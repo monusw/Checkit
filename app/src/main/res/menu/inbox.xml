@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--TODO: menu settings-->
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/inbox_menu_item"
+        app:showAsAction="ifRoom" >
+        <menu xmlns:android="http://schemas.android.com/apk/res/android">
+            <item
+                android:title="q" />
+            <item
+                android:title="w" />
+            <item
+                android:title="q" />
+        </menu>
+    </item>
+</menu>

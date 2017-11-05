@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Check it</string>
+
+    <string name="navigation_drawer_open">打开导航栏</string>
+    <string name="navigation_drawer_close">关闭导航栏</string>
+
+    <!--nav titles-->
+    <string name="nav_inbox_title">收件箱</string>
+    <string name="nav_projects_title">项目</string>
+    <string name="nav_daily_title">日常</string>
+    <string name="nav_forecast_title">预测</string>
+    <string name="nav_system_group_title">系统</string>
+    <string name="nav_settings_title">设置</string>
+    <string name="nav_about_title">关于</string>
+
+    <!--inbox menu item titles-->
+    <string name="inbox_menu_item">测试</string>
+</resources>

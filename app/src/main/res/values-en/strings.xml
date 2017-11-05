@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Check it</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--nav titles-->
+    <string name="nav_inbox_title">Inbox</string>
+    <string name="nav_projects_title">Projects</string>
+    <string name="nav_daily_title">Daily</string>
+    <string name="nav_forecast_title">Forecast</string>
+    <string name="nav_system_group_title">System</string>
+    <string name="nav_settings_title">Settings</string>
+    <string name="nav_about_title">About</string>
+
+    <!--inbox menu item titles-->
+    <string name="inbox_menu_item">test</string>
+</resources>

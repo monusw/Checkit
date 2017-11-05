@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--TODO: 图标-->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inbox"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/nav_inbox_title" />
+        <item
+            android:id="@+id/nav_projects"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/nav_projects_title" />
+        <item
+            android:id="@+id/nav_daily"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/nav_daily_title" />
+        <item
+            android:id="@+id/nav_forecast"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/nav_forecast_title" />
+    </group>
+
+    <item android:title="@string/nav_system_group_title">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/nav_settings_title" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/nav_about_title" />
+        </menu>
+    </item>
+
+</menu>
