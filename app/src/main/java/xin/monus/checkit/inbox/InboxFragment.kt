@@ -20,11 +20,10 @@ class InboxFragment: Fragment(), InboxContract.View {
                               savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.activity_main_frag, container, false)
 
-//        with(root) {
-//            this@InboxFragment.testTxt = findViewById(R.id.test_txt)
-//            println(testTxt.text)
-//        }
-        testTxt = root.findViewById(R.id.test_txt)
+        // init the view
+        with(root) {
+            testTxt = root.findViewById(R.id.test_txt)
+        }
 
         val fab = activity.findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener { view ->
@@ -32,9 +31,11 @@ class InboxFragment: Fragment(), InboxContract.View {
             presenter.load()
         }
 
-//        setHasOptionsMenu(true)
+        // set up options menu on the top right
+        setHasOptionsMenu(true)
         return root
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -53,6 +54,15 @@ class InboxFragment: Fragment(), InboxContract.View {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
         inflater.inflate(R.menu.inbox, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        return if (id == R.id.action_settings) {
+
+            true
+        } else super.onOptionsItemSelected(item)
+
     }
 
 
