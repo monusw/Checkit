@@ -5,10 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import xin.monus.checkit.R
 import xin.monus.checkit.db.LocalDbHelper
 
-/**
- * @author wu
- * @date   2017/11/12
- */
+
 class TestActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
