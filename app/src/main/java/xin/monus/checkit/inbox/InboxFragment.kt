@@ -14,6 +14,8 @@ class InboxFragment: Fragment(), InboxContract.View {
     override lateinit var presenter: InboxContract.Presenter
 
     private lateinit var testTxt: TextView
+
+
     private var isTitle = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -23,7 +25,9 @@ class InboxFragment: Fragment(), InboxContract.View {
         // init the view
         with(root) {
             testTxt = root.findViewById(R.id.test_txt)
+
         }
+
 
         val fab = activity.findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener { view ->

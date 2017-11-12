@@ -47,6 +47,7 @@ class InboxActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         navigationView.menu.getItem(0).isChecked = true
         navigationView.setNavigationItemSelectedListener(this)
 
+
         // initialize the fragment
         val inboxFragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
                 as InboxFragment? ?: InboxFragment.newInstance().also {

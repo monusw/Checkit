@@ -5,8 +5,8 @@ import java.util.*
 
 class InboxItemRepository(
         // TODO: add local database and remote database
-//        val inboxItemsRemoteDataSource: InboxItemDataSource,
-//        val inboxItemsLocalDataSource: InboxItemDataSource
+//        val inboxItemRemoteDataSource: InboxItemDataSource,
+//        val inboxItemLocalDataSource: InboxItemDataSource
 ): InboxItemDataSource {
 
     var cachedInboxItems: LinkedHashMap<String, InboxItem> = LinkedHashMap()
