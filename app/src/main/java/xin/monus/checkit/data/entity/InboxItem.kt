@@ -1,8 +1,10 @@
 package xin.monus.checkit.data.entity
 
-import java.util.*
-
 data class InboxItem (
-        val id: String = UUID.randomUUID().toString(),
-        val title: String = ""
+        val id: Int,
+        val username: String,
+        val content: String,
+        val deadline: String,
+        val complete: Boolean,
+        val flag: Boolean
 )

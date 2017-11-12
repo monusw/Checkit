@@ -3,7 +3,7 @@ package xin.monus.checkit.test
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import xin.monus.checkit.R
-import xin.monus.checkit.data.source.local.LocalDbHelper
+import xin.monus.checkit.db.LocalDbHelper
 
 /**
  * @author wu

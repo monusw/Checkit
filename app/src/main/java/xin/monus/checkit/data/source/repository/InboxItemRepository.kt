@@ -1,6 +1,7 @@
-package xin.monus.checkit.data.source
+package xin.monus.checkit.data.source.repository
 
 import xin.monus.checkit.data.entity.InboxItem
+import xin.monus.checkit.data.source.InboxItemDataSource
 import java.util.*
 
 class InboxItemRepository(
@@ -20,7 +21,7 @@ class InboxItemRepository(
         }
         else {
             // for test
-            val newItem = InboxItem(title = "hello")
+            val newItem = InboxItem(1, "test", "hello", "2017-12", true, false)
             callback.onInboxItemLoaded(newItem)
             return
         }

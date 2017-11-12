@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import xin.monus.checkit.R
-import xin.monus.checkit.data.source.InboxItemRepository
+import xin.monus.checkit.data.source.repository.InboxItemRepository
 import xin.monus.checkit.projects.ProjectsActivity
 import xin.monus.checkit.util.replaceFragmentInActivity
 import xin.monus.checkit.util.setupActionBar

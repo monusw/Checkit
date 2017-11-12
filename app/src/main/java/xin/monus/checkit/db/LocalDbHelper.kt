@@ -1,13 +1,13 @@
-package xin.monus.checkit.data.source.local
+package xin.monus.checkit.db
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import xin.monus.checkit.data.source.local.LocalTable.ActionTable
-import xin.monus.checkit.data.source.local.LocalTable.DailyTable
-import xin.monus.checkit.data.source.local.LocalTable.InboxItemTable
-import xin.monus.checkit.data.source.local.LocalTable.ProjectTable
-import xin.monus.checkit.data.source.local.LocalTable.UserTable
+import xin.monus.checkit.db.LocalTable.ActionTable
+import xin.monus.checkit.db.LocalTable.DailyTable
+import xin.monus.checkit.db.LocalTable.InboxItemTable
+import xin.monus.checkit.db.LocalTable.ProjectTable
+import xin.monus.checkit.db.LocalTable.UserTable
 
 class LocalDbHelper(context : Context) :
         SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {

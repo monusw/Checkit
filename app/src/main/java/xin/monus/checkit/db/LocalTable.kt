@@ -1,4 +1,4 @@
-package xin.monus.checkit.data.source.local
+package xin.monus.checkit.db
 
 import android.provider.BaseColumns
 
