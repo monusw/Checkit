@@ -12,6 +12,6 @@ interface InboxItemDataSource {
 
     }
 
-    fun getInboxItem (itemId: String, callback: GetInboxItemCallBack)
+    fun getInboxItemById (id: Int, callback: GetInboxItemCallBack)
 
 }

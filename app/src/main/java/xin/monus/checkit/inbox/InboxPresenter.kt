@@ -1,7 +1,5 @@
 package xin.monus.checkit.inbox
 
-import xin.monus.checkit.data.entity.InboxItem
-import xin.monus.checkit.data.source.InboxItemDataSource
 import xin.monus.checkit.data.source.repository.InboxItemRepository
 
 class InboxPresenter(
@@ -25,15 +23,15 @@ class InboxPresenter(
 
     // for test
     override fun load() {
-        inboxItemRepository.getInboxItem("smart", object : InboxItemDataSource.GetInboxItemCallBack {
-            override fun onInboxItemLoaded(item: InboxItem) {
-                inboxView.show(item)
-            }
-
-            override fun onDataNotAvailable() {
-                println("no data")
-            }
-        })
+//        inboxItemRepository.getInboxItem("smart", object : InboxItemDataSource.GetInboxItemCallBack {
+//            override fun onInboxItemLoaded(item: InboxItem) {
+//                inboxView.show(item)
+//            }
+//
+//            override fun onDataNotAvailable() {
+//                println("no data")
+//            }
+//        })
     }
 
 }

@@ -47,13 +47,13 @@ class InboxFragment: Fragment(), InboxContract.View {
     }
 
     override fun show(item: InboxItem) {
-        if (isTitle) {
-            testTxt.text = item.id
-            isTitle = false
-        } else {
-            testTxt.text = item.title
-            isTitle = true
-        }
+//        if (isTitle) {
+//            testTxt.text = item.id
+//            isTitle = false
+//        } else {
+//            testTxt.text = item.title
+//            isTitle = true
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
