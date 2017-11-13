@@ -17,6 +17,23 @@ class InboxItemRepository(
 
     var cacheIsFresh = true
 
+    /**
+     * Singleton
+     */
+    companion object {
+        private var INSTANCE: InboxItemRepository? = null
+
+        @JvmStatic fun getInstance(inboxItemLocalDataSource: InboxItemDataSource): InboxItemRepository {
+            return INSTANCE ?: InboxItemRepository(inboxItemLocalDataSource)
+                    .apply { INSTANCE = this }
+        }
+
+        // For test
+        @JvmStatic fun destroyInstance() {
+            INSTANCE = null
+        }
+    }
+
     override fun getInboxItems(callback: InboxItemDataSource.LoadInboxItemsCallback) {
         if (cachedInboxItems.isNotEmpty() && cacheIsFresh) {
             callback.onInboxItemsLoaded(ArrayList(cachedInboxItems.values))
@@ -39,7 +56,7 @@ class InboxItemRepository(
         }
     }
 
-    override fun getInboxItemById(id: Int, callback: InboxItemDataSource.GetInboxItemCallback) {
+    override fun getInboxItemById(id: Int, callback : InboxItemDataSource.GetInboxItemCallback) {
         val itemInCache = getInboxItemInCacheById(id)
         if (itemInCache != null) {
             callback.onInboxItemLoaded(itemInCache)
@@ -49,7 +66,7 @@ class InboxItemRepository(
         inboxItemLocalDataSource.getInboxItemById(id, object : InboxItemDataSource.GetInboxItemCallback {
             override fun onInboxItemLoaded(item: InboxItem) {
                 cacheAndPerform(item) {
-                    callback.onInboxItemLoaded(item)
+                    callback.onInboxItemLoaded(it)
                 }
             }
 
@@ -89,24 +106,6 @@ class InboxItemRepository(
             cacheAndPerform(it) {}
         }
         cacheIsFresh = true
-    }
-
-
-    /**
-     * Singleton
-     */
-    companion object {
-        private var INSTANCE: InboxItemRepository? = null
-
-        @JvmStatic fun getInstance(tasksLocalDataSource: InboxItemDataSource): InboxItemRepository {
-            return INSTANCE ?: InboxItemRepository(tasksLocalDataSource)
-                    .apply { INSTANCE = this }
-        }
-
-        // For test
-        @JvmStatic fun destroyInstance() {
-            INSTANCE = null
-        }
     }
 
 }

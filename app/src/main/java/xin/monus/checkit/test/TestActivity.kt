@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.data.source.InboxItemDataSource
-import xin.monus.checkit.data.source.local.InboxItemLocalDataSource
 import xin.monus.checkit.db.LocalDbHelper
+import xin.monus.checkit.util.Injection
 
 
 class TestActivity: AppCompatActivity() {
@@ -30,9 +30,9 @@ class TestActivity: AppCompatActivity() {
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
                     "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 1 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 1 );")
+                    "  VALUES ('test1', 'homework', DATETIME('2017-12-08 17:00'), 1 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 1 );")
+                    "  VALUES ('test1', 'review', DATETIME('2017-12-08 17:00'), 1 );")
 //            execSQL("DELETE FROM USER WHERE username = 'test1';")
         }
 
@@ -43,7 +43,20 @@ class TestActivity: AppCompatActivity() {
                 flag = true
                 )
 
-        val ldb = InboxItemLocalDataSource.getInstance(this)
+//        val ldb = InboxItemLocalDataSource.getInstance(this)
+        val ldb = Injection.getInboxItemRepository(this)
+
+        ldb.getInboxItems(object : InboxItemDataSource.LoadInboxItemsCallback {
+            override fun onInboxItemsLoaded(items: List<InboxItem>) {
+                for (i in items) {
+                    println(i.content)
+                }
+            }
+
+            override fun onDataNotAvailable() {
+                println("fuck")
+            }
+        })
 
         ldb.addInboxItem(item, object : InboxItemDataSource.OperationCallback {
             override fun success() {
@@ -55,5 +68,19 @@ class TestActivity: AppCompatActivity() {
 
         })
 
+        ldb.getInboxItems(object : InboxItemDataSource.LoadInboxItemsCallback {
+            override fun onInboxItemsLoaded(items: List<InboxItem>) {
+                for (i in items) {
+                    println(i.content)
+                }
+            }
+
+            override fun onDataNotAvailable() {
+                println("fuck")
+            }
+        })
+
     }
+
+
 }
