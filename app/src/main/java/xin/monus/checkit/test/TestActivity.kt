@@ -8,10 +8,7 @@ import xin.monus.checkit.data.source.InboxItemDataSource
 import xin.monus.checkit.data.source.local.InboxItemLocalDataSource
 import xin.monus.checkit.db.LocalDbHelper
 
-/**
- * @author wu
- * @date   2017/11/12
- */
+
 class TestActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
