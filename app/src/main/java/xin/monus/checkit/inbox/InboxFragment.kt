@@ -30,7 +30,8 @@ class InboxFragment: Fragment(), InboxContract.View {
 
 
         val fab = activity.findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
+            view ->
             Snackbar.make(view, "For test", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
             presenter.load()
         }
@@ -47,13 +48,7 @@ class InboxFragment: Fragment(), InboxContract.View {
     }
 
     override fun show(item: InboxItem) {
-//        if (isTitle) {
-//            testTxt.text = item.id
-//            isTitle = false
-//        } else {
-//            testTxt.text = item.title
-//            isTitle = true
-//        }
+        testTxt.text = item.username
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
