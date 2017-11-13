@@ -60,7 +60,9 @@ object FakeData {
             execSQL("INSERT INTO DAILY (username, content, remind_time)" +
                     "    VALUES ('test1', 'review', TIME('21:30', 'localtime'));")
 
+            close()
         }
+        dbHelper.close()
     }
 
 }

@@ -54,7 +54,7 @@ class InboxActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 as InboxFragment? ?: InboxFragment.newInstance().also {
             replaceFragmentInActivity(it, R.id.contentFrame)
         }
-        
+
         //fake data
         FakeData.generateData(this)
 

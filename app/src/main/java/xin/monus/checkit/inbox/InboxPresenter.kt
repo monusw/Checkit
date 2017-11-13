@@ -25,7 +25,7 @@ class InboxPresenter(
 
     // for test
     override fun load() {
-        inboxItemRepository.getInboxItemById(1, object : InboxItemDataSource.GetInboxItemCallBack {
+        inboxItemRepository.getInboxItemById(1, object : InboxItemDataSource.GetInboxItemCallback {
             override fun onInboxItemLoaded(item: InboxItem) {
                 inboxView.show(item)
             }

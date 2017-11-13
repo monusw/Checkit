@@ -4,7 +4,15 @@ import xin.monus.checkit.data.entity.InboxItem
 
 interface InboxItemDataSource {
 
-    interface GetInboxItemCallBack {
+    interface LoadInboxItemsCallback {
+
+        fun onInboxItemsLoaded(items: List<InboxItem>)
+
+        fun onDataNotAvailable()
+
+    }
+
+    interface GetInboxItemCallback {
 
         fun onInboxItemLoaded(item: InboxItem)
 
@@ -12,6 +20,21 @@ interface InboxItemDataSource {
 
     }
 
-    fun getInboxItemById (id: Int, callback: GetInboxItemCallBack)
+    /**
+     * Add, delete, modify inbox item callback
+     */
+    interface OperationCallback {
+
+        fun success()
+
+        fun fail()
+
+    }
+
+    fun getInboxItems(callback: LoadInboxItemsCallback)
+
+    fun getInboxItemById (id: Int, callback: GetInboxItemCallback)
+
+    fun addInboxItem(item: InboxItem, callback: OperationCallback)
 
 }

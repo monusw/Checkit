@@ -36,16 +36,21 @@ class TestActivity: AppCompatActivity() {
 //            execSQL("DELETE FROM USER WHERE username = 'test1';")
         }
 
-        val ldb = InboxItemLocalDataSource.getInstance(this)
-        ldb.getInboxItemById(1, object : InboxItemDataSource.GetInboxItemCallBack {
-            override fun onInboxItemLoaded(item: InboxItem) {
-                println(item.id)
-                println(item.username)
-                println(item.deadline)
-            }
+        val item = InboxItem(username = "test",
+                content = "smart ass",
+                deadline = "2017-12-23 18:00",
+                complete = false,
+                flag = true
+                )
 
-            override fun onDataNotAvailable() {
-                println("failed")
+        val ldb = InboxItemLocalDataSource.getInstance(this)
+
+        ldb.addInboxItem(item, object : InboxItemDataSource.OperationCallback {
+            override fun success() {
+                println("add success")
+            }
+            override fun fail() {
+                println("add failed")
             }
 
         })
