@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import xin.monus.checkit.R
 import xin.monus.checkit.projects.ProjectsActivity
+import xin.monus.checkit.test.FakeData
 import xin.monus.checkit.util.Injection
 import xin.monus.checkit.util.replaceFragmentInActivity
 import xin.monus.checkit.util.setupActionBar
@@ -53,6 +54,10 @@ class InboxActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 as InboxFragment? ?: InboxFragment.newInstance().also {
             replaceFragmentInActivity(it, R.id.contentFrame)
         }
+        
+        //fake data
+        FakeData.generateData(this)
+
         // create the presenter
         inboxPresenter = InboxPresenter(Injection.getInboxItemRepository(this), inboxFragment)
     }
