@@ -65,8 +65,28 @@ class TestActivity: AppCompatActivity() {
             override fun fail() {
                 println("add failed")
             }
-
         })
+
+        ldb.deleteInboxItem(1, object : InboxItemDataSource.OperationCallback {
+            override fun success() {
+                println("delete success")
+            }
+
+            override fun fail() {
+                println("delete failed")
+            }
+        })
+
+        ldb.updateInboxItem(InboxItem(2, "test1", "stick your finger", "2018-1-1 00:00", true, true),
+                object : InboxItemDataSource.OperationCallback {
+                    override fun success() {
+                        println("update success")
+                    }
+
+                    override fun fail() {
+                        println("update failed")
+                    }
+                })
 
         ldb.getInboxItems(object : InboxItemDataSource.LoadInboxItemsCallback {
             override fun onInboxItemsLoaded(items: List<InboxItem>) {
@@ -79,6 +99,8 @@ class TestActivity: AppCompatActivity() {
                 println("fuck")
             }
         })
+
+
 
     }
 

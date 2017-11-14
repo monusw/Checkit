@@ -98,6 +98,36 @@ class InboxItemLocalDataSource private constructor(context: Context) : InboxItem
         }
     }
 
+    override fun deleteInboxItem(id: Int, callback: InboxItemDataSource.OperationCallback) {
+        with(dbHelper.writableDatabase) {
+            if (delete(InboxItemTable.TABLE_NAME,
+                    "${InboxItemTable.COLUMN_ID} = ?",
+                    arrayOf(id.toString())) > 0) {
+                callback.success()
+            } else {
+                callback.fail()
+            }
+            close()
+        }
+    }
+
+    override fun updateInboxItem(item: InboxItem, callback: InboxItemDataSource.OperationCallback) {
+        val values = ContentValues().apply {
+            put(InboxItemTable.COLUMN_CONTENT, item.content)
+            put(InboxItemTable.COLUMN_DEADLINE, item.deadline)
+            put(InboxItemTable.COLUMN_COMPLETE, item.complete)
+            put(InboxItemTable.COLUMN_FLAG, item.flag)
+        }
+        with(dbHelper.writableDatabase) {
+            if (update(InboxItemTable.TABLE_NAME, values,
+                    "${InboxItemTable.COLUMN_ID} = ?",
+                    arrayOf(item.id.toString())) > 0) {
+                callback.success()
+            } else {
+                callback.fail()
+            }
+        }
+    }
 
 
 }

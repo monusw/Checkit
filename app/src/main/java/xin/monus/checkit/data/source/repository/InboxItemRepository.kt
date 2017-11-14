@@ -89,6 +89,32 @@ class InboxItemRepository(
         })
     }
 
+    override fun deleteInboxItem(id: Int, callback: InboxItemDataSource.OperationCallback) {
+        inboxItemLocalDataSource.deleteInboxItem(id, object : InboxItemDataSource.OperationCallback {
+            override fun success() {
+                cachedInboxItems.remove(id)
+                callback.success()
+            }
+
+            override fun fail() {
+                callback.fail()
+            }
+        })
+    }
+
+    override fun updateInboxItem(item: InboxItem, callback: InboxItemDataSource.OperationCallback) {
+        inboxItemLocalDataSource.updateInboxItem(item, object : InboxItemDataSource.OperationCallback {
+            override fun success() {
+                cachedInboxItems[item.id] = item
+                callback.success()
+            }
+
+            override fun fail() {
+                callback.fail()
+            }
+        })
+    }
+
 
     /**
      * Private functions
