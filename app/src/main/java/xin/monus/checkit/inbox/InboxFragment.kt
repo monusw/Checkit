@@ -20,7 +20,7 @@ class InboxFragment: Fragment(), InboxContract.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.activity_main_frag, container, false)
+        val root = inflater.inflate(R.layout.activity_inbox_frag, container, false)
 
         // init the view
         with(root) {
