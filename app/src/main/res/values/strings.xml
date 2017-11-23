@@ -15,4 +15,6 @@
 
     <!--inbox menu item titles-->
     <string name="inbox_menu_item">测试</string>
+    <string name="content">Content</string>
+    <string name="dead_line">dead line</string>
 </resources>
