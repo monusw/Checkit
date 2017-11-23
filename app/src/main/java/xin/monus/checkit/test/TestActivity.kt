@@ -6,6 +6,7 @@ import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.data.source.InboxItemDataSource
 import xin.monus.checkit.db.LocalDbHelper
+import xin.monus.checkit.login.UserProfile
 import xin.monus.checkit.util.Injection
 
 
@@ -100,8 +101,7 @@ class TestActivity: AppCompatActivity() {
             }
         })
 
-
-
+        val user = UserProfile.getUser(this)
     }
 
 
