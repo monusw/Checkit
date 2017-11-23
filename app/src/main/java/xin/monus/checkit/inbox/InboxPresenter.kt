@@ -1,8 +1,10 @@
 package xin.monus.checkit.inbox
 
+import dalvik.system.InMemoryDexClassLoader
 import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.data.source.InboxItemDataSource
 import xin.monus.checkit.data.source.repository.InboxItemRepository
+import java.util.function.IntBinaryOperator
 
 class InboxPresenter(
         val inboxItemRepository: InboxItemRepository,
@@ -19,19 +21,20 @@ class InboxPresenter(
         // test
         println("inbox presenter")
         firstLoad = false
-//        load()
+        loadItems()
     }
 
 
     // for test
-    override fun load() {
-        inboxItemRepository.getInboxItemById(1, object : InboxItemDataSource.GetInboxItemCallback {
-            override fun onInboxItemLoaded(item: InboxItem) {
-                inboxView.show(item)
+    override fun loadItems() {
+        inboxItemRepository.getInboxItems(object :InboxItemDataSource.LoadInboxItemsCallback {
+            override fun onInboxItemsLoaded(items: List<InboxItem>) {
+                inboxView.setEndRefresh()
+                inboxView.showItems(items)
             }
 
             override fun onDataNotAvailable() {
-                println("not available")
+                println("No data!")
             }
 
         })

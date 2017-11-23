@@ -7,10 +7,11 @@ import xin.monus.checkit.data.entity.InboxItem
 interface InboxContract {
 
     interface View : BaseView<Presenter> {
-        fun show(item: InboxItem)
+        fun showItems(list: List<InboxItem>)
+        fun setEndRefresh()
     }
 
     interface Presenter : BasePresenter {
-        fun load()
+        fun loadItems()
     }
 }
