@@ -30,7 +30,26 @@ object FakeData {
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
                     "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 1 );")
+                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+            execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
+                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+            execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
+                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+            execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
+                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+            execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
+                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+            execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
+                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+            execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
+                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+            execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
+                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+            execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
+                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+            execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
+                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+
 
             // PROJECT
             execSQL("INSERT INTO PROJECT (username, content, deadline, flag)" +
