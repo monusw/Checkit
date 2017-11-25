@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v4.widget.SwipeRefreshLayout
 import android.view.*
 import android.widget.ListView
 import android.widget.TextView
+import com.baoyz.widget.PullRefreshLayout
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.InboxItem
-import xin.monus.checkit.data.source.InboxItemDataSource
+import java.util.*
 
 class InboxFragment: Fragment(), InboxContract.View {
 
@@ -21,7 +22,7 @@ class InboxFragment: Fragment(), InboxContract.View {
 
     private val listAdapter = InboxListAdapter(ArrayList(0))
 
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var pullRefreshLayout: PullRefreshLayout
 
     private var isTitle = false
 
@@ -35,15 +36,16 @@ class InboxFragment: Fragment(), InboxContract.View {
             findViewById<ListView>(R.id.item_list).apply {
                 adapter = listAdapter
             }
-            swipeRefreshLayout=findViewById(R.id.swipeRefreshLayout)
-            swipeRefreshLayout.setColorSchemeColors(
-                    ContextCompat.getColor(context, android.R.color.holo_blue_light),
-                    ContextCompat.getColor(context, android.R.color.holo_green_light),
-                    ContextCompat.getColor(context, android.R.color.holo_orange_light),
-                    ContextCompat.getColor(context, android.R.color.holo_red_light)
-            )
-            swipeRefreshLayout.setOnRefreshListener {
-                swipeRefreshLayout.isRefreshing = true
+            pullRefreshLayout =findViewById(R.id.pullRefreshLayout)
+//            pullRefreshLayout.setColorSchemeColors(
+//                    ContextCompat.getColor(context, android.R.color.holo_blue_light),
+//                    ContextCompat.getColor(context, android.R.color.holo_green_light),
+//                    ContextCompat.getColor(context, android.R.color.holo_orange_light),
+//                    ContextCompat.getColor(context, android.R.color.holo_red_light)
+//            )
+            pullRefreshLayout.setOnRefreshListener {
+                pullRefreshLayout.setRefreshing(true)
+                //doAsync { Thread.sleep(3000) }
                 presenter.loadItems()
             }
         }
@@ -73,7 +75,12 @@ class InboxFragment: Fragment(), InboxContract.View {
     }
 
     override fun setEndRefresh() {
-        swipeRefreshLayout.isRefreshing = false
+        doAsync {
+            Thread.sleep(5000)
+            uiThread {
+                pullRefreshLayout.setRefreshing(false)
+            }
+        }
     }
 
 
