@@ -1,24 +1,25 @@
 package xin.monus.checkit.inbox
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.*
+import android.widget.AbsListView
 import android.widget.ListView
-import android.widget.TextView
 import com.baoyz.widget.PullRefreshLayout
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.InboxItem
+import xin.monus.checkit.inbox.edit.InboxEditActivity
 import java.util.*
 
 class InboxFragment: Fragment(), InboxContract.View {
 
     override lateinit var presenter: InboxContract.Presenter
 
-    private lateinit var testTxt: TextView
+    private lateinit var floatingBtn: FloatingActionButton
 
     private val listAdapter = InboxListAdapter(ArrayList(0))
 
@@ -35,28 +36,42 @@ class InboxFragment: Fragment(), InboxContract.View {
 //            testTxt = findViewById(R.id.test_txt)
             findViewById<ListView>(R.id.item_list).apply {
                 adapter = listAdapter
+
+                setOnScrollListener(object : AbsListView.OnScrollListener {
+                    override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+                    }
+
+                    override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
+                        when(scrollState) {
+                            AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
+                                if (lastVisiblePosition == count - 1) {
+                                    floatingBtn.hide()
+                                } else {
+                                    floatingBtn.show()
+                                }
+                            }
+                            else -> floatingBtn.show()
+                        }
+                    }
+
+                })
             }
             pullRefreshLayout =findViewById(R.id.pullRefreshLayout)
-//            pullRefreshLayout.setColorSchemeColors(
-//                    ContextCompat.getColor(context, android.R.color.holo_blue_light),
-//                    ContextCompat.getColor(context, android.R.color.holo_green_light),
-//                    ContextCompat.getColor(context, android.R.color.holo_orange_light),
-//                    ContextCompat.getColor(context, android.R.color.holo_red_light)
-//            )
             pullRefreshLayout.setOnRefreshListener {
                 pullRefreshLayout.setRefreshing(true)
-                //doAsync { Thread.sleep(3000) }
                 presenter.loadItems()
             }
         }
 
 
 
-        val fab = activity.findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
-            view ->
-            Snackbar.make(view, "For test", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
-            presenter.loadItems()
+        floatingBtn = activity.findViewById<FloatingActionButton>(R.id.fab)
+        floatingBtn.setOnClickListener {
+            _ ->
+//            Snackbar.make(view, "For test", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
+//            presenter.loadItems()
+            val intent = Intent(context, InboxEditActivity::class.java)
+            startActivity(intent)
         }
 
         // set up options menu on the top right
