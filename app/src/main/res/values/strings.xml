@@ -14,7 +14,8 @@
     <string name="nav_about_title">关于</string>
 
     <!--inbox menu item titles-->
-    <string name="inbox_menu_item">测试</string>
-    <string name="content">Content</string>
-    <string name="dead_line">dead line</string>
+    <string name="inbox_menu_item">筛选</string>
+
+    <!--inbox item edit-->
+    <string name="inbox_edit_title">编辑</string>
 </resources>
