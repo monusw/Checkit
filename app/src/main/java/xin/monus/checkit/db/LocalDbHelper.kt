@@ -75,7 +75,7 @@ class LocalDbHelper(context : Context) :
                 "CREATE TABLE ${ActionTable.TABLE_NAME} ("+
                         "${ActionTable.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT ,"+
                         "${ActionTable.COLUMN_PROJECT_ID} INTEGER ,"+
-                        "${ActionTable.COLUMN_PARENT_ACTION_ID} DEFAULT NULL ,"+
+                        "${ActionTable.COLUMN_PARENT_ACTION_ID} INTEGER DEFAULT 0 ,"+
                         "${ActionTable.COLUMN_CONTENT} TEXT,"+
                         "${ActionTable.COLUMN_DEADLINE} DATETIME ,"+
                         "${ActionTable.COLUMN_COMPLETE} BOOLEAN NOT NULL DEFAULT 0,"+
