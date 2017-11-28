@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.ImageButton
 import android.widget.TextView
@@ -15,7 +16,7 @@ import xin.monus.checkit.data.entity.InboxItem
 
 
 
-class InboxListAdapter(list: List<InboxItem>) : BaseAdapter() {
+class InboxListAdapter(list: List<InboxItem>, val itemClickedListener: InboxFragment.ItemClickedListener) : BaseAdapter() {
     var list: List<InboxItem> = list
     set(value) {
         field = value
@@ -60,7 +61,7 @@ class InboxListAdapter(list: List<InboxItem>) : BaseAdapter() {
         }
 
         rowView.setOnClickListener {
-            println("edit view")
+            itemClickedListener.getID(getItem(i).id)
         }
 
         return rowView

@@ -6,7 +6,9 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.view.*
 import android.widget.AbsListView
+import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.Toast
 import com.baoyz.widget.PullRefreshLayout
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -17,11 +19,21 @@ import java.util.*
 
 class InboxFragment: Fragment(), InboxContract.View {
 
+    interface ItemClickedListener{
+        fun getID(itemID: Int)
+    }
+
     override lateinit var presenter: InboxContract.Presenter
 
     private lateinit var floatingBtn: FloatingActionButton
 
-    private val listAdapter = InboxListAdapter(ArrayList(0))
+    private val listAdapter = InboxListAdapter(ArrayList(0), object : InboxFragment.ItemClickedListener{
+        override fun getID(itemID: Int) {
+            val intent = Intent(context, InboxEditActivity::class.java)
+            intent.putExtra("ID",itemID)
+            startActivity(intent)
+        }
+    })
 
     private lateinit var pullRefreshLayout: PullRefreshLayout
 
@@ -55,6 +67,8 @@ class InboxFragment: Fragment(), InboxContract.View {
                     }
 
                 })
+
+
             }
             pullRefreshLayout =findViewById(R.id.pullRefreshLayout)
             pullRefreshLayout.setOnRefreshListener {

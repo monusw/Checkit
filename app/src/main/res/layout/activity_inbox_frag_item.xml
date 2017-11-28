@@ -6,12 +6,16 @@
     android:layout_height="wrap_content"
     >
 
+
     <TextView
         android:id="@+id/content"
         android:layout_width="210dp"
         android:layout_height="30dp"
         android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:textSize="25sp"
+        android:text="ass"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,6 +28,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="10dp"
         android:textSize="15sp"
+        android:text="fuck"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@id/content"

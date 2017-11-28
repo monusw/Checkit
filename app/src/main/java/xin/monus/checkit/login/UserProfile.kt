@@ -19,6 +19,7 @@ object UserProfile {
                 user = generateDefaultUser(context)
             }
             firstLoad = false
+            INSTANCE = user
             return user
         }
     }

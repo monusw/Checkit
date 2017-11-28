@@ -26,29 +26,29 @@ object FakeData {
                     "    VALUES ('test3', 'hello', 'myth');")
             // INBOX_ITEM
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'complete1 homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'complete2 homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'complete3 homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'complete4 homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'complete5 homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'complete6 homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'complete7 homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'complete8 homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'complete9 homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'completeA homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'completeB homework', DATETIME('2017-12-08 17:00'), 0 );")
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
-                    "  VALUES ('test1', 'complete homework', DATETIME('2017-12-08 17:00'), 0 );")
+                    "  VALUES ('test1', 'completeC homework', DATETIME('2017-12-08 17:00'), 0 );")
 
 
             // PROJECT
