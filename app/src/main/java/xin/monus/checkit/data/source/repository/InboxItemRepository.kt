@@ -80,7 +80,7 @@ class InboxItemRepository(
     override fun addInboxItem(item: InboxItem, callback: InboxItemDataSource.OperationCallback) {
         inboxItemLocalDataSource.addInboxItem(item, object : InboxItemDataSource.OperationCallback {
             override fun success() {
-                cacheAndPerform(item) {}
+                refreshFromDB()
                 callback.success()
             }
             override fun fail() {
@@ -133,5 +133,18 @@ class InboxItemRepository(
         }
         cacheIsFresh = true
     }
+
+    private fun refreshFromDB() {
+        inboxItemLocalDataSource.getInboxItems(object : InboxItemDataSource.LoadInboxItemsCallback {
+            override fun onInboxItemsLoaded(items: List<InboxItem>) {
+                refreshCache(items)
+            }
+
+            override fun onDataNotAvailable() {
+            }
+        })
+    }
+
+
 
 }
