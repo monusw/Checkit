@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/projects_pull_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:refreshType="water_drop">
+
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:id="@+id/projects_list"
+            android:scrollbars="vertical"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+
+    </com.baoyz.widget.PullRefreshLayout>
+
+</LinearLayout>

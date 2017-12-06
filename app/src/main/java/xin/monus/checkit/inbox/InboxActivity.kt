@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import xin.monus.checkit.R
+import xin.monus.checkit.daily.DailyActivity
+import xin.monus.checkit.forecast.ForecastActivity
 import xin.monus.checkit.projects.ProjectsActivity
 import xin.monus.checkit.test.FakeData
 import xin.monus.checkit.util.Injection
@@ -75,10 +77,12 @@ class InboxActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 startActivity(intent)
             }
             R.id.nav_daily -> {
-
+                val intent = Intent(this@InboxActivity, DailyActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_forecast -> {
-
+                val intent = Intent(this@InboxActivity, ForecastActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_settings -> {
 
@@ -91,6 +95,15 @@ class InboxActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
         drawer.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onBackPressed() {
+        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 
 }

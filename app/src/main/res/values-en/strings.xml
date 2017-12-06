@@ -18,4 +18,7 @@
 
     <!--inbox item edit-->
     <string name="inbox_edit_title">Edit</string>
+
+    <!--projects item swipe menu-->
+    <string name="projects_swipe_delete">Delete</string>
 </resources>

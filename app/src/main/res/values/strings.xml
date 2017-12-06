@@ -18,4 +18,7 @@
 
     <!--inbox item edit-->
     <string name="inbox_edit_title">编辑</string>
+
+    <!--projects item swipe menu-->
+    <string name="projects_swipe_delete">删除</string>
 </resources>

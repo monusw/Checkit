@@ -1,4 +1,4 @@
-package xin.monus.checkit.projects
+package xin.monus.checkit.forecast
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,30 +12,29 @@ import android.view.Menu
 import android.view.MenuItem
 import xin.monus.checkit.R
 import xin.monus.checkit.daily.DailyActivity
-import xin.monus.checkit.forecast.ForecastActivity
 import xin.monus.checkit.inbox.InboxActivity
-import xin.monus.checkit.util.Injection
+import xin.monus.checkit.projects.ProjectsActivity
 import xin.monus.checkit.util.replaceFragmentInActivity
 import xin.monus.checkit.util.setupActionBar
 
-class ProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class ForecastActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val drawerLayout by lazy { findViewById(R.id.drawer_layout) as DrawerLayout }
 
     private val toolbar by lazy { findViewById(R.id.toolbar) as Toolbar }
 
-    private lateinit var projectsPresenter: ProjectsPresenter
+    private lateinit var forecastPresenter : ForecastContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_projects)
+        setContentView(R.layout.activity_daily)
 
         // setup the tool bar
         setupActionBar(R.id.toolbar) {
             setHomeAsUpIndicator(R.drawable.ic_menu)
             setDisplayHomeAsUpEnabled(true)
             // add
-            setTitle(R.string.nav_projects_title)
+            setTitle(R.string.nav_forecast_title)
         }
         // Set up the navigation drawer.
         val toggle = ActionBarDrawerToggle(
@@ -45,14 +44,14 @@ class ProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         // TODO: Change the index in different activity
-        navigationView.menu.getItem(1).isChecked = true
+        navigationView.menu.getItem(3).isChecked = true
         navigationView.setNavigationItemSelectedListener(this)
 
-        val projectsFragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
-                as ProjectsFragment? ?: ProjectsFragment.newInstance().also {
+        val forecastFragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
+                as ForecastFragment? ?: ForecastFragment.newInstance().also {
             replaceFragmentInActivity(it, R.id.contentFrame)
         }
-        projectsPresenter = ProjectsPresenter(Injection.getProjectsRepository(this), projectsFragment)
+        forecastPresenter = ForecastPresenter(forecastFragment)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -61,19 +60,19 @@ class ProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         when (id) {
             R.id.nav_inbox -> {
-                val intent = Intent(this@ProjectsActivity, InboxActivity::class.java)
+                val intent = Intent(this@ForecastActivity, InboxActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_projects -> {
-
+                val intent = Intent(this@ForecastActivity, ProjectsActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_daily -> {
-                val intent = Intent(this@ProjectsActivity, DailyActivity::class.java)
+                val intent = Intent(this@ForecastActivity, DailyActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_forecast -> {
-                val intent = Intent(this@ProjectsActivity, ForecastActivity::class.java)
-                startActivity(intent)
+
             }
             R.id.nav_settings -> {
 

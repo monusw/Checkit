@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        tools:context="xin.monus.checkit.projects.ProjectsActivity">
+        tools:context="xin.monus.checkit.inbox.InboxActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
