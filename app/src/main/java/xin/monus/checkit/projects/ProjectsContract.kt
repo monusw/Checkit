@@ -12,6 +12,7 @@ interface ProjectsContract {
     }
 
     interface Presenter : BasePresenter {
+        fun deleteProject(projectId: Int)
     }
 
 }

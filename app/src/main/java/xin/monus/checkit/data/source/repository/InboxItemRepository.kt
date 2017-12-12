@@ -102,6 +102,31 @@ class InboxItemRepository(
         })
     }
 
+    override fun deleteCompleteItems(callback: InboxItemDataSource.OperationCallback) {
+        inboxItemLocalDataSource.deleteCompleteItems(object : InboxItemDataSource.OperationCallback {
+            override fun success() {
+                deleteCompleteItems()
+                callback.success()
+            }
+            override fun fail() {
+                callback.fail()
+            }
+        })
+    }
+
+    override fun deleteAllItems(callback: InboxItemDataSource.OperationCallback) {
+        inboxItemLocalDataSource.deleteAllItems(object : InboxItemDataSource.OperationCallback {
+            override fun success() {
+                deleteAllItems()
+                callback.success()
+            }
+
+            override fun fail() {
+                callback.fail()
+            }
+        })
+    }
+
     override fun updateInboxItem(item: InboxItem, callback: InboxItemDataSource.OperationCallback) {
         inboxItemLocalDataSource.updateInboxItem(item, object : InboxItemDataSource.OperationCallback {
             override fun success() {
@@ -145,6 +170,23 @@ class InboxItemRepository(
         })
     }
 
+    private fun deleteCompleteItems() {
+        val iterator = cachedInboxItems.entries.iterator()
+        while (iterator.hasNext()) {
+            val entry = iterator.next()
+            if (entry.value.complete) {
+                iterator.remove()
+            }
+        }
+    }
+
+    private fun deleteAllItems() {
+        val iterator = cachedInboxItems.entries.iterator()
+        while (iterator.hasNext()) {
+            iterator.next()
+            iterator.remove()
+        }
+    }
 
 
 }

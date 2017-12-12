@@ -7,7 +7,7 @@ import xin.monus.checkit.data.entity.Action
 import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.data.entity.Project
 import xin.monus.checkit.data.entity.ProjectType
-import xin.monus.checkit.data.source.ProjectsDataSource
+import xin.monus.checkit.data.source.InboxItemDataSource
 import xin.monus.checkit.db.LocalDbHelper
 import xin.monus.checkit.util.Injection
 
@@ -67,62 +67,45 @@ class TestActivity: AppCompatActivity() {
         )
 
 //        val ldb = InboxItemLocalDataSource.getInstance(this)
-        val ldb = Injection.getProjectsRepository(this)
+        val ldb = Injection.getInboxItemRepository(this)
+//        val ldb = Injection.getProjectsRepository(this)
 
-        ldb.addProject(project, object : ProjectsDataSource.OperationCallback {
-            override fun success() {
-                println("add success")
-            }
+        ldb.getInboxItems(object : InboxItemDataSource.LoadInboxItemsCallback {
+            override fun onInboxItemsLoaded(items: List<InboxItem>) {
 
-            override fun fail() {
-                println("add failed")
-            }
-
-        })
-
-        ldb.deleteProject(1, object : ProjectsDataSource.OperationCallback {
-            override fun success() {
-                println("delete success")
-            }
-
-            override fun fail() {
-                println("delete failed")
-            }
-
-        })
-
-        ldb.getProjectById(2, object : ProjectsDataSource.GetProjectCallback {
-            override fun onProjectLoaded(project: Project) {
-                project.content = "faQ"
-                ldb.updateProject(project, object : ProjectsDataSource.OperationCallback {
+                println(ldb.cachedInboxItems.size)
+                ldb.deleteCompleteItems(object : InboxItemDataSource.OperationCallback {
                     override fun success() {
-                        println("update success")
+                        println("success")
+                        println(ldb.cachedInboxItems.size)
+
+                        ldb.deleteAllItems(object : InboxItemDataSource.OperationCallback {
+                            override fun success() {
+                                println("success")
+                                println(ldb.cachedInboxItems.size)
+                            }
+
+                            override fun fail() {
+                                println("fail")
+                            }
+                        })
                     }
 
                     override fun fail() {
-                        println("update fail")
+                        println("fail")
                     }
                 })
+
+
             }
 
             override fun onDataNotAvailable() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        })
-
-        ldb.getProjects(object : ProjectsDataSource.LoadProjectsCallback {
-            override fun onProjectsLoaded(projects: List<Project>) {
-                for (i in projects) {
-                    println(i.content)
-                }
-            }
-
-            override fun onDataNotAvailable() {
-                println("no actions")
+                println("not get")
             }
 
         })
 
+        println(ldb.cachedInboxItems.size)
 
 
 

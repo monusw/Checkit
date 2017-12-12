@@ -80,6 +80,9 @@ class InboxItemLocalDataSource private constructor(context: Context) : InboxItem
         } ?: callback.onDataNotAvailable()
     }
 
+    /**
+     *  Add a new inbox item to database
+     */
     override fun addInboxItem(item: InboxItem, callback: InboxItemDataSource.OperationCallback) {
         val values = ContentValues().apply {
             put(InboxItemTable.COLUMN_USERNAME, item.username)
@@ -98,6 +101,9 @@ class InboxItemLocalDataSource private constructor(context: Context) : InboxItem
         }
     }
 
+    /**
+     * Delete an item by id
+     */
     override fun deleteInboxItem(id: Int, callback: InboxItemDataSource.OperationCallback) {
         with(dbHelper.writableDatabase) {
             if (delete(InboxItemTable.TABLE_NAME,
@@ -111,6 +117,38 @@ class InboxItemLocalDataSource private constructor(context: Context) : InboxItem
         }
     }
 
+    /**
+     * Delete all items
+     */
+    override fun deleteAllItems(callback: InboxItemDataSource.OperationCallback) {
+        with(dbHelper.writableDatabase) {
+            if (delete(InboxItemTable.TABLE_NAME, null, null) > 0) {
+                callback.success()
+            } else {
+                callback.fail()
+            }
+            close()
+        }
+    }
+
+    /**
+     * Delete all complete items
+     */
+    override fun deleteCompleteItems(callback: InboxItemDataSource.OperationCallback) {
+        with(dbHelper.writableDatabase) {
+            if (delete(InboxItemTable.TABLE_NAME,
+                    "${InboxItemTable.COLUMN_COMPLETE} = ?",
+                    arrayOf("1")) > 0) {
+                callback.success()
+            } else {
+                callback.fail()
+            }
+        }
+    }
+
+    /**
+     * Update an item
+     */
     override fun updateInboxItem(item: InboxItem, callback: InboxItemDataSource.OperationCallback) {
         val values = ContentValues().apply {
             put(InboxItemTable.COLUMN_CONTENT, item.content)

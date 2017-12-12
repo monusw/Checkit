@@ -21,4 +21,5 @@
 
     <!--projects item swipe menu-->
     <string name="projects_swipe_delete">Delete</string>
+    <string name="projects_swipe_edit">Edit</string>
 </resources>

@@ -28,4 +28,31 @@ class ProjectsPresenter(
         })
     }
 
+    override fun deleteProject(projectId: Int) {
+        projectsRepository.deleteProject(projectId, object : ProjectsDataSource.OperationCallback {
+            override fun success() {
+                reloadProjects()
+            }
+
+            override fun fail() {
+                Log.w("projects", "delete fail")
+            }
+        })
+    }
+
+
+    private fun reloadProjects() {
+        println("Reload view")
+        projectsRepository.getProjects(object: ProjectsDataSource.LoadProjectsCallback {
+            override fun onProjectsLoaded(projects: List<Project>) {
+                projectsView.showProjects(projects)
+            }
+
+            override fun onDataNotAvailable() {
+                Log.w("projects", "no data")
+            }
+
+        })
+    }
+
 }

@@ -21,4 +21,5 @@
 
     <!--projects item swipe menu-->
     <string name="projects_swipe_delete">删除</string>
+    <string name="projects_swipe_edit">编辑</string>
 </resources>

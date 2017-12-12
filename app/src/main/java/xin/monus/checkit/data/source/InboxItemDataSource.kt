@@ -39,6 +39,10 @@ interface InboxItemDataSource {
 
     fun deleteInboxItem(id: Int, callback: OperationCallback)
 
+    fun deleteCompleteItems(callback: OperationCallback)
+
+    fun deleteAllItems(callback: OperationCallback)
+
     fun updateInboxItem(item: InboxItem, callback: OperationCallback)
 
 }

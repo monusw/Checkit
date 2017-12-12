@@ -1,6 +1,7 @@
 package xin.monus.checkit.projects
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,11 +13,13 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import com.baoyz.widget.PullRefreshLayout
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import xin.monus.checkit.R
 import xin.monus.checkit.base.BaseAdapter
 import xin.monus.checkit.data.entity.Project
+import xin.monus.checkit.projects.actions.ActionsActivity
 
 class ProjectsFragment: Fragment(), ProjectsContract.View {
 
@@ -26,7 +29,31 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
 
     lateinit var recyclerView: SwipeMenuRecyclerView
 
-    private val projectsAdapter  by lazy {ProjectsAdapter(context, ArrayList(0)) }
+    private val projectsAdapter  by lazy {ProjectsAdapter(context, ArrayList(0), itemClickListener) }
+
+    private val itemClickListener = object : ItemClickListener {
+        override fun onClickDelete(projectId: Int) {
+            println("delete project id: $projectId")
+        }
+
+        override fun onClickEdit(projectId: Int) {
+            println("edit project id: $projectId")
+        }
+
+        override fun onClickProject(projectId: Int) {
+            println("click project id: $projectId")
+            val intent = Intent(context, ActionsActivity::class.java)
+            intent.putExtra("PROJECT_ID", projectId.toString())
+            startActivity(intent)
+        }
+
+    }
+
+    interface ItemClickListener {
+        fun onClickDelete(projectId: Int)
+        fun onClickEdit(projectId: Int)
+        fun onClickProject(projectId: Int)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.activity_projects_frag, container, false)
@@ -43,6 +70,8 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
         val swipeBtnTextSize = 16
         with(recyclerView) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+            // set up right swipe menu
             setSwipeMenuCreator { _, swipeRightMenu, _ ->
                 val deleteItem = SwipeMenuItem(context)
                         .setText(R.string.projects_swipe_delete)
@@ -51,7 +80,34 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
                         .setBackgroundColor(Color.RED)
                         .setWidth(swipeBtnWidth)
                         .setHeight(swipeBtnHeight)
+                val editItem = SwipeMenuItem(context)
+                        .setText(R.string.projects_swipe_edit)
+                        .setTextColor(Color.WHITE)
+                        .setTextSize(swipeBtnTextSize)
+                        .setBackgroundColor(Color.GRAY)
+                        .setWidth(swipeBtnWidth)
+                        .setHeight(swipeBtnHeight)
+
+                swipeRightMenu.addMenuItem(editItem)
                 swipeRightMenu.addMenuItem(deleteItem)
+            }
+
+            setSwipeMenuItemClickListener {menuBridge: SwipeMenuBridge ->
+                menuBridge.closeMenu()
+                val adapterPosition = menuBridge.adapterPosition
+                val menuPosition = menuBridge.position
+                println("click menu, position: $menuPosition")
+                when (menuPosition) {
+                    0 -> {
+                        val projectId = projectsAdapter.projects[adapterPosition].id
+                        println(projectId)
+                        itemClickListener.onClickEdit(projectId)
+                    }
+                    1 -> {
+                        val projectId = projectsAdapter.projects[adapterPosition].id
+                        itemClickListener.onClickDelete(projectId)
+                    }
+                }
             }
 
             adapter = projectsAdapter
@@ -62,7 +118,6 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
 
     override fun onResume() {
         super.onResume()
-        println("projects fragment resume")
         presenter.start()
     }
 
@@ -71,8 +126,7 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
         projectsAdapter.projects = projects
     }
 
-
-    class ProjectsAdapter(context: Context, projects: List<Project>) :
+    class ProjectsAdapter(context: Context, projects: List<Project>, val itemClickListener: ItemClickListener) :
             BaseAdapter<ProjectsAdapter.ViewHolder>(context) {
 
         var projects: List<Project> = projects
@@ -84,8 +138,14 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.contentTxt.text = projects[position].content
             holder.deadlineTxt.text = projects[position].deadline
+
             holder.completeBtn.setOnClickListener {
                 println("projects complete btn pressed")
+            }
+
+            // Item 点击事件
+            holder.itemView.setOnClickListener {
+                itemClickListener.onClickProject(projects[position].id)
             }
         }
 
@@ -98,9 +158,9 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
 
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val contentTxt: TextView = itemView.findViewById<TextView>(R.id.content)
-            val deadlineTxt: TextView = itemView.findViewById<TextView>(R.id.deadline)
-            val completeBtn: ImageButton = itemView.findViewById<ImageButton>(R.id.complete)
+            val contentTxt: TextView = itemView.findViewById(R.id.content)
+            val deadlineTxt: TextView = itemView.findViewById(R.id.deadline)
+            val completeBtn: ImageButton = itemView.findViewById(R.id.complete)
         }
     }
 
