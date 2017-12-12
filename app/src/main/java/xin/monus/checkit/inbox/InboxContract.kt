@@ -13,5 +13,6 @@ interface InboxContract {
 
     interface Presenter : BasePresenter {
         fun loadItems()
+        fun completeButtonListener(itemID: Int)
     }
 }
