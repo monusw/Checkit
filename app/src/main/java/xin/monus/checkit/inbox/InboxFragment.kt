@@ -1,9 +1,12 @@
 package xin.monus.checkit.inbox
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.AbsListView
 import android.widget.AdapterView
@@ -15,25 +18,37 @@ import org.jetbrains.anko.uiThread
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.inbox.edit.InboxEditActivity
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import java.util.*
+import kotlin.collections.ArrayList
 
 class InboxFragment: Fragment(), InboxContract.View {
 
     interface ItemClickedListener{
         fun getID(itemID: Int)
+        fun itemComplete(itemID: Int)
     }
 
     override lateinit var presenter: InboxContract.Presenter
 
     private lateinit var floatingBtn: FloatingActionButton
 
-    private val listAdapter = InboxListAdapter(ArrayList(0), object : InboxFragment.ItemClickedListener{
-        override fun getID(itemID: Int) {
-            val intent = Intent(context, InboxEditActivity::class.java)
-            intent.putExtra("ID",itemID)
-            startActivity(intent)
-        }
-    })
+    lateinit var recycleView: SwipeMenuRecyclerView
+
+    private val listAdapter by lazy {
+        InboxListAdapter(context, ArrayList(0), object : InboxFragment.ItemClickedListener {
+            override fun getID(itemID: Int) {
+                val intent = Intent(context, InboxEditActivity::class.java)
+                intent.putExtra("ID", itemID)
+                startActivity(intent)
+            }
+
+            override fun itemComplete(itemID: Int) {
+                presenter.completeButtonListener(itemID)
+            }
+        })
+    }
 
     private lateinit var pullRefreshLayout: PullRefreshLayout
 
@@ -46,35 +61,53 @@ class InboxFragment: Fragment(), InboxContract.View {
         // init the view
         with(root) {
 //            testTxt = findViewById(R.id.test_txt)
-            findViewById<ListView>(R.id.item_list).apply {
-                adapter = listAdapter
+            recycleView = findViewById(R.id.item_list)
 
-                setOnScrollListener(object : AbsListView.OnScrollListener {
-                    override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
-                    }
-
-                    override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
-                        when(scrollState) {
-                            AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
-                                if (lastVisiblePosition == count - 1) {
-                                    floatingBtn.hide()
-                                } else {
-                                    floatingBtn.show()
-                                }
-                            }
-                            else -> floatingBtn.show()
-                        }
-                    }
-
-                })
-
-
-            }
             pullRefreshLayout =findViewById(R.id.pullRefreshLayout)
             pullRefreshLayout.setOnRefreshListener {
                 pullRefreshLayout.setRefreshing(true)
                 presenter.loadItems()
             }
+
+        }
+
+        val swipeBtnHeight = ViewGroup.LayoutParams.MATCH_PARENT
+        val swipeBtnWidth = 200
+        val swipeBtnTextSize = 20
+        with(recycleView) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            setSwipeMenuCreator { _, swipeRightMenu, _ ->
+                val deleteItem = SwipeMenuItem(context)
+                        .setText(R.string.projects_swipe_delete)
+                        .setTextColor(Color.WHITE)
+                        .setTextSize(swipeBtnTextSize)
+                        .setBackgroundColor(Color.RED)
+                        .setWidth(swipeBtnWidth)
+                        .setHeight(swipeBtnHeight)
+                swipeRightMenu.addMenuItem(deleteItem)
+            }
+
+            adapter = listAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(view: RecyclerView, scrollState: Int) {
+                    val layoutManager = view.layoutManager as LinearLayoutManager
+                    val count = layoutManager.itemCount
+                    val lastPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                    when(scrollState) {
+                        AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
+                            if (lastPosition == count - 1) {
+                                floatingBtn.hide()
+                            } else {
+                                floatingBtn.show()
+                            }
+                        }
+                        else -> floatingBtn.show()
+                    }
+                }
+            })
+
+
         }
 
 
@@ -88,8 +121,10 @@ class InboxFragment: Fragment(), InboxContract.View {
             startActivity(intent)
         }
 
+
         // set up options menu on the top right
         setHasOptionsMenu(true)
+
         return root
     }
 
@@ -100,16 +135,11 @@ class InboxFragment: Fragment(), InboxContract.View {
     }
 
     override fun showItems(list: List<InboxItem>) {
-        listAdapter.list = list
+        listAdapter.list = list as MutableList<InboxItem>
     }
 
     override fun setEndRefresh() {
-        doAsync {
-            Thread.sleep(5000)
-            uiThread {
                 pullRefreshLayout.setRefreshing(false)
-            }
-        }
     }
 
 
