@@ -3,13 +3,10 @@ package xin.monus.checkit.test
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import xin.monus.checkit.R
-import xin.monus.checkit.data.entity.Action
-import xin.monus.checkit.data.entity.InboxItem
-import xin.monus.checkit.data.entity.Project
-import xin.monus.checkit.data.entity.ProjectType
-import xin.monus.checkit.data.source.InboxItemDataSource
+import xin.monus.checkit.data.entity.*
+import xin.monus.checkit.data.source.DailyDataSource
+import xin.monus.checkit.data.source.local.DailyLocalDataSource
 import xin.monus.checkit.db.LocalDbHelper
-import xin.monus.checkit.util.Injection
 
 
 class TestActivity: AppCompatActivity() {
@@ -66,46 +63,81 @@ class TestActivity: AppCompatActivity() {
                 actionList = ArrayList(0)
         )
 
+        val dailyItem = Daily(
+                username = "test",
+                content = "daily test",
+                remindTime = "18:00",
+                complete = false,
+                flag = true
+        )
+
 //        val ldb = InboxItemLocalDataSource.getInstance(this)
-        val ldb = Injection.getInboxItemRepository(this)
+//        val ldb = Injection.getInboxItemRepository(this)
 //        val ldb = Injection.getProjectsRepository(this)
+        val ldb = DailyLocalDataSource.getInstance(this)
+//
+//        ldb.getDailyItemById(4, object : DailyDataSource.GetDailyItemCallback {
+//            override fun onDailyItemLoaded(item: Daily) {
+//                println("get it: ${item.content}")
+//            }
+//
+//            override fun onDataNotAvailable() {
+//                println("ass")
+//            }
+//        })
+        ldb.addDailyItem(dailyItem, object : DailyDataSource.OperationCallback {
+            override fun success() {
+                println("add success")
+            }
 
-        ldb.getInboxItems(object : InboxItemDataSource.LoadInboxItemsCallback {
-            override fun onInboxItemsLoaded(items: List<InboxItem>) {
+            override fun fail() {
+                println("add failed")
+            }
+        })
 
-                println(ldb.cachedInboxItems.size)
-                ldb.deleteCompleteItems(object : InboxItemDataSource.OperationCallback {
+        ldb.deleteDailyItem(2, object : DailyDataSource.OperationCallback {
+            override fun success() {
+                println("delete success")
+            }
+
+            override fun fail() {
+                println("delete failed")
+            }
+        })
+
+
+        ldb.getDailyItemById(1, object : DailyDataSource.GetDailyItemCallback {
+            override fun onDailyItemLoaded(item: Daily) {
+                item.content = "update test?"
+                ldb.updateDailyItem(item, object : DailyDataSource.OperationCallback {
                     override fun success() {
-                        println("success")
-                        println(ldb.cachedInboxItems.size)
-
-                        ldb.deleteAllItems(object : InboxItemDataSource.OperationCallback {
-                            override fun success() {
-                                println("success")
-                                println(ldb.cachedInboxItems.size)
-                            }
-
-                            override fun fail() {
-                                println("fail")
-                            }
-                        })
+                        println("update success")
                     }
 
                     override fun fail() {
-                        println("fail")
+                        println("update failed")
                     }
                 })
-
-
             }
 
             override fun onDataNotAvailable() {
-                println("not get")
+                println("no such item")
+            }
+        })
+
+        ldb.getDailyItems(object : DailyDataSource.LoadDailyItemsCallback {
+            override fun onDailyItemsLoaded(items: List<Daily>) {
+                for (i in items) {
+                    println(i.content)
+                }
+            }
+
+            override fun onDataNotAvailable() {
+                println("fuck")
             }
 
         })
 
-        println(ldb.cachedInboxItems.size)
 
 
 

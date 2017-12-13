@@ -122,7 +122,6 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
     }
 
     override fun showProjects(projects: List<Project>) {
-        println(projects.size)
         projectsAdapter.projects = projects
     }
 

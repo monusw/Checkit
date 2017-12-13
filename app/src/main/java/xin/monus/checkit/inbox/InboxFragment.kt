@@ -9,19 +9,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.AbsListView
-import android.widget.AdapterView
-import android.widget.ListView
-import android.widget.Toast
 import com.baoyz.widget.PullRefreshLayout
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.inbox.edit.InboxEditActivity
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-import java.util.*
-import kotlin.collections.ArrayList
 
 class InboxFragment: Fragment(), InboxContract.View {
 
@@ -148,12 +141,14 @@ class InboxFragment: Fragment(), InboxContract.View {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        return if (id == R.id.action_settings) {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                println("faQ")
+                true
+            }
 
-            true
-        } else super.onOptionsItemSelected(item)
-
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 

@@ -2,7 +2,10 @@ package xin.monus.checkit.projects.actions
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import xin.monus.checkit.R
+import xin.monus.checkit.data.entity.Action
 import xin.monus.checkit.util.Injection
 import xin.monus.checkit.util.setupActionBar
 
@@ -21,6 +24,8 @@ class ActionsActivity : AppCompatActivity(), ActionsContract.View {
 //            setTitle(R.string.inbox_edit_title)
         }
 
+        initView()
+
         val projectId = intent.getStringExtra("PROJECT_ID").toInt()
 
         presenter = ActionsPresenter(Injection.getActionRepository(this), this, projectId)
@@ -36,4 +41,21 @@ class ActionsActivity : AppCompatActivity(), ActionsContract.View {
         return true
     }
 
+    private val actionsAdapter by lazy { ActionsAdapter(this, ArrayList(0)) }
+
+    lateinit var recyclerView: SwipeMenuRecyclerView
+
+    private fun initView() {
+        recyclerView = findViewById(R.id.actions_list) as SwipeMenuRecyclerView
+
+        with(recyclerView) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = actionsAdapter
+        }
+    }
+
+    override fun showActions(actions: List<Action>) {
+        println(actions.size)
+        actionsAdapter.actionList = actions
+    }
 }

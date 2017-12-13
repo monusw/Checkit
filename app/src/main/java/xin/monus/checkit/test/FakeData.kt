@@ -59,17 +59,17 @@ object FakeData {
 
             //  ACTION (parent)
             execSQL("INSERT INTO ACTION (project_id, content, deadline)" +
-                    "  VALUES ('1', 'complete homework', DATETIME('2017-12-08 17:00'));")
+                    "  VALUES ('1', 'action1', DATETIME('2017-12-08 17:00'));")
             execSQL("INSERT INTO ACTION (project_id, content, deadline)" +
-                    "  VALUES ('1', 'complete homework agian', DATETIME('2017-12-08 17:00'));")
+                    "  VALUES ('1', 'action2', DATETIME('2017-12-08 17:00'));")
 
             // ACTION (son)
             execSQL("INSERT INTO ACTION(project_id, content, deadline, parent_action_id)" +
-                    "    VALUES ('1', 'complete homework', DATETIME('2017-12-08 17:00'), '1');")
+                    "    VALUES ('1', 'sub action1', DATETIME('2017-12-08 17:00'), '1');")
             execSQL("INSERT INTO ACTION(project_id, content, deadline, parent_action_id)" +
-                    "    VALUES ('1', 'complete homework', DATETIME('2017-12-08 17:00'), '1');")
+                    "    VALUES ('1', 'sub action2', DATETIME('2017-12-08 17:00'), '1');")
             execSQL("INSERT INTO ACTION(project_id, content, deadline, parent_action_id)" +
-                    "    VALUES ('1', 'complete homework', DATETIME('2017-12-08 17:00'), '1');")
+                    "    VALUES ('1', 'sub action3', DATETIME('2017-12-08 17:00'), '1');")
 
             //DAILY
             execSQL("INSERT INTO DAILY (username, content, remind_time)" +
