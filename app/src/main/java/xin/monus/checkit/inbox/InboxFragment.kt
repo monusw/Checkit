@@ -11,15 +11,14 @@ import android.view.*
 import android.widget.AbsListView
 import com.baoyz.widget.PullRefreshLayout
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
-import xin.monus.checkit.R
-import xin.monus.checkit.data.entity.InboxItem
-import xin.monus.checkit.inbox.edit.InboxEditActivity
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.yesButton
-import kotlin.collections.ArrayList
+import xin.monus.checkit.R
+import xin.monus.checkit.data.entity.InboxItem
+import xin.monus.checkit.inbox.edit.InboxEditActivity
 
 class InboxFragment: Fragment(), InboxContract.View {
 
@@ -186,10 +185,6 @@ class InboxFragment: Fragment(), InboxContract.View {
                 presenter.deleteFinished()
                 true
             }
-
-            else -> super.onOptionsItemSelected(item)
-        }
-
 
             else -> super.onOptionsItemSelected(item)
         }
