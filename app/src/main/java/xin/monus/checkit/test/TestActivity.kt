@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.*
 import xin.monus.checkit.data.source.DailyDataSource
-import xin.monus.checkit.data.source.local.DailyLocalDataSource
 import xin.monus.checkit.db.LocalDbHelper
+import xin.monus.checkit.util.Injection
 
 
 class TestActivity: AppCompatActivity() {
@@ -74,7 +74,7 @@ class TestActivity: AppCompatActivity() {
 //        val ldb = InboxItemLocalDataSource.getInstance(this)
 //        val ldb = Injection.getInboxItemRepository(this)
 //        val ldb = Injection.getProjectsRepository(this)
-        val ldb = DailyLocalDataSource.getInstance(this)
+        val ldb = Injection.getDailyRepository(this)
 //
 //        ldb.getDailyItemById(4, object : DailyDataSource.GetDailyItemCallback {
 //            override fun onDailyItemLoaded(item: Daily) {
