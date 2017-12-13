@@ -32,12 +32,6 @@ class InboxPresenter(
     override fun loadItems() {
         inboxItemRepository.getInboxItems(object :InboxItemDataSource.LoadInboxItemsCallback {
             override fun onInboxItemsLoaded(items: List<InboxItem>) {
-//                showItemList = items as MutableList<InboxItem>
-//                for (i in items) {
-//                    if (!i.complete) {
-//                        showItemList!!.add(i)
-//                    }
-//                }
                 val sourceData : MutableList<InboxItem> = items.toMutableList()
                 var interator = 0
                 while (interator<sourceData.size) {
@@ -55,6 +49,7 @@ class InboxPresenter(
 
             override fun onDataNotAvailable() {
                 println("No data!")
+//                inboxView.showItems(null)
             }
 
         })
@@ -82,5 +77,44 @@ class InboxPresenter(
             }
         })
 
+    }
+
+    override fun deleteItem(itemID: Int) {
+        inboxItemRepository.deleteInboxItem(itemID, object : InboxItemDataSource.OperationCallback{
+            override fun success() {
+                loadItems()
+                println("Delete successfully!")
+            }
+
+            override fun fail() {
+                println("Delete fail!")
+            }
+        })
+    }
+
+    override fun deleteAll() {
+        inboxItemRepository.deleteAllItems(object : InboxItemDataSource.OperationCallback{
+            override fun success() {
+                loadItems()
+                println("Delete all items successfully!")
+            }
+
+            override fun fail() {
+                println("Items deleting fail!")
+            }
+
+        })
+    }
+
+    override fun deleteFinished() {
+        inboxItemRepository.deleteCompleteItems(object : InboxItemDataSource.OperationCallback{
+            override fun success() {
+                println("Delete completed item successfully")
+            }
+
+            override fun fail() {
+                println("Completed item deleteing fail")
+            }
+        })
     }
 }

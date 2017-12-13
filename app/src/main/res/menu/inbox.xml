@@ -7,15 +7,16 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
+        android:icon="@drawable/ic_expand_more_24dp"
         android:title="@string/inbox_menu_item"
         app:showAsAction="ifRoom" >
         <menu xmlns:android="http://schemas.android.com/apk/res/android">
             <item
-                android:title="q" />
+                android:id="@+id/delete_all"
+                android:title="删除全部" />
             <item
-                android:title="w" />
-            <item
-                android:title="q" />
+                android:id="@+id/delete_finished"
+                android:title="删除已完成" />
         </menu>
     </item>
 </menu>

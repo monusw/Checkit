@@ -14,5 +14,8 @@ interface InboxContract {
     interface Presenter : BasePresenter {
         fun loadItems()
         fun completeButtonListener(itemID: Int)
+        fun deleteItem(itemID: Int)
+        fun deleteAll()
+        fun deleteFinished()
     }
 }

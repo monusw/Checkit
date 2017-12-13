@@ -9,18 +9,16 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.AbsListView
-import android.widget.AdapterView
-import android.widget.ListView
-import android.widget.Toast
 import com.baoyz.widget.PullRefreshLayout
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.inbox.edit.InboxEditActivity
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-import java.util.*
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.yesButton
 import kotlin.collections.ArrayList
 
 class InboxFragment: Fragment(), InboxContract.View {
@@ -28,6 +26,7 @@ class InboxFragment: Fragment(), InboxContract.View {
     interface ItemClickedListener{
         fun getID(itemID: Int)
         fun itemComplete(itemID: Int)
+        fun itemDelete(itemID: Int)
     }
 
     override lateinit var presenter: InboxContract.Presenter
@@ -36,19 +35,25 @@ class InboxFragment: Fragment(), InboxContract.View {
 
     lateinit var recycleView: SwipeMenuRecyclerView
 
-    private val listAdapter by lazy {
-        InboxListAdapter(context, ArrayList(0), object : InboxFragment.ItemClickedListener {
-            override fun getID(itemID: Int) {
-                val intent = Intent(context, InboxEditActivity::class.java)
-                intent.putExtra("ID", itemID)
-                startActivity(intent)
-            }
+    private val itemClickListener = object : InboxFragment.ItemClickedListener{
+        override fun getID(itemID: Int) {
+            val intent = Intent(context, InboxEditActivity::class.java)
+            intent.putExtra("ID", itemID)
+            startActivity(intent)
+        }
 
-            override fun itemComplete(itemID: Int) {
-                presenter.completeButtonListener(itemID)
-            }
-        })
+        override fun itemComplete(itemID: Int) {
+            presenter.completeButtonListener(itemID)
+        }
+
+        override fun itemDelete(itemID: Int) {
+            println("delete project id: $itemID")
+
+            presenter.deleteItem(itemID)
+        }
     }
+
+    private val listAdapter by lazy { InboxListAdapter(context, ArrayList(0), itemClickListener) }
 
     private lateinit var pullRefreshLayout: PullRefreshLayout
 
@@ -87,6 +92,19 @@ class InboxFragment: Fragment(), InboxContract.View {
                 swipeRightMenu.addMenuItem(deleteItem)
             }
 
+            setSwipeMenuItemClickListener {menuBridge: SwipeMenuBridge ->
+                menuBridge.closeMenu()
+                val adapterPosition = menuBridge.adapterPosition
+                val menuPosition = menuBridge.position
+                println("click menu, position: $menuPosition")
+                when (menuPosition) {
+                    0 -> {
+                        val projectId = listAdapter.list[adapterPosition].id
+                        itemClickListener.itemDelete(projectId)
+                    }
+                }
+            }
+
             adapter = listAdapter
 
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -98,7 +116,8 @@ class InboxFragment: Fragment(), InboxContract.View {
                         AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
                             if (lastPosition == count - 1) {
                                 floatingBtn.hide()
-                            } else {
+                            }
+                            else {
                                 floatingBtn.show()
                             }
                         }
@@ -135,11 +154,11 @@ class InboxFragment: Fragment(), InboxContract.View {
     }
 
     override fun showItems(list: List<InboxItem>) {
-        listAdapter.list = list as MutableList<InboxItem>
+        listAdapter.list = list
     }
 
     override fun setEndRefresh() {
-                pullRefreshLayout.setRefreshing(false)
+        pullRefreshLayout.setRefreshing(false)
     }
 
 
@@ -148,11 +167,28 @@ class InboxFragment: Fragment(), InboxContract.View {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        return if (id == R.id.action_settings) {
+        return when (item.itemId) {
+            R.id.delete_all -> {
+                alert("确认删除？") {
+                    yesButton {
+                        println("ass")
+                        presenter.deleteAll()
+                    }
+                    noButton {
+                        println("fuck")
+                    }
+                }.show()
 
-            true
-        } else super.onOptionsItemSelected(item)
+                true
+            }
+            R.id.delete_finished -> {
+                println("hole")
+                presenter.deleteFinished()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
 
     }
 
