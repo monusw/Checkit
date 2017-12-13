@@ -190,6 +190,9 @@ class InboxFragment: Fragment(), InboxContract.View {
             else -> super.onOptionsItemSelected(item)
         }
 
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 
