@@ -4,13 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.baoyz.widget.PullRefreshLayout
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
@@ -20,14 +22,15 @@ import xin.monus.checkit.R
 import xin.monus.checkit.base.BaseAdapter
 import xin.monus.checkit.data.entity.Project
 import xin.monus.checkit.projects.actions.ActionsActivity
+import xin.monus.checkit.projects.edit.ProjectEditActivity
 
 class ProjectsFragment: Fragment(), ProjectsContract.View {
 
     override lateinit var presenter: ProjectsContract.Presenter
 
     lateinit var pullRefresh: PullRefreshLayout
-
     lateinit var recyclerView: SwipeMenuRecyclerView
+    lateinit var floatingBtn: FloatingActionButton
 
     private val projectsAdapter  by lazy {ProjectsAdapter(context, ArrayList(0), itemClickListener) }
 
@@ -64,7 +67,36 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
             pullRefresh = findViewById(R.id.projects_pull_refresh)
         }
 
-        // set up the recycler view
+        floatingBtn = activity.findViewById(R.id.fab)
+
+        floatingBtn.setOnClickListener {
+            onClickAddBtn()
+        }
+
+
+        setupRecyclerView()
+
+        return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.start()
+    }
+
+    override fun showProjects(projects: List<Project>) {
+        projectsAdapter.projects = projects
+    }
+
+    private fun onClickAddBtn() {
+        val intent = Intent(activity, ProjectEditActivity::class.java)
+        startActivity(intent)
+    }
+
+    /**
+     * Set up the recycler view
+     */
+    private fun setupRecyclerView() {
         val swipeBtnHeight = ViewGroup.LayoutParams.MATCH_PARENT
         val swipeBtnWidth = 200
         val swipeBtnTextSize = 16
@@ -112,17 +144,6 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
 
             adapter = projectsAdapter
         }
-
-        return root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.start()
-    }
-
-    override fun showProjects(projects: List<Project>) {
-        projectsAdapter.projects = projects
     }
 
     class ProjectsAdapter(context: Context, projects: List<Project>, val itemClickListener: ItemClickListener) :
@@ -136,10 +157,20 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.contentTxt.text = projects[position].content
-            holder.deadlineTxt.text = projects[position].deadline
 
-            holder.completeBtn.setOnClickListener {
-                println("projects complete btn pressed")
+            // 显示项目进度的list view
+            val listView = holder.checkStateView
+            val actionList = projects[position].actionList
+            listView.removeAllViews()
+            for (action in actionList) {
+                val item = inflater.inflate(R.layout.img_check_state_item, listView, false)
+                val img = item.findViewById<ImageView>(R.id.image_view)
+                if (action.complete) {
+                    img.setImageResource(R.drawable.img_did_check)
+                } else {
+                    img.setImageResource(R.drawable.img_to_check)
+                }
+                listView.addView(item)
             }
 
             // Item 点击事件
@@ -158,8 +189,7 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val contentTxt: TextView = itemView.findViewById(R.id.content)
-            val deadlineTxt: TextView = itemView.findViewById(R.id.deadline)
-            val completeBtn: ImageButton = itemView.findViewById(R.id.complete)
+            val checkStateView: LinearLayout = itemView.findViewById(R.id.check_state_view)
         }
     }
 

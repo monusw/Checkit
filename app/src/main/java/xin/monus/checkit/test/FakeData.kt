@@ -58,8 +58,8 @@ object FakeData {
                     "  VALUES ('test1', 'proposal', DATETIME('2017-12-08 17:00'), 2 );")
 
             //  ACTION (parent)
-            execSQL("INSERT INTO ACTION (project_id, content, deadline)" +
-                    "  VALUES ('1', 'action1', DATETIME('2017-12-08 17:00'));")
+            execSQL("INSERT INTO ACTION (project_id, content, deadline, complete)" +
+                    "  VALUES ('1', 'action1', DATETIME('2017-12-08 17:00'), 1);")
             execSQL("INSERT INTO ACTION (project_id, content, deadline)" +
                     "  VALUES ('1', 'action2', DATETIME('2017-12-08 17:00'));")
 
