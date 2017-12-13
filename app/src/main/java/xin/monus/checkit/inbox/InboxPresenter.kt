@@ -1,11 +1,8 @@
 package xin.monus.checkit.inbox
 
-import android.widget.Toast
-import dalvik.system.InMemoryDexClassLoader
 import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.data.source.InboxItemDataSource
 import xin.monus.checkit.data.source.repository.InboxItemRepository
-import java.util.function.IntBinaryOperator
 
 class InboxPresenter(
         val inboxItemRepository: InboxItemRepository,
@@ -48,6 +45,8 @@ class InboxPresenter(
             }
 
             override fun onDataNotAvailable() {
+                inboxView.setEndRefresh()
+                inboxView.showItems(ArrayList(0))
                 println("No data!")
 //                inboxView.showItems(null)
             }
