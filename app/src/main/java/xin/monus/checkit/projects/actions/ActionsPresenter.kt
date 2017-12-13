@@ -18,9 +18,7 @@ class ActionsPresenter(
         println("action view start")
         actionRepository.getActionsByProjectId(projectId, object : ActionDataSource.LoadActionsCallback {
             override fun onActionsLoaded(actions: List<Action>) {
-                for (action in actions) {
-                    println(action.content)
-                }
+                actionsView.showActions(actions)
             }
 
             override fun onDataNotAvailable() {
