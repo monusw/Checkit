@@ -177,7 +177,17 @@ class InboxFragment: Fragment(), InboxContract.View {
                 true
             }
             R.id.delete_finished -> {
-                presenter.deleteFinished()
+                alert("确认删除？") {
+                    yesButton {
+                        println("hole")
+                        presenter.deleteFinished()
+                    }
+                    noButton {
+                        println("deep")
+                    }
+                }.show()
+
+
                 true
             }
 
