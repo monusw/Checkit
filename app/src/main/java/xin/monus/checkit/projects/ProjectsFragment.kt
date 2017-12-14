@@ -67,6 +67,10 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
             pullRefresh = findViewById(R.id.projects_pull_refresh)
         }
 
+        pullRefresh.setOnRefreshListener {
+            pullRefresh.setRefreshing(false)
+        }
+
         floatingBtn = activity.findViewById(R.id.fab)
 
         floatingBtn.setOnClickListener {

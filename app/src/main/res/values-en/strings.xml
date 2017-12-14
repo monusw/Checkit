@@ -22,4 +22,7 @@
     <!--projects item swipe menu-->
     <string name="projects_swipe_delete">Delete</string>
     <string name="projects_swipe_edit">Edit</string>
+
+    <!--action activity-->
+    <string name="actions_activity_title">Actions</string>
 </resources>

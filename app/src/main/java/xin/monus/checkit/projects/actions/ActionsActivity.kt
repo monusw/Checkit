@@ -21,7 +21,7 @@ class ActionsActivity : AppCompatActivity(), ActionsContract.View {
             setDisplayShowHomeEnabled(true)
             setDisplayHomeAsUpEnabled(true)
             // add
-//            setTitle(R.string.inbox_edit_title)
+            setTitle(R.string.actions_activity_title)
         }
 
         initView()
@@ -56,6 +56,8 @@ class ActionsActivity : AppCompatActivity(), ActionsContract.View {
 
     override fun showActions(actions: List<Action>) {
         println(actions.size)
-        actionsAdapter.actionList = actions
+        val list = ArrayList<Action>()
+        actions.filterNotTo(list) { it.complete }
+        actionsAdapter.actionList = list
     }
 }
