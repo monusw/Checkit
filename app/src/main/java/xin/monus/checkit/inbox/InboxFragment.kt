@@ -169,26 +169,24 @@ class InboxFragment: Fragment(), InboxContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete_all -> {
-                alert("确认删除？") {
+                alert(R.string.delete_confirm) {
                     yesButton {
-                        println("ass")
                         presenter.deleteAll()
                     }
                     noButton {
-                        println("fuck")
+                        println("do nothing")
                     }
                 }.show()
 
                 true
             }
             R.id.delete_finished -> {
-                alert("确认删除？") {
+                alert(R.string.delete_confirm) {
                     yesButton {
-                        println("hole")
                         presenter.deleteFinished()
                     }
                     noButton {
-                        println("deep")
+                        println("do nothing")
                     }
                 }.show()
 

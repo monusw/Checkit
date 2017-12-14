@@ -15,9 +15,14 @@
 
     <!--inbox menu item titles-->
     <string name="inbox_menu_item">筛选</string>
+    <string name="delete_all_item">删除全部</string>
+    <string name="delete_all_finished">删除已完成</string>
 
     <!--inbox item edit-->
     <string name="inbox_edit_title">编辑</string>
+    <string name="delete_confirm">确认删除？</string>
+    <string name="content_label">内容</string>
+    <string name="inbox_deadline">截止日期</string>
 
     <!--projects item swipe menu-->
     <string name="projects_swipe_delete">删除</string>

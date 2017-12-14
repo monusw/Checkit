@@ -30,7 +30,7 @@
         android:layout_below="@+id/appBarLayout"
         android:layout_marginLeft="40dp"
         android:layout_marginStart="40dp"
-        android:text="内容编辑"
+        android:text="@string/content_label"
         android:textSize="16sp"
         android:textStyle="bold"
          />
@@ -45,7 +45,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:inputType="textMultiLine"
-        android:hint="输入任务内容"
+        android:hint=""
         android:maxLines="14"
          />
 
@@ -56,7 +56,7 @@
         android:layout_alignLeft="@+id/content_edit"
         android:layout_alignStart="@+id/content_edit"
         android:layout_below="@+id/content_edit"
-        android:text="截止日期选择"
+        android:text="@string/inbox_deadline"
         android:textSize="16sp"
         android:textStyle="bold" />
 
