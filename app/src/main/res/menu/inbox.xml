@@ -13,10 +13,10 @@
         <menu xmlns:android="http://schemas.android.com/apk/res/android">
             <item
                 android:id="@+id/delete_all"
-                android:title="删除全部" />
+                android:title="@string/delete_all_item" />
             <item
                 android:id="@+id/delete_finished"
-                android:title="删除已完成" />
+                android:title="@string/delete_all_finished" />
         </menu>
     </item>
 </menu>
