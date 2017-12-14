@@ -108,7 +108,6 @@ class InboxPresenter(
     override fun deleteFinished() {
         inboxItemRepository.deleteCompleteItems(object : InboxItemDataSource.OperationCallback{
             override fun success() {
-                loadItems()
                 println("Delete completed item successfully")
             }
 

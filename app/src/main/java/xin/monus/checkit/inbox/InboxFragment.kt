@@ -11,14 +11,15 @@ import android.view.*
 import android.widget.AbsListView
 import com.baoyz.widget.PullRefreshLayout
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
+import xin.monus.checkit.R
+import xin.monus.checkit.data.entity.InboxItem
+import xin.monus.checkit.inbox.edit.InboxEditActivity
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.yesButton
-import xin.monus.checkit.R
-import xin.monus.checkit.data.entity.InboxItem
-import xin.monus.checkit.inbox.edit.InboxEditActivity
+import kotlin.collections.ArrayList
 
 class InboxFragment: Fragment(), InboxContract.View {
 
@@ -55,6 +56,8 @@ class InboxFragment: Fragment(), InboxContract.View {
     private val listAdapter by lazy { InboxListAdapter(context, ArrayList(0), itemClickListener) }
 
     private lateinit var pullRefreshLayout: PullRefreshLayout
+
+    private var isTitle = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -168,9 +171,11 @@ class InboxFragment: Fragment(), InboxContract.View {
             R.id.delete_all -> {
                 alert("确认删除？") {
                     yesButton {
+                        println("ass")
                         presenter.deleteAll()
                     }
                     noButton {
+                        println("fuck")
                     }
                 }.show()
 
