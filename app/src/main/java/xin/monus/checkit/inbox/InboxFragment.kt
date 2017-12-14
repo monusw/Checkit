@@ -192,6 +192,7 @@ class InboxFragment: Fragment(), InboxContract.View {
                     }
                 }.show()
 
+
                 true
             }
 
