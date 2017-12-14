@@ -133,7 +133,6 @@ class TestActivity: AppCompatActivity() {
             }
 
             override fun onDataNotAvailable() {
-                println("fuck")
             }
 
         })
