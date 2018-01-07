@@ -3,4 +3,5 @@
     <color name="colorPrimary">#AC92EC</color>
     <color name="colorPrimaryDark">#967ADC</color>
     <color name="colorAccent">#967ADC</color>
+    <color name="logout_text">#FF0000</color>
 </resources>
