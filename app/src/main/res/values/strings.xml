@@ -4,6 +4,18 @@
     <string name="navigation_drawer_open">打开导航栏</string>
     <string name="navigation_drawer_close">关闭导航栏</string>
 
+    <!--For All Activity-->
+    <string name="global_back">返回</string>
+
+    <!--login and register-->
+    <string name="login_activity_title">登录</string>
+    <string name="login_username_label">用户名</string>
+    <string name="login_password_label">密码</string>
+    <string name="login_re_password_label">确认密码</string>
+    <string name="register_activity_title">注册</string>
+    <string name="login_btn_direct_use">跳过登录</string>
+    <string name="confirm_direct_use">不登录则无法使用云同步服务，确认继续？</string>
+
     <!--nav titles-->
     <string name="nav_inbox_title">收集箱</string>
     <string name="nav_projects_title">项目</string>
@@ -30,4 +42,5 @@
 
     <!--action activity-->
     <string name="actions_activity_title">动作</string>
+    <string name="title_activity_register">RegisterActivity</string>
 </resources>
