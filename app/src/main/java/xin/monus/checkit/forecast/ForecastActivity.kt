@@ -14,6 +14,7 @@ import xin.monus.checkit.R
 import xin.monus.checkit.daily.DailyActivity
 import xin.monus.checkit.inbox.InboxActivity
 import xin.monus.checkit.projects.ProjectsActivity
+import xin.monus.checkit.settings.SettingsActivity
 import xin.monus.checkit.util.replaceFragmentInActivity
 import xin.monus.checkit.util.setupActionBar
 
@@ -75,7 +76,8 @@ class ForecastActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
             }
             R.id.nav_settings -> {
-
+                val intent = Intent(this@ForecastActivity, SettingsActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_about -> {
 

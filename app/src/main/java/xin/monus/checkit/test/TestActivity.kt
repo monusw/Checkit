@@ -2,11 +2,14 @@ package xin.monus.checkit.test
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import okhttp3.*
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.*
 import xin.monus.checkit.data.source.DailyDataSource
 import xin.monus.checkit.db.LocalDbHelper
 import xin.monus.checkit.util.Injection
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 
 class TestActivity: AppCompatActivity() {
@@ -14,6 +17,42 @@ class TestActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
 
+//        dbTest()
+
+        networkTest()
+    }
+
+    private val url = "http://101.132.99.105/CMS/api/index.php/login"
+
+    private fun networkTest() {
+        val mOkHttpClient = OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .build()
+        val body = FormBody.Builder()
+                .add("username", "test")
+                .add("password", "hello")
+                .build()
+        val request = Request.Builder().url(url).post(body).build()
+        val call = mOkHttpClient.newCall(request)
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call?, e: IOException?) {
+                println("fuck")
+            }
+
+            override fun onResponse(call: Call?, response: Response) {
+                if (response.isSuccessful) {
+                    println("success")
+                    println(response.body()?.string())
+                } else {
+                    println("fail")
+                }
+            }
+
+        })
+    }
+
+
+    private fun dbTest() {
         if (LocalDbHelper.deleteDatabase(this)) {
             println("delete database success")
         } else {
@@ -42,7 +81,7 @@ class TestActivity: AppCompatActivity() {
                 deadline = "2017-12-23 18:00",
                 complete = false,
                 flag = true
-                )
+        )
 
         val action = Action(
                 projectId = 1,

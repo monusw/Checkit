@@ -22,14 +22,14 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setupUI() {
         btn_register.setOnClickListener {
-            checkRegisterter()
+            checkRegister()
         }
         btn_back.setOnClickListener {
             onBackPressed()
         }
     }
 
-    private fun checkRegisterter() {
+    private fun checkRegister() {
 
     }
 
