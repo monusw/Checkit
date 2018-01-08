@@ -16,6 +16,10 @@
     <string name="login_btn_direct_use">Skip Login</string>
     <string name="confirm_direct_use">You can not use the cloud sync service without login, Continue?</string>
 
+    <string name="no_null_username">username can not be null</string>
+    <string name="no_null_password">password can not be null</string>
+    <string name="login_error">username or password is incorrect.</string>
+
     <!--nav titles-->
     <string name="nav_inbox_title">Inbox</string>
     <string name="nav_projects_title">Projects</string>
