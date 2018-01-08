@@ -5,14 +5,15 @@ import android.content.Context
 import xin.monus.checkit.data.entity.User
 import xin.monus.checkit.db.LocalDbHelper
 import xin.monus.checkit.db.LocalTable.UserTable
+import xin.monus.checkit.network.DataStatus
 
 object UserProfile {
     private lateinit var INSTANCE: User
     private var firstLoad = true
 
     fun getUser(context: Context): User {
-        if (!firstLoad) {
-            return INSTANCE
+        return if (!firstLoad) {
+            INSTANCE
         } else {
             var user = getUserFromDatabase(context)
             if (user == null) {
@@ -20,7 +21,29 @@ object UserProfile {
             }
             firstLoad = false
             INSTANCE = user
-            return user
+            user
+        }
+    }
+
+    fun saveUser(user: User, context: Context): Boolean {
+        val dbHelper = LocalDbHelper(context)
+        val values = ContentValues().apply {
+            put(UserTable.COLUMN_USERNAME, user.username)
+            put(UserTable.COLUMN_PASSWORD, user.password)
+            put(UserTable.COLUMN_NICKNAME, user.nickname)
+            put(UserTable.COLUMN_HEIGHT, user.height)
+            put(UserTable.COLUMN_WEIGHT, user.weight)
+            put(UserTable.COLUMN_CALORIE, user.daily_calorie)
+            put(UserTable.COLUMN_STATUS, DataStatus.SYNC)
+        }
+        with(dbHelper.writableDatabase) {
+            return if (insert(UserTable.TABLE_NAME, null, values) != 0L) {
+                close()
+                true
+            } else {
+                close()
+                false
+            }
         }
     }
 
@@ -70,7 +93,7 @@ object UserProfile {
         return user
     }
 
-    private fun generateDefaultUser(context: Context): User {
+    fun generateDefaultUser(context: Context): User {
         val dbHelper = LocalDbHelper(context)
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {

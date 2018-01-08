@@ -112,9 +112,11 @@ class RequestManager {
         })
     }
 
+}
 
-
-
-
-
+object DataStatus {
+    val DELETED = -1
+    val NEW = 0         //本地新增
+    val UPDATE = 1      //本地更新
+    val SYNC = 9        //已经与服务器同步过
 }

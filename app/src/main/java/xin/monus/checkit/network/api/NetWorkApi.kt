@@ -19,5 +19,7 @@ interface NetWorkApi {
 
     fun checkLogin(username: String, password: String, callback: UserCallback)
 
+    fun checkRegister(username: String, password: String, callback: UserCallback)
+
 
 }

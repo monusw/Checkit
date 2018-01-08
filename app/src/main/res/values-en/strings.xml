@@ -18,7 +18,11 @@
 
     <string name="no_null_username">username can not be null</string>
     <string name="no_null_password">password can not be null</string>
+    <string name="no_null_re_password">re-password can not be null</string>
+    <string name="not_fit_password">Two passwords are not equal</string>
     <string name="login_error">username or password is incorrect.</string>
+    <string name="register_error">Username is occupied.</string>
+
 
     <!--nav titles-->
     <string name="nav_inbox_title">Inbox</string>

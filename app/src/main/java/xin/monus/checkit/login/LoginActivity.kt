@@ -61,11 +61,14 @@ class LoginActivity : AppCompatActivity() {
         btn_nologin.setOnClickListener {
             alert(R.string.confirm_direct_use) {
                 yesButton {
+                    // TODO: 测试
+                    UserProfile.generateDefaultUser(this@LoginActivity)
                     val intent = Intent(this@LoginActivity, InboxActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
                 noButton {
-                    println("do nothing")
+                    println("quit login")
                 }
             }.show()
         }
@@ -95,6 +98,7 @@ class LoginActivity : AppCompatActivity() {
                 override fun success(user: User) {
                     uiThread {
                         println("login success")
+                        UserProfile.saveUser(user, this@LoginActivity)
                         progressCircle.visibility = View.GONE
                         updateAutoLogin()
                         val intent = Intent(this@LoginActivity, InboxActivity::class.java)

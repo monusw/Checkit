@@ -20,10 +20,6 @@ object FakeData {
             // USER
             execSQL("INSERT INTO USER(username, password, nickname)" +
                     "    VALUES ('test1', 'hello', 'myth');")
-            execSQL("INSERT INTO USER(username, password, nickname)" +
-                    "    VALUES ('test2', 'hello', 'myth');")
-            execSQL("INSERT INTO USER(username, password, nickname)" +
-                    "    VALUES ('test3', 'hello', 'myth');")
             // INBOX_ITEM
             execSQL("INSERT INTO INBOX_ITEM (username, content, deadline, complete)" +
                     "  VALUES ('test1', 'complete1 homework', DATETIME('2017-12-08 17:00'), 0 );")
