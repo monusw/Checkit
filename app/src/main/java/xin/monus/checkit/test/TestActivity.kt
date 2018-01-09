@@ -3,17 +3,15 @@ package xin.monus.checkit.test
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.gson.Gson
-import com.google.gson.JsonParser
-import okhttp3.*
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.*
 import xin.monus.checkit.data.source.DailyDataSource
 import xin.monus.checkit.db.LocalDbHelper
-import xin.monus.checkit.network.API
+import xin.monus.checkit.network.RequestManager
 import xin.monus.checkit.network.api.NetWorkApi
 import xin.monus.checkit.util.Injection
-import java.io.IOException
-import java.util.concurrent.TimeUnit
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class TestActivity: AppCompatActivity() {
@@ -24,70 +22,64 @@ class TestActivity: AppCompatActivity() {
 //        dbTest()
 
 //        networkTest()
-        test()
+//        test()
+        en()
     }
 
-    private val url = "http://101.132.99.105/CMS/api/index.php/login"
-
-    private fun test() {
-        API.checkLogin("test", "hello", object : NetWorkApi.UserCallback {
-            override fun success(user: User) {
-                println("login success")
+    fun en() {
+        val values = HashMap<String, String>()
+        values.put("id", "1")
+        RequestManager.getInstance().requestDeleteAsync(url, values, object : NetWorkApi.ReqCallback {
+            override fun success(jsonString: String) {
+                println(jsonString)
             }
 
             override fun fail(msg: String) {
-                println("login fail")
+                println(msg)
+            }
+
+        })
+
+    }
+
+    private val url = "inbox_item/test1"
+
+    private fun test() {
+        val item1 = InboxItem(username = "test",
+                content = "smart ass",
+                deadline = "2017-12-23 18:00",
+                complete = false,
+                flag = true
+        )
+        val item2 = InboxItem(username = "test2",
+                content = "smart ass",
+                deadline = "2017-12-23 18:00",
+                complete = false,
+                flag = true
+        )
+        val list = listOf(item1, item2)
+        val gson = Gson().toJson(list)
+        println(gson.toString())
+        RequestManager.getInstance().requestPostAsyncWithJson(url, gson, object : NetWorkApi.ReqCallback {
+            override fun success(jsonString: String) {
+                println(jsonString)
+            }
+
+            override fun fail(msg: String) {
+                println(msg)
             }
 
         })
     }
 
     private fun networkTest() {
-        val mOkHttpClient = OkHttpClient().newBuilder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .build()
-        val body = FormBody.Builder()
-                .add("username", "test")
-                .add("password", "hello")
-                .build()
-        val request = Request.Builder().url(url).post(body).build()
-        val call = mOkHttpClient.newCall(request)
-        call.enqueue(object : Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
-                println("fuck")
-            }
 
-            override fun onResponse(call: Call?, response: Response) {
-                if (response.isSuccessful) {
-                    println("success")
-                    val jsonString = response.body()!!.string()
-                    // 解析器
-                    val parser = JsonParser()
-                    // 获得根节点元素
-                    val element = parser.parse(jsonString)
-                    // 判断是什么类型的Gson节点对象
-                    val root = element.asJsonObject
-                    // 基本数据类型
-                    val msgJson = root.getAsJsonPrimitive("msg")
-                    val msg = msgJson.asString
-                    println("msg: $msg")
-                    // Object类型
-                    val dataJson = root.getAsJsonObject("data")
-                    val user = Gson().fromJson(dataJson, User::class.java)
-                    println(user.nickname)
-
-                } else {
-                    println("fail")
-                }
-            }
-
-        })
     }
 
 
     private fun dbTest() {
         if (LocalDbHelper.deleteDatabase(this)) {
-            println("delete database success")
+            println("fa delete database success")
         } else {
             println("no database to be deleted")
         }

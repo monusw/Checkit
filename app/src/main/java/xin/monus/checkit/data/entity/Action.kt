@@ -8,5 +8,7 @@ data class Action(
         var deadline: String,
         var complete: Boolean,
         var flag: Boolean,
-        var subActionList: List<Action>
+        var subActionList: List<Action>,
+        var status: Int = 0,
+        var timestamp: String = ""
 )

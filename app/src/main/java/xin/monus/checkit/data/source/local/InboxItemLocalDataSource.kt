@@ -6,6 +6,8 @@ import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.data.source.InboxItemDataSource
 import xin.monus.checkit.db.LocalDbHelper
 import xin.monus.checkit.db.LocalTable.InboxItemTable
+import xin.monus.checkit.network.DataStatus
+import java.util.*
 
 class InboxItemLocalDataSource private constructor(context: Context) : InboxItemDataSource {
     /**
@@ -25,9 +27,10 @@ class InboxItemLocalDataSource private constructor(context: Context) : InboxItem
         val db = dbHelper.readableDatabase
         val projection = arrayOf(
                 InboxItemTable.COLUMN_ID, InboxItemTable.COLUMN_USERNAME, InboxItemTable.COLUMN_CONTENT,
-                InboxItemTable.COLUMN_DEADLINE, InboxItemTable.COLUMN_COMPLETE, InboxItemTable.COLUMN_FLAG)
+                InboxItemTable.COLUMN_DEADLINE, InboxItemTable.COLUMN_COMPLETE, InboxItemTable.COLUMN_FLAG,
+                InboxItemTable.COLUMN_STATUS, InboxItemTable.COLUMN_TIMESTAMP)
         val cursor = db.query(InboxItemTable.TABLE_NAME, projection,
-                null, null, null, null, null)
+                "${InboxItemTable.COLUMN_STATUS} >= ?", arrayOf("0"), null, null, null)
         val items = ArrayList<InboxItem>()
         with(cursor) {
             while (moveToNext()) {
@@ -37,7 +40,9 @@ class InboxItemLocalDataSource private constructor(context: Context) : InboxItem
                 val deadline = getString(getColumnIndexOrThrow(InboxItemTable.COLUMN_DEADLINE))
                 val complete = getInt(getColumnIndexOrThrow(InboxItemTable.COLUMN_COMPLETE)) != 0
                 val flag = getInt(getColumnIndexOrThrow(InboxItemTable.COLUMN_FLAG)) != 0
-                val inboxItem = InboxItem(itemId, username, content, deadline, complete, flag)
+                val status = getInt(getColumnIndexOrThrow(InboxItemTable.COLUMN_STATUS))
+                val timestamp = getString(getColumnIndexOrThrow(InboxItemTable.COLUMN_TIMESTAMP))
+                val inboxItem = InboxItem(itemId, username, content, deadline, complete, flag, status, timestamp)
                 items.add(inboxItem)
             }
             close()
@@ -57,7 +62,8 @@ class InboxItemLocalDataSource private constructor(context: Context) : InboxItem
         val db = dbHelper.readableDatabase
         val projection = arrayOf(
                 InboxItemTable.COLUMN_ID, InboxItemTable.COLUMN_USERNAME, InboxItemTable.COLUMN_CONTENT,
-                InboxItemTable.COLUMN_DEADLINE, InboxItemTable.COLUMN_COMPLETE, InboxItemTable.COLUMN_FLAG)
+                InboxItemTable.COLUMN_DEADLINE, InboxItemTable.COLUMN_COMPLETE, InboxItemTable.COLUMN_FLAG,
+                InboxItemTable.COLUMN_STATUS, InboxItemTable.COLUMN_TIMESTAMP)
         val cursor = db.query(InboxItemTable.TABLE_NAME, projection,
                 "${InboxItemTable.COLUMN_ID} = ?",
                 arrayOf(id.toString()),null, null, null)
@@ -70,7 +76,9 @@ class InboxItemLocalDataSource private constructor(context: Context) : InboxItem
                 val deadline = getString(getColumnIndexOrThrow(InboxItemTable.COLUMN_DEADLINE))
                 val complete = getInt(getColumnIndexOrThrow(InboxItemTable.COLUMN_COMPLETE)) != 0
                 val flag = getInt(getColumnIndexOrThrow(InboxItemTable.COLUMN_FLAG)) != 0
-                inboxItem = InboxItem(itemId, username, content, deadline, complete, flag)
+                val status = getInt(getColumnIndexOrThrow(InboxItemTable.COLUMN_STATUS))
+                val timestamp = getString(getColumnIndexOrThrow(InboxItemTable.COLUMN_TIMESTAMP))
+                inboxItem = InboxItem(itemId, username, content, deadline, complete, flag, status, timestamp)
             }
             close()
         }
@@ -155,6 +163,7 @@ class InboxItemLocalDataSource private constructor(context: Context) : InboxItem
             put(InboxItemTable.COLUMN_DEADLINE, item.deadline)
             put(InboxItemTable.COLUMN_COMPLETE, item.complete)
             put(InboxItemTable.COLUMN_FLAG, item.flag)
+            put(InboxItemTable.COLUMN_STATUS, DataStatus.UPDATE)
         }
         with(dbHelper.writableDatabase) {
             if (update(InboxItemTable.TABLE_NAME, values,

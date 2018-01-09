@@ -21,11 +21,11 @@ class InboxPresenter(
         // test
         println("inbox presenter")
         firstLoad = false
+        inboxView.setStartRefresh()
         loadItems()
     }
 
 
-    // for test
     override fun loadItems() {
         inboxItemRepository.getInboxItems(object :InboxItemDataSource.LoadInboxItemsCallback {
             override fun onInboxItemsLoaded(items: List<InboxItem>) {
@@ -48,11 +48,11 @@ class InboxPresenter(
                 inboxView.setEndRefresh()
                 inboxView.showItems(ArrayList(0))
                 println("No data!")
-//                inboxView.showItems(null)
             }
 
         })
     }
+
 
     override fun completeButtonListener(itemID: Int) {
         inboxItemRepository.getInboxItemById(itemID, object : InboxItemDataSource.GetInboxItemCallback{

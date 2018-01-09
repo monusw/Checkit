@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 class RequestManager {
     val BASE_URL = "http://101.132.99.105/CMS/api/index.php"    // 请求接口根地址
     val TYPE_GET = 0                       // get请求
-    val TYPE_POST = 1                      // post请求
+    val TYPE_POST_FORM = 1                 // post请求(表单)
     val TAG = RequestManager::class.java.simpleName
 
     val CONNECT_TIME_OUT:Long = 30                // 连接请求超时时间
@@ -47,7 +47,7 @@ class RequestManager {
                     paramsMap:HashMap<String, String>, callback: NetWorkApi.ReqCallback) {
         when(requestType) {
             TYPE_GET -> requestGetAsync(actionUrl, paramsMap, callback)
-            TYPE_POST -> requestPostAsync(actionUrl, paramsMap, callback)
+            TYPE_POST_FORM -> requestPostAsync(actionUrl, paramsMap, callback)
         }
     }
 
@@ -111,6 +111,62 @@ class RequestManager {
 
         })
     }
+
+    fun requestPostAsyncWithJson(actionUrl: String, jsonString: String, callback: NetWorkApi.ReqCallback) {
+        val JSON: MediaType = MediaType.parse("application/json; charset=utf-8")!!
+        val body = RequestBody.create(JSON, jsonString)
+        val requestUrl = BASE_URL + "/" + actionUrl
+        val request = Request.Builder().url(requestUrl).post(body).build()
+        val call = mOkHttpClient.newCall(request)
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call?, e: IOException?) {
+                callback.fail("POST JSON 失败")
+            }
+
+            override fun onResponse(call: Call?, response: Response) {
+                if (response.isSuccessful) {
+                    callback.success(response.body()!!.string())
+                } else {
+                    callback.fail("服务器错误")
+                    Log.e(TAG, "服务器错误")
+                }
+            }
+
+        })
+
+    }
+
+
+    /**
+     * 单个删除请求
+     */
+    fun requestDeleteAsync(actionUrl: String, paramsMap:HashMap<String, String>, callback: NetWorkApi.ReqCallback) {
+        val builder = FormBody.Builder()
+        for (key in paramsMap.keys) {
+            builder.add(key, paramsMap[key]!!)
+        }
+        val formBody = builder.build()
+        val requestUrl = BASE_URL + "/" + actionUrl
+        val request = Request.Builder().url(requestUrl).delete(formBody).build()
+        val call = mOkHttpClient.newCall(request)
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call?, e: IOException?) {
+                callback.fail("DELETE 请求失败")
+                Log.e(TAG, e.toString())
+            }
+
+            override fun onResponse(call: Call?, response: Response) {
+                if (response.isSuccessful) {
+                    callback.success(response.body()!!.string())
+                } else {
+                    callback.fail("服务器错误")
+                    Log.e(TAG, "服务器错误")
+                }
+            }
+
+        })
+    }
+
 
 }
 

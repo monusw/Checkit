@@ -15,7 +15,6 @@ import xin.monus.checkit.daily.DailyActivity
 import xin.monus.checkit.inbox.InboxActivity
 import xin.monus.checkit.projects.ProjectsActivity
 import xin.monus.checkit.settings.SettingsActivity
-import xin.monus.checkit.util.replaceFragmentInActivity
 import xin.monus.checkit.util.setupActionBar
 
 class ForecastActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -48,11 +47,11 @@ class ForecastActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         navigationView.menu.getItem(3).isChecked = true
         navigationView.setNavigationItemSelectedListener(this)
 
-        val forecastFragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
-                as ForecastFragment? ?: ForecastFragment.newInstance().also {
-            replaceFragmentInActivity(it, R.id.contentFrame)
-        }
-        forecastPresenter = ForecastPresenter(forecastFragment)
+//        val forecastFragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
+//                as ForecastFragment? ?: ForecastFragment.newInstance().also {
+//            replaceFragmentInActivity(it, R.id.contentFrame)
+//        }
+//        forecastPresenter = ForecastPresenter(forecastFragment)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

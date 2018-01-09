@@ -1,13 +1,14 @@
 package xin.monus.checkit.data.source.repository
 
+import org.jetbrains.anko.doAsync
 import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.data.source.InboxItemDataSource
+import xin.monus.checkit.login.UserProfile
 import java.util.*
 
 class InboxItemRepository(
-        // TODO: add remote database
-        private val inboxItemLocalDataSource: InboxItemDataSource
-//        private val inboxItemRemoteDataSource: InboxItemDataSource,
+        private val inboxItemLocalDataSource: InboxItemDataSource,
+        private val inboxItemRemoteDataSource: InboxItemDataSource
 ): InboxItemDataSource {
 
     /**
@@ -23,8 +24,8 @@ class InboxItemRepository(
     companion object {
         private var INSTANCE: InboxItemRepository? = null
 
-        @JvmStatic fun getInstance(inboxItemLocalDataSource: InboxItemDataSource): InboxItemRepository {
-            return INSTANCE ?: InboxItemRepository(inboxItemLocalDataSource)
+        @JvmStatic fun getInstance(inboxItemLocalDataSource: InboxItemDataSource, inboxItemRemoteDataSource: InboxItemDataSource): InboxItemRepository {
+            return INSTANCE ?: InboxItemRepository(inboxItemLocalDataSource, inboxItemRemoteDataSource)
                     .apply { INSTANCE = this }
         }
 
@@ -39,6 +40,7 @@ class InboxItemRepository(
             callback.onInboxItemsLoaded(ArrayList(cachedInboxItems.values))
             return
         }
+        // 缓存是有效的
         if (cacheIsFresh) {
             inboxItemLocalDataSource.getInboxItems(object : InboxItemDataSource.LoadInboxItemsCallback {
                 override fun onInboxItemsLoaded(items: List<InboxItem>) {
@@ -47,12 +49,68 @@ class InboxItemRepository(
                 }
 
                 override fun onDataNotAvailable() {
-                    // TODO: Get data from remote
-                    callback.onDataNotAvailable()
+                    // 已登录则在本地无数据的情况下尝试从服务端拉取
+                    if (UserProfile.isLogin) {
+                        inboxItemRemoteDataSource.getInboxItems(object : InboxItemDataSource.LoadInboxItemsCallback {
+                            override fun onInboxItemsLoaded(items: List<InboxItem>) {
+                                refreshCache(items)
+                                callback.onInboxItemsLoaded(ArrayList(cachedInboxItems.values))
+                                // 异步存储在本地数据库
+                                doAsync {
+                                    for (item in items) {
+                                        inboxItemLocalDataSource.addInboxItem(item, object : InboxItemDataSource.OperationCallback {
+                                            override fun success() {
+                                            }
+
+                                            override fun fail() {
+                                            }
+
+                                        })
+                                    }
+                                }
+                            }
+
+                            override fun onDataNotAvailable() {
+                                callback.onDataNotAvailable()
+                            }
+
+                        })
+                    } else {
+                        callback.onDataNotAvailable()
+                    }
                 }
             })
         } else {
-            //TODO: Get data from remote and refresh local
+            //强制从服务端拉取
+            cacheIsFresh = true
+            if (UserProfile.isLogin) {
+                inboxItemRemoteDataSource.getInboxItems(object : InboxItemDataSource.LoadInboxItemsCallback {
+                    override fun onInboxItemsLoaded(items: List<InboxItem>) {
+                        refreshCache(items)
+                        callback.onInboxItemsLoaded(ArrayList(cachedInboxItems.values))
+                        // 异步存储在本地数据库
+                        doAsync {
+                            for (item in items) {
+                                inboxItemLocalDataSource.addInboxItem(item, object : InboxItemDataSource.OperationCallback {
+                                    override fun success() {
+                                    }
+
+                                    override fun fail() {
+                                    }
+
+                                })
+                            }
+                        }
+                    }
+
+                    override fun onDataNotAvailable() {
+                        callback.onDataNotAvailable()
+                    }
+
+                })
+            } else {
+                callback.onDataNotAvailable()
+            }
         }
     }
 

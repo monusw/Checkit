@@ -1,6 +1,8 @@
 package xin.monus.checkit.projects
 
 import android.util.Log
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import xin.monus.checkit.data.entity.Project
 import xin.monus.checkit.data.source.ProjectsDataSource
 import xin.monus.checkit.data.source.repository.ProjectsRepository
@@ -16,16 +18,20 @@ class ProjectsPresenter(
 
     override fun start() {
         println("projects fragment start")
-        projectsRepository.getProjects(object: ProjectsDataSource.LoadProjectsCallback {
-            override fun onProjectsLoaded(projects: List<Project>) {
-                projectsView.showProjects(projects)
-            }
+        doAsync {
+            projectsRepository.getProjects(object: ProjectsDataSource.LoadProjectsCallback {
+                override fun onProjectsLoaded(projects: List<Project>) {
+                    uiThread {
+                        projectsView.showProjects(projects)
+                    }
+                }
 
-            override fun onDataNotAvailable() {
-                Log.w("projects", "no data")
-            }
+                override fun onDataNotAvailable() {
+                    Log.w("projects", "no data")
+                }
 
-        })
+            })
+        }
     }
 
     override fun deleteProject(projectId: Int) {

@@ -6,5 +6,7 @@ data class InboxItem(
         var content: String,
         var deadline: String,
         var complete: Boolean,
-        var flag: Boolean
+        var flag: Boolean,
+        var status: Int = 0,
+        var timestamp: String = ""
 )

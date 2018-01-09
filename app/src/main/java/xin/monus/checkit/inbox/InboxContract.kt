@@ -8,6 +8,7 @@ interface InboxContract {
 
     interface View : BaseView<Presenter> {
         fun showItems(list: List<InboxItem>)
+        fun setStartRefresh()
         fun setEndRefresh()
     }
 

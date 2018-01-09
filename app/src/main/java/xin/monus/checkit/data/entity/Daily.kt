@@ -6,5 +6,7 @@ data class Daily(
         var content: String,
         var remindTime: String,
         var complete: Boolean,
-        var flag: Boolean
+        var flag: Boolean,
+        var status: Int = 0,
+        var timestamp: String = ""
 )

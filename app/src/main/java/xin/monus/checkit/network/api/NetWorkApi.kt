@@ -1,5 +1,6 @@
 package xin.monus.checkit.network.api
 
+import android.content.Context
 import xin.monus.checkit.data.entity.User
 
 
@@ -17,9 +18,16 @@ interface NetWorkApi {
         fun fail(msg: String)
     }
 
+    interface SyncResult {
+        fun success()
+        fun fail()
+    }
+
     fun checkLogin(username: String, password: String, callback: UserCallback)
 
     fun checkRegister(username: String, password: String, callback: UserCallback)
+
+    fun syncInboxItems(username: String, context: Context, callback: SyncResult)
 
 
 }

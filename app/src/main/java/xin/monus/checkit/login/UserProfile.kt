@@ -10,6 +10,7 @@ import xin.monus.checkit.network.DataStatus
 object UserProfile {
     private lateinit var INSTANCE: User
     private var firstLoad = true
+    var isLogin = false
 
     fun getUser(context: Context): User {
         return if (!firstLoad) {
@@ -26,6 +27,15 @@ object UserProfile {
     }
 
     fun saveUser(user: User, context: Context): Boolean {
+        isLogin = true
+        val oldUser = getUserFromDatabase(context)
+        if (oldUser != null) {
+            if (oldUser.username == user.username) {
+                return true
+            }
+        } else {
+            deleteUser(context)
+        }
         val dbHelper = LocalDbHelper(context)
         val values = ContentValues().apply {
             put(UserTable.COLUMN_USERNAME, user.username)
@@ -44,6 +54,15 @@ object UserProfile {
                 close()
                 false
             }
+        }
+    }
+
+    fun deleteUser(context: Context) {
+        val dbHelper = LocalDbHelper(context)
+        with(dbHelper.writableDatabase) {
+            //开启级联删除，删除一个用户会把跟他相关的所有表信息删除
+            execSQL(LocalDbHelper.OPEN_FOREIGN_KEYS)
+            delete(UserTable.TABLE_NAME, null, null)
         }
     }
 
@@ -94,6 +113,7 @@ object UserProfile {
     }
 
     fun generateDefaultUser(context: Context): User {
+        isLogin = false
         val dbHelper = LocalDbHelper(context)
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {

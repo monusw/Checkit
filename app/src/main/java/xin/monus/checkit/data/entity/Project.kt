@@ -9,7 +9,9 @@ data class Project(
         var deadline: String,
         var complete: Boolean,
         var flag: Boolean,
-        var actionList: List<Action>
+        var actionList: List<Action>,
+        var status: Int = 0,
+        var timestamp: String = ""
 )
 
 enum class ProjectType {

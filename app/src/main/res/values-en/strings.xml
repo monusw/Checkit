@@ -37,6 +37,7 @@
     <string name="inbox_menu_item">Filter</string>
     <string name="delete_all_item">Delete All</string>
     <string name="delete_all_finished">Delete Finished</string>
+    <string name="pull_from_server">Sync Server</string>
 
     <!--inbox item edit-->
     <string name="inbox_edit_title">Edit</string>

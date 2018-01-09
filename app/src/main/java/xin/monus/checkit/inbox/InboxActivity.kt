@@ -14,7 +14,6 @@ import xin.monus.checkit.daily.DailyActivity
 import xin.monus.checkit.forecast.ForecastActivity
 import xin.monus.checkit.projects.ProjectsActivity
 import xin.monus.checkit.settings.SettingsActivity
-import xin.monus.checkit.test.FakeData
 import xin.monus.checkit.util.Injection
 import xin.monus.checkit.util.replaceFragmentInActivity
 import xin.monus.checkit.util.setupActionBar
@@ -59,7 +58,12 @@ class InboxActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
 
         //fake data
-        FakeData.generateData(this)
+//        FakeData.generateData(this)
+//        if (LocalDbHelper.deleteDatabase(this)) {
+//            println("delete database success")
+//        } else {
+//            println("no database to be deleted")
+//        }
 
         // create the presenter
         inboxPresenter = InboxPresenter(Injection.getInboxItemRepository(this), inboxFragment)

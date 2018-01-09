@@ -8,7 +8,7 @@ object FakeData {
 
     @JvmStatic fun generateData(context : Context) {
         if (LocalDbHelper.deleteDatabase(context)) {
-            println("delete database success")
+            println("delete fake database success")
         } else {
             println("no database to be deleted")
         }
