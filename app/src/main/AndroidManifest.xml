@@ -50,6 +50,9 @@
             android:name=".daily.DailyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".daily.dailyEdit.DailyEditActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".forecast.ForecastActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
