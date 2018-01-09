@@ -6,6 +6,7 @@
 
     <!--For All Activity-->
     <string name="global_back">Back</string>
+    <string name="global_operation_failed">Operation failed</string>
 
     <!--login and register-->
     <string name="login_activity_title">Login</string>
@@ -49,6 +50,15 @@
     <!--projects item swipe menu-->
     <string name="projects_swipe_delete">Delete</string>
     <string name="projects_swipe_edit">Edit</string>
+    <string name="project_new_title">New Project</string>
+    <string name="project_edit_title">Edit</string>
+    <string name="project_content_hint">Project Content</string>
+    <string name="project_type_label">Type</string>
+    <string name="project_type_parallel">parallel</string>
+    <string name="project_type_sequence">sequence</string>
+    <string name="project_type_single">single</string>
+    <string name="btn_flag">Flag</string>
+    <string name="no_null_project_content">Content can not be empty</string>
 
     <!--action activity-->
     <string name="actions_activity_title">Actions</string>

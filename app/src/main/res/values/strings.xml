@@ -6,6 +6,7 @@
 
     <!--For All Activity-->
     <string name="global_back">返回</string>
+    <string name="global_operation_failed">操作失败</string>
 
     <!--login and register-->
     <string name="login_activity_title">登录</string>
@@ -48,8 +49,16 @@
     <!--projects item swipe menu-->
     <string name="projects_swipe_delete">删除</string>
     <string name="projects_swipe_edit">编辑</string>
+    <string name="project_new_title">新建项目</string>
+    <string name="project_edit_title">编辑</string>
+    <string name="project_content_hint">项目内容</string>
+    <string name="project_type_label">类型</string>
+    <string name="project_type_parallel">平行</string>
+    <string name="project_type_sequence">顺序</string>
+    <string name="project_type_single">单个动作</string>
+    <string name="btn_flag">标记</string>
+    <string name="no_null_project_content">内容不能为空</string>
 
     <!--action activity-->
     <string name="actions_activity_title">动作</string>
-    <string name="title_activity_register">RegisterActivity</string>
 </resources>

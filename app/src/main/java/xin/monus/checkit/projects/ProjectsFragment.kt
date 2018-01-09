@@ -36,11 +36,15 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
 
     private val itemClickListener = object : ItemClickListener {
         override fun onClickDelete(projectId: Int) {
+            presenter.deleteProject(projectId)
             println("delete project id: $projectId")
         }
 
         override fun onClickEdit(projectId: Int) {
             println("edit project id: $projectId")
+            val intent = Intent(activity, ProjectEditActivity::class.java)
+            intent.putExtra("ID", projectId)
+            startActivity(intent)
         }
 
         override fun onClickProject(projectId: Int) {
