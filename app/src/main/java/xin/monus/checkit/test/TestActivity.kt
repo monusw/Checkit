@@ -28,7 +28,7 @@ class TestActivity: AppCompatActivity() {
 
     fun en() {
         val values = HashMap<String, String>()
-        values.put("id", "1")
+        values.put("id", "10")
         RequestManager.getInstance().requestDeleteAsync(url, values, object : NetWorkApi.ReqCallback {
             override fun success(jsonString: String) {
                 println(jsonString)

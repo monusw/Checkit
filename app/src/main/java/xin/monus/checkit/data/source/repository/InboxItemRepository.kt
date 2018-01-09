@@ -129,7 +129,6 @@ class InboxItemRepository(
             }
 
             override fun onDataNotAvailable() {
-                // TODO: Get data from remote
                 callback.onDataNotAvailable()
             }
         })
@@ -152,6 +151,14 @@ class InboxItemRepository(
             override fun success() {
                 cachedInboxItems.remove(id)
                 callback.success()
+                // TODO: 异步取消注释测试
+//                inboxItemRemoteDataSource.deleteInboxItem(id, object : InboxItemDataSource.OperationCallback {
+//                    override fun success() {
+//                    }
+//
+//                    override fun fail() {
+//                    }
+//                })
             }
 
             override fun fail() {
@@ -165,6 +172,15 @@ class InboxItemRepository(
             override fun success() {
                 deleteCompleteItems()
                 callback.success()
+//                doAsync {
+//                    inboxItemRemoteDataSource.deleteCompleteItems(object : InboxItemDataSource.OperationCallback {
+//                        override fun success() {
+//                        }
+//                        override fun fail() {
+//                        }
+//
+//                    })
+//                }
             }
             override fun fail() {
                 callback.fail()
@@ -177,6 +193,16 @@ class InboxItemRepository(
             override fun success() {
                 deleteAllItems()
                 callback.success()
+//                doAsync {
+//                    inboxItemRemoteDataSource.deleteAllItems(object : InboxItemDataSource.OperationCallback {
+//                        override fun success() {
+//                        }
+//
+//                        override fun fail() {
+//                        }
+//
+//                    })
+//                }
             }
 
             override fun fail() {

@@ -141,13 +141,19 @@ class RequestManager {
      * 单个删除请求
      */
     fun requestDeleteAsync(actionUrl: String, paramsMap:HashMap<String, String>, callback: NetWorkApi.ReqCallback) {
-        val builder = FormBody.Builder()
+        val tempParams = StringBuilder()
+        var pos = 0
         for (key in paramsMap.keys) {
-            builder.add(key, paramsMap[key]!!)
+            if (pos > 0) {
+                tempParams.append("&")
+            }
+            tempParams.append(String.format("%s=%s", key,
+                    URLEncoder.encode(paramsMap[key]!!, "utf-8")))
+            pos += 1
         }
-        val formBody = builder.build()
-        val requestUrl = BASE_URL + "/" + actionUrl
-        val request = Request.Builder().url(requestUrl).delete(formBody).build()
+        // 请求地址
+        val requestUrl = String.format("%s/%s?%s", BASE_URL, actionUrl, tempParams.toString())
+        val request = Request.Builder().url(requestUrl).delete().build()
         val call = mOkHttpClient.newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call?, e: IOException?) {

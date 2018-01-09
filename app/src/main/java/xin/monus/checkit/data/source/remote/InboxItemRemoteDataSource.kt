@@ -25,7 +25,6 @@ class InboxItemRemoteDataSource private constructor(context: Context)  : InboxIt
     }
 
     override fun getInboxItems(callback: InboxItemDataSource.LoadInboxItemsCallback) {
-        //TODO: 测试
 //        val username = "test1"
         val user = getUserFromDatabase()
         val username = user!!.username
@@ -75,16 +74,59 @@ class InboxItemRemoteDataSource private constructor(context: Context)  : InboxIt
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    // TODO: repository添加
     override fun deleteInboxItem(id: Int, callback: InboxItemDataSource.OperationCallback) {
+        val user = getUserFromDatabase()
+        val username = user!!.username
+        val url = "inbox_item/"+username
+        val values = HashMap<String, String>()
+        values.put("id", id.toString())
+        RequestManager.getInstance().requestDeleteAsync(url, values, object : NetWorkApi.ReqCallback {
+            override fun success(jsonString: String) {
+                callback.success()
+            }
 
+            override fun fail(msg: String) {
+                callback.fail()
+            }
+
+        })
     }
 
     override fun deleteCompleteItems(callback: InboxItemDataSource.OperationCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val user = getUserFromDatabase()
+        val username = user!!.username
+        val url = "inbox_item/"+username
+        val values = HashMap<String, String>()
+        values.put("id", "complete")
+        RequestManager.getInstance().requestDeleteAsync(url, values, object : NetWorkApi.ReqCallback {
+            override fun success(jsonString: String) {
+                callback.success()
+            }
+
+            override fun fail(msg: String) {
+                callback.fail()
+            }
+
+        })
     }
 
     override fun deleteAllItems(callback: InboxItemDataSource.OperationCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val user = getUserFromDatabase()
+        val username = user!!.username
+        val url = "inbox_item/"+username
+        val values = HashMap<String, String>()
+        values.put("id", "all")
+        RequestManager.getInstance().requestDeleteAsync(url, values, object : NetWorkApi.ReqCallback {
+            override fun success(jsonString: String) {
+                callback.success()
+            }
+
+            override fun fail(msg: String) {
+                callback.fail()
+            }
+
+        })
     }
 
     override fun updateInboxItem(item: InboxItem, callback: InboxItemDataSource.OperationCallback) {
