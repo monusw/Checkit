@@ -32,7 +32,7 @@ class DailyLocalDataSource private constructor(context: Context) : DailyDataSour
                 val itemId = getInt(getColumnIndexOrThrow(DailyTable.COLUMN_ID))
                 val username = getString(getColumnIndexOrThrow(DailyTable.COLUMN_USERNAME))
                 val content = getString(getColumnIndexOrThrow(DailyTable.COLUMN_CONTENT))
-                val remindTime = getString(getColumnIndexOrThrow(DailyTable.COLUMN_CONTENT))
+                val remindTime = getString(getColumnIndexOrThrow(DailyTable.COLUMN_REMIND_TIME))
                 val complete = getInt(getColumnIndexOrThrow(DailyTable.COLUMN_COMPLETE)) != 0
                 val flag = getInt(getColumnIndexOrThrow(DailyTable.COLUMN_FLAG)) != 0
                 val dailyItem = Daily(itemId, username, content, remindTime, complete, flag)
@@ -64,7 +64,7 @@ class DailyLocalDataSource private constructor(context: Context) : DailyDataSour
             if (moveToFirst()) {
                 val username = getString(getColumnIndexOrThrow(DailyTable.COLUMN_USERNAME))
                 val content = getString(getColumnIndexOrThrow(DailyTable.COLUMN_CONTENT))
-                val remindTime = getString(getColumnIndexOrThrow(DailyTable.COLUMN_CONTENT))
+                val remindTime = getString(getColumnIndexOrThrow(DailyTable.COLUMN_REMIND_TIME))
                 val complete = getInt(getColumnIndexOrThrow(DailyTable.COLUMN_COMPLETE)) != 0
                 val flag = getInt(getColumnIndexOrThrow(DailyTable.COLUMN_FLAG)) != 0
                 dailyItem = Daily(itemId, username, content, remindTime, complete, flag)
