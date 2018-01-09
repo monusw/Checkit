@@ -15,6 +15,8 @@ import xin.monus.checkit.forecast.ForecastActivity
 import xin.monus.checkit.inbox.InboxActivity
 import xin.monus.checkit.projects.ProjectsActivity
 import xin.monus.checkit.settings.SettingsActivity
+import xin.monus.checkit.test.FakeData
+import xin.monus.checkit.util.Injection
 import xin.monus.checkit.util.replaceFragmentInActivity
 import xin.monus.checkit.util.setupActionBar
 
@@ -48,11 +50,13 @@ class DailyActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         navigationView.menu.getItem(2).isChecked = true
         navigationView.setNavigationItemSelectedListener(this)
 
+//        FakeData.generateData(this)
+
         val dailyFragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
                 as DailyFragment? ?: DailyFragment.newInstance().also {
             replaceFragmentInActivity(it, R.id.contentFrame)
         }
-        dailyPresenter = DailyPresenter(dailyFragment)
+        dailyPresenter = DailyPresenter(Injection.getDailyRepository(this), dailyFragment)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

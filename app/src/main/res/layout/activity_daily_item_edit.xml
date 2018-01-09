@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/appBarLayout">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:id="@+id/content_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/appBarLayout"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:text="@string/content_label"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        />
+
+    <EditText
+        android:id="@+id/daily_content_edit"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/content_tag"
+        android:layout_alignStart="@+id/content_tag"
+        android:layout_below="@+id/content_tag"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:inputType="textMultiLine"
+        android:hint=""
+        android:maxLines="14"
+        />
+
+    <TextView
+        android:id="@+id/deadline_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/daily_content_edit"
+        android:layout_alignStart="@+id/daily_content_edit"
+        android:layout_below="@+id/daily_content_edit"
+        android:text="提醒时间"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/remind_time_btn"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/deadline_tag"
+        android:layout_alignStart="@+id/deadline_tag"
+        android:layout_below="@+id/deadline_tag"
+        android:background="@drawable/border_line_while"
+        android:textSize="20sp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/daily_edit_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        app:srcCompat="@drawable/ic_done_black_24dp" />
+
+</RelativeLayout>
