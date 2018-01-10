@@ -43,10 +43,14 @@ class InboxListAdapter(val context: Context, list: List<InboxItem>, val itemClic
 
             completeBtn.setOnClickListener {
                 if (!complete) {
+                    println(complete)
                     completeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.btn_normal))
+                    println(complete)
                 }
                 else {
+                    println(complete)
                     completeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.btn_press))
+                    println(complete)
                 }
                 notifyDataSetChanged()
                 itemClickedListener.itemComplete(id)

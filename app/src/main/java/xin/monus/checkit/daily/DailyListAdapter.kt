@@ -11,9 +11,7 @@ import android.widget.TextView
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.Daily
 
-/**
- * Created by lenovo on 2018/1/9.
- */
+
 class DailyListAdapter(val context: Context, list: List<Daily>, val itemClickedListener: DailyFragment.ItemClickedListener) :
         xin.monus.checkit.base.BaseAdapter<DailyListAdapter.ViewHolder>(context) {
 
@@ -44,9 +42,12 @@ class DailyListAdapter(val context: Context, list: List<Daily>, val itemClickedL
 
             completeBtn.setOnClickListener {
                 if (!complete) {
+                    println(complete)
                     completeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.btn_normal))
+                    println(complete)
                 }
                 else {
+                    println("hole")
                     completeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.btn_press))
                 }
                 notifyDataSetChanged()
@@ -62,15 +63,15 @@ class DailyListAdapter(val context: Context, list: List<Daily>, val itemClickedL
     override fun getItemCount() = list.size
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val view = inflater.inflate(R.layout.activity_inbox_frag_item, parent, false)
+        val view = inflater.inflate(R.layout.activity_daily_frag_item, parent, false)
         return DailyListAdapter.ViewHolder(view)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var id = -1
-        val content: TextView = itemView.findViewById(R.id.content)
-        val remindTime: TextView = itemView.findViewById(R.id.deadLine)
+        val content: TextView = itemView.findViewById(R.id.daily_content)
+        val remindTime: TextView = itemView.findViewById(R.id.daily_deadLine)
         var complete = false
-        val completeBtn: ImageButton = itemView.findViewById(R.id.complete)
+        val completeBtn: ImageButton = itemView.findViewById(R.id.daily_complete)
     }
 }

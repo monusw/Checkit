@@ -14,6 +14,10 @@ import com.baoyz.widget.PullRefreshLayout
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+import com.yuan.waveview.WaveView
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.yesButton
 import xin.monus.checkit.R
 import xin.monus.checkit.daily.dailyEdit.DailyEditActivity
 import xin.monus.checkit.daily.stepCounter.config.Constant
@@ -32,7 +36,8 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
     //循环取当前时刻的步数中间的时间间隔
     private var TIME_INTERVAL = 500L
     //控件
-    lateinit var stepNumberShow: TextView
+    lateinit var stepNumberShow : TextView
+    lateinit var waveView : WaveView
 
     private val userMessage by lazy { UserProfile.getUser(activity) }
     lateinit var messenger : Messenger
@@ -64,6 +69,7 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
             Constant.MSG_FROM_SERVER -> {
                 //更新步数
                 val stepNumber = msg.data.getInt("step")
+                waveView.progress = stepNumber.toLong()
                 stepNumberShow.text = energy(stepNumber).toString()
                 delayHandler.sendEmptyMessageDelayed(Constant.REQUEST_SERVER, TIME_INTERVAL)
             }
@@ -81,13 +87,15 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
     }
 
     private fun energy(step : Int) : Float {
+
         val weight = userMessage.weight * 0.57
         val height = userMessage.height * 0.43
-        val step = step * 0.5
-        return if (weight + height + step - 108.44 < 0) {
+        val stepNum = step * 0.5
+        val result = weight + height + stepNum// - 108.44
+        return if (result < 0) {
             0f
         } else {
-            (weight + height + step - 108.44).toFloat()
+            result.toFloat()
         }
         //return (weight + height + step - 108.44).toFloat()
     }
@@ -138,8 +146,20 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
                 presenter.loadItems()
             }
             stepNumberShow = findViewById(R.id.step_number)
+            waveView = findViewById(R.id.waveview)
             delayHandler = Handler(this@DailyFragment)
 
+        }
+
+        if (userMessage.weight == 0.0 || userMessage.height == 0.0 || userMessage.daily_calorie == 0.0) {
+            alert(R.string.user_message_incomplete) {
+                yesButton {
+
+                }
+                noButton {
+
+                }
+            }.show()
         }
 
 
@@ -174,6 +194,16 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
 
             adapter = listAdapter
         }
+
+        waveView.setMode(WaveView.MODE_CIRCLE)
+        waveView.max = userMessage.daily_calorie.toLong()
+        waveView.setProgressListener(object : WaveView.waveProgressListener{
+            override fun onPorgress(isDone: Boolean, progress: Long, max: Long) {
+                if (isDone) {
+                    //TODO
+                }
+            }
+        })
 
 
         setHasOptionsMenu(true)
@@ -213,6 +243,10 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
 
     override fun setEndRefresh() {
         pullRefreshLayout.setRefreshing(false)
+    }
+
+    override fun setStartRefresh() {
+        pullRefreshLayout.setRefreshing(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
