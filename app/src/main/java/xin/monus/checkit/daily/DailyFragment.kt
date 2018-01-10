@@ -24,6 +24,7 @@ import xin.monus.checkit.daily.stepCounter.config.Constant
 import xin.monus.checkit.daily.stepCounter.service.StepService
 import xin.monus.checkit.data.entity.Daily
 import xin.monus.checkit.login.UserProfile
+import java.math.BigDecimal
 
 
 /**
@@ -69,8 +70,10 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
             Constant.MSG_FROM_SERVER -> {
                 //更新步数
                 val stepNumber = msg.data.getInt("step")
-                waveView.progress = energy(stepNumber).toLong()
-                stepNumberShow.text = energy(stepNumber).toString()+"/"+userMessage.daily_calorie.toString()
+                val energy = energy(stepNumber).toDouble()
+                waveView.progress = energy.toLong()
+                val bgEnergy = BigDecimal(energy / userMessage.daily_calorie * 100)
+                stepNumberShow.text = (bgEnergy.setScale(2, BigDecimal.ROUND_HALF_UP)).toString() + "%"
                 delayHandler.sendEmptyMessageDelayed(Constant.REQUEST_SERVER, TIME_INTERVAL)
             }
             Constant.REQUEST_SERVER -> {
