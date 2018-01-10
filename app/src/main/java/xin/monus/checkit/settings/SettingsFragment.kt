@@ -96,14 +96,14 @@ class SettingsFragment: Fragment(), SettingsContract.View {
                 }
             })
             //TODO
-//            API.syncInboxItems(userMessage.username, activity, object : NetWorkApi.SyncResult {
-//                override fun success() {
-//                    println("sync inbox item success")
-//                }
-//                override fun ftestail() {
-//                    println("sync inbox item failed")
-//                }
-//            })
+            API.syncInboxItems(userMessage.username, activity, object : NetWorkApi.SyncResult {
+                override fun success() {
+                    println("sync inbox item success")
+                }
+                override fun fail() {
+                    println("sync inbox item failed")
+                }
+            })
             uiThread {
                 Toast.makeText(activity, getString(R.string.settings_end_sync), Toast.LENGTH_SHORT).show()
                 println("sync success")
