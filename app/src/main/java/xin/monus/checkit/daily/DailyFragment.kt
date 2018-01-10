@@ -84,12 +84,12 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
         val weight = userMessage.weight * 0.57
         val height = userMessage.height * 0.43
         val step = step * 0.5
-//        return if (weight + height + step - 108.44 < 0) {
-//            0f
-//        } else {
-//            (weight + height + step - 108.44).toFloat()
-//        }
-        return (weight + height + step - 108.44).toFloat()
+        return if (weight + height + step - 108.44 < 0) {
+            0f
+        } else {
+            (weight + height + step - 108.44).toFloat()
+        }
+        //return (weight + height + step - 108.44).toFloat()
     }
 
     interface ItemClickedListener{
