@@ -19,7 +19,7 @@ import xin.monus.checkit.daily.dailyEdit.DailyEditActivity
 import xin.monus.checkit.daily.stepCounter.config.Constant
 import xin.monus.checkit.daily.stepCounter.service.StepService
 import xin.monus.checkit.data.entity.Daily
-
+import xin.monus.checkit.login.UserProfile
 
 
 /**
@@ -32,8 +32,9 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
     //循环取当前时刻的步数中间的时间间隔
     private var TIME_INTERVAL = 500L
     //控件
-    lateinit var stepNumber : TextView
+    lateinit var stepNumberShow: TextView
 
+    private val userMessage by lazy { UserProfile.getUser(activity) }
     lateinit var messenger : Messenger
     private val mGetReplyMessenger = Messenger(Handler(this))
     lateinit var delayHandler : Handler
@@ -57,12 +58,13 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
 
     }
 
-    //接收从服务端回调的步数
+    //接收从后台回调的步数
     override fun handleMessage(msg : Message): Boolean {
         when(msg.what) {
             Constant.MSG_FROM_SERVER -> {
                 //更新步数
-                stepNumber.text = msg.data.getInt("step").toString()
+                val stepNumber = msg.data.getInt("step")
+                stepNumberShow.text = energy(stepNumber).toString()
                 delayHandler.sendEmptyMessageDelayed(Constant.REQUEST_SERVER, TIME_INTERVAL)
             }
             Constant.REQUEST_SERVER -> {
@@ -76,6 +78,18 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
             }
         }
         return false
+    }
+
+    private fun energy(step : Int) : Float {
+        val weight = userMessage.weight * 0.57
+        val height = userMessage.height * 0.43
+        val step = step * 0.5
+//        return if (weight + height + step - 108.44 < 0) {
+//            0f
+//        } else {
+//            (weight + height + step - 108.44).toFloat()
+//        }
+        return (weight + height + step - 108.44).toFloat()
     }
 
     interface ItemClickedListener{
@@ -123,7 +137,7 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
                 pullRefreshLayout.setRefreshing(true)
                 presenter.loadItems()
             }
-            stepNumber = findViewById(R.id.step_number)
+            stepNumberShow = findViewById(R.id.step_number)
             delayHandler = Handler(this@DailyFragment)
 
         }
