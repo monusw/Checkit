@@ -15,7 +15,6 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import com.yuan.waveview.WaveView
-import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.yesButton
 import xin.monus.checkit.R
@@ -71,9 +70,20 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
                 //更新步数
                 val stepNumber = msg.data.getInt("step")
                 val energy = energy(stepNumber).toDouble()
-                waveView.progress = energy.toLong()
-                val bgEnergy = BigDecimal(energy / userMessage.daily_calorie * 100)
-                stepNumberShow.text = (bgEnergy.setScale(2, BigDecimal.ROUND_HALF_UP)).toString() + "%"
+                if (energy <= userMessage.daily_calorie) {
+                    waveView.progress = (userMessage.daily_calorie / 10).toLong()
+                } else if (energy > userMessage.daily_calorie) {
+                    waveView.progress = userMessage.daily_calorie.toLong()
+                } else {
+                    waveView.progress = energy.toLong()
+                }
+                if (energy != 0.0) {
+                    val bgEnergy = BigDecimal(energy / userMessage.daily_calorie * 100)
+                    stepNumberShow.text = (bgEnergy.setScale(2, BigDecimal.ROUND_HALF_UP)).toString() + "%"
+                } else {
+                    stepNumberShow.text = 0.toString() + "%"
+                }
+
                 delayHandler.sendEmptyMessageDelayed(Constant.REQUEST_SERVER, TIME_INTERVAL)
             }
             Constant.REQUEST_SERVER -> {
@@ -95,14 +105,11 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
         val height = userMessage.height * 0.43
         val stepNum = step * 0.5
         val result = weight + height + stepNum// - 108.44
-        return if (result <= userMessage.daily_calorie*5/100) {
-            (result/5*100).toFloat()
-        } else if (result > userMessage.daily_calorie) {
-            userMessage.daily_calorie.toFloat()
+        return if (stepNum == 0.0) {
+            0.0F
         } else {
             result.toFloat()
         }
-        //return (weight + height + step - 108.44).toFloat()
     }
 
     interface ItemClickedListener{
@@ -159,9 +166,6 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
         if (userMessage.weight == 0.0 || userMessage.height == 0.0 || userMessage.daily_calorie == 0.0) {
             alert(R.string.user_message_incomplete) {
                 yesButton {
-
-                }
-                noButton {
 
                 }
             }.show()

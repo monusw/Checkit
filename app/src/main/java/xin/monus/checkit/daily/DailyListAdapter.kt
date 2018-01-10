@@ -40,6 +40,7 @@ class DailyListAdapter(val context: Context, list: List<Daily>, val itemClickedL
             }
 
             val time = list[position].remindTime
+            println(time)
             val sf = SimpleDateFormat("HH:mm")
             val remindT = sf.parse(time)
             val current = Date()
@@ -70,7 +71,6 @@ class DailyListAdapter(val context: Context, list: List<Daily>, val itemClickedL
                     println(complete)
                 }
                 else {
-                    println("hole")
                     completeBtn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.btn_press))
                 }
                 notifyDataSetChanged()
