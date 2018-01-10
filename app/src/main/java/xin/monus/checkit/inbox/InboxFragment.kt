@@ -129,7 +129,6 @@ class InboxFragment: Fragment(), InboxContract.View {
         }
 
 
-
         floatingBtn = activity.findViewById<FloatingActionButton>(R.id.fab)
         floatingBtn.setOnClickListener {
             _ ->

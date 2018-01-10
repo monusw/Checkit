@@ -35,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
     private fun checkAutoLogin() {
         val preferences = getSharedPreferences("login", Context.MODE_PRIVATE)
         val firstLogin = preferences.getBoolean(TAG, true)
+        updateAutoLogin()
         if (!firstLogin) {
             val intent = Intent(this@LoginActivity, InboxActivity::class.java)
             startActivity(intent)
@@ -120,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateAutoLogin() {
+        UserProfile.isLogin = true
         val preferences = getSharedPreferences("login", Context.MODE_PRIVATE)
         val editor = preferences.edit()
         editor.putBoolean(TAG, false)

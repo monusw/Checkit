@@ -32,10 +32,12 @@
         <!-- Register progress -->
         <ProgressBar
             android:id="@+id/register_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone" />
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/app_icon"

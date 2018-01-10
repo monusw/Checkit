@@ -154,9 +154,11 @@ class InboxItemRepository(
                 // TODO: 异步取消注释测试
 //                inboxItemRemoteDataSource.deleteInboxItem(id, object : InboxItemDataSource.OperationCallback {
 //                    override fun success() {
+//                        println("success")
 //                    }
 //
 //                    override fun fail() {
+//                        println("fail")
 //                    }
 //                })
             }

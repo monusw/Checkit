@@ -44,8 +44,10 @@ class ForecastRepository(context: Context) : ForecastDataSource {
                         forecastList.add(forecast)
                     }
                 }
+                callback.onForecastsLoaded(forecastList)
             }
             override fun onDataNotAvailable() {
+                callback.onDataNotAvailable()
             }
         })
 

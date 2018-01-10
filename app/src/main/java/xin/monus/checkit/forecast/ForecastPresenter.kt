@@ -25,6 +25,7 @@ class ForecastPresenter(
             forecastRepository.getAllForecast(object : ForecastDataSource.GetForecastsCallback {
                 override fun onForecastsLoaded(forecasts: List<Forecast>) {
                     uiThread {
+                        println(forecasts.size)
                         forecastList.clear()
                         forecastList.addAll(forecasts)
                         forecastView.initData(forecastList)
