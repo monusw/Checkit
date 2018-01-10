@@ -102,6 +102,6 @@
 
     <!--daily activity-->
     <string name="user_message_incomplete">用户信息不完整，这将影响部分功能的正常运行</string>
-
+    <string name="daily_content_hint">日常提醒</string>
 
 </resources>

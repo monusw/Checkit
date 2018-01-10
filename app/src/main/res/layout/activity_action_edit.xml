@@ -75,7 +75,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/transparent"
-                android:text="2018-1-20 16:40"
+                android:text="2018-1-12 14:30"
                 android:textAlignment="textEnd"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"

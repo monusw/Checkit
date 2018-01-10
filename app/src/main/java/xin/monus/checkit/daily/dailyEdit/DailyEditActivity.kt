@@ -1,8 +1,10 @@
 package xin.monus.checkit.daily.dailyEdit
 
 import android.app.TimePickerDialog
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
@@ -26,6 +28,8 @@ class DailyEditActivity : AppCompatActivity() {
     lateinit var finishEdit : FloatingActionButton
     lateinit var tempDailyItem : Daily
 
+    lateinit var btnFlag: Button
+
     var isNew = true
     val id:Int by lazy { intent.getIntExtra("ID",0) }
 
@@ -40,6 +44,7 @@ class DailyEditActivity : AppCompatActivity() {
         selectRemindTime = findViewById(R.id.remind_time_btn) as Button
         contentEditor = findViewById(R.id.daily_content_edit) as EditText
         finishEdit = findViewById(R.id.daily_edit_finish) as FloatingActionButton
+        btnFlag = findViewById(R.id.btn_flag) as Button
 
         updateTimeShow()
 
@@ -58,10 +63,24 @@ class DailyEditActivity : AppCompatActivity() {
                 }
 
                 override fun onDataNotAvailable() {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    println("never here")
                 }
             })
+        } else {
+            tempDailyItem  = Daily(0,
+                    UserProfile.getUser(this).username,
+                    "","",
+                    false,
+                    false)
         }
+
+        setFlagBtnPic()
+
+        btnFlag.setOnClickListener {
+            tempDailyItem.flag = !tempDailyItem.flag
+            setFlagBtnPic()
+        }
+
 
         selectRemindTime.setOnClickListener {
             TimePickerDialog(
@@ -69,6 +88,7 @@ class DailyEditActivity : AppCompatActivity() {
                     TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                         calendar.set(Calendar.MINUTE,minute)
+                        updateTimeShow()
                     },
                     calendar.get(Calendar.HOUR_OF_DAY),
                     calendar.get(Calendar.MINUTE),
@@ -83,27 +103,21 @@ class DailyEditActivity : AppCompatActivity() {
 
 
             if (addContent.isEmpty()) {
-                Toast.makeText(this,"内容不能为空",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.no_null_project_content),Toast.LENGTH_SHORT).show()
             }
             else if (isNew){
-                tempDailyItem = Daily(
-                        0,
-                        UserProfile.getUser(this).username,
-                        addContent,deadlineDB,
-                        false,
-                        false)
+                tempDailyItem.content = addContent
+                tempDailyItem.remindTime = deadlineDB
 
                 dailyRepository.addDailyItem(tempDailyItem, object: DailyDataSource.OperationCallback{
                     override fun success() {
-                        Toast.makeText(applicationContext,"创建成功", Toast.LENGTH_SHORT).show()
-
-
+                        //Toast.makeText(applicationContext,"创建成功", Toast.LENGTH_SHORT).show()
                         //return to InboxFragment
                         finish()
                     }
 
                     override fun fail() {
-                        Toast.makeText(applicationContext, "创建失败", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, getString(R.string.global_operation_failed), Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -113,16 +127,13 @@ class DailyEditActivity : AppCompatActivity() {
 
                 dailyRepository.updateDailyItem(tempDailyItem, object: DailyDataSource.OperationCallback{
                     override fun success() {
-                        Toast.makeText(applicationContext,"修改成功", Toast.LENGTH_SHORT).show()
-
-
-
+                        //Toast.makeText(applicationContext,"修改成功", Toast.LENGTH_SHORT).show()
                         //return to InboxFragment
                         finish()
                     }
 
                     override fun fail() {
-                        Toast.makeText(applicationContext, "修改失败", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, getString(R.string.global_operation_failed), Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -136,6 +147,16 @@ class DailyEditActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun setFlagBtnPic() {
+        val drawable: Drawable? = if (tempDailyItem.flag) {
+            ContextCompat.getDrawable(this, R.drawable.flag_press)
+        } else {
+            ContextCompat.getDrawable(this, R.drawable.flag)
+        }
+        drawable!!.setBounds(0,0, drawable.minimumWidth, drawable.minimumHeight)
+        btnFlag.setCompoundDrawables(null, null, drawable, null)
     }
 
     override fun onSupportNavigateUp(): Boolean {

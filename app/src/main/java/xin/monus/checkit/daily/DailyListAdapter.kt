@@ -1,6 +1,7 @@
 package xin.monus.checkit.daily
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Paint
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
@@ -10,6 +11,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.Daily
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class DailyListAdapter(val context: Context, list: List<Daily>, val itemClickedListener: DailyFragment.ItemClickedListener) :
@@ -27,6 +30,26 @@ class DailyListAdapter(val context: Context, list: List<Daily>, val itemClickedL
             remindTime.text = list[position].remindTime
             complete = list[position].complete
             content.text = list[position].content
+
+            val flag = list[position].flag
+
+            if (flag) {
+                content.setTextColor(ContextCompat.getColor(context, R.color.forecast_date_red))
+            } else {
+                content.setTextColor(Color.BLACK)
+            }
+
+            val time = list[position].remindTime
+            val sf = SimpleDateFormat("HH:mm")
+            val remindT = sf.parse(time)
+            val current = Date()
+            val currentT = sf.parse(sf.format(current))
+            if (remindT.time < currentT.time) {
+                remindTime.setBackgroundColor(ContextCompat.getColor(context, R.color.background_red))
+            } else {
+                remindTime.setBackgroundColor(Color.WHITE)
+            }
+
             if (complete) {
                 content.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG
             }
