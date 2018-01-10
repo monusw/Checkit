@@ -86,6 +86,8 @@ class ActionEditActivity : AppCompatActivity() {
             contenTxt.setText(newAction.content)
         }
 
+        btnDeadline.text = newAction.deadline
+
         setFlagBtnPic()
 
         btnFlag.setOnClickListener {
