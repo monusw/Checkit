@@ -141,12 +141,12 @@ class ForecastFragment : Fragment(), ForecastContract.View {
         }
 
         if (fList2.size != 0) {
-            num2.setTextColor(Color.BLACK)
+            num2.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_yellow))
         } else {
             num2.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_gray))
         }
         if (fList3.size != 0) {
-            num3.setTextColor(Color.BLACK)
+            num3.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_yellow))
         } else {
             num3.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_gray))
         }

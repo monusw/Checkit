@@ -53,6 +53,8 @@ class InboxListAdapter(val context: Context, list: List<InboxItem>, val itemClic
                 deadline.setBackgroundColor(ContextCompat.getColor(context, R.color.background_red))
             } else if (date.time < time2) {
                 deadline.setBackgroundColor(ContextCompat.getColor(context, R.color.background_yellow))
+            } else {
+                deadline.setBackgroundColor(Color.WHITE)
             }
             if (flag) {
                 content.setTextColor(ContextCompat.getColor(context, R.color.forecast_date_red))

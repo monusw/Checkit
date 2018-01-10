@@ -9,6 +9,7 @@
     <color name="forecast_date_gray">#CCCCCC</color>
     <color name="forecast_background_gray">#E7E7E7</color>
     <color name="forecast_date_red">#CC6666</color>
+    <color name="forecast_date_yellow">#FF9966</color>
 
     <color name="background_light_gray">#F8F8F8</color>
     <color name="background_yellow">#FCEECB</color>
