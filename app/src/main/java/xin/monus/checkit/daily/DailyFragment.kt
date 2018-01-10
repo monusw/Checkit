@@ -69,8 +69,8 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
             Constant.MSG_FROM_SERVER -> {
                 //更新步数
                 val stepNumber = msg.data.getInt("step")
-                waveView.progress = stepNumber.toLong()
-                stepNumberShow.text = energy(stepNumber).toString()
+                waveView.progress = energy(stepNumber).toLong()
+                stepNumberShow.text = energy(stepNumber).toString()+"/"+userMessage.daily_calorie.toString()
                 delayHandler.sendEmptyMessageDelayed(Constant.REQUEST_SERVER, TIME_INTERVAL)
             }
             Constant.REQUEST_SERVER -> {
@@ -92,8 +92,10 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
         val height = userMessage.height * 0.43
         val stepNum = step * 0.5
         val result = weight + height + stepNum// - 108.44
-        return if (result < 0) {
-            0f
+        return if (result <= userMessage.daily_calorie*5/100) {
+            (result/5*100).toFloat()
+        } else if (result > userMessage.daily_calorie) {
+            userMessage.daily_calorie.toFloat()
         } else {
             result.toFloat()
         }
