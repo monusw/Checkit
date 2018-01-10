@@ -93,9 +93,9 @@ class InboxActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 val intent = Intent(this@InboxActivity, SettingsActivity::class.java)
                 startActivity(intent)
             }
-            R.id.nav_about -> {
-
-            }
+//            R.id.nav_about -> {
+//
+//            }
         }
 
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout

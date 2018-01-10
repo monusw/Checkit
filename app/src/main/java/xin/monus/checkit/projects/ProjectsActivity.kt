@@ -80,9 +80,9 @@ class ProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 val intent = Intent(this@ProjectsActivity, SettingsActivity::class.java)
                 startActivity(intent)
             }
-            R.id.nav_about -> {
-
-            }
+//            R.id.nav_about -> {
+//
+//            }
         }
 
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout

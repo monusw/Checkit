@@ -81,9 +81,9 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             R.id.nav_settings -> {
 
             }
-            R.id.nav_about -> {
-
-            }
+//            R.id.nav_about -> {
+//
+//            }
         }
 
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout

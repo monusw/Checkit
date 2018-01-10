@@ -80,9 +80,9 @@ class ForecastActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 val intent = Intent(this@ForecastActivity, SettingsActivity::class.java)
                 startActivity(intent)
             }
-            R.id.nav_about -> {
-
-            }
+//            R.id.nav_about -> {
+//
+//            }
         }
 
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
