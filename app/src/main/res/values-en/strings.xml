@@ -72,7 +72,9 @@
     <string name="actions_activity_title">Actions</string>
 
     <!--forecast activity-->
+    <string name="forecast_before">Before</string>
     <string name="forecast_today">Today</string>
+    <string name="forecast_future">Future</string>
     <string name="forecast_mon">Mon.</string>
     <string name="forecast_tues">Tues.</string>
     <string name="forecast_wed">Wed.</string>
@@ -81,6 +83,9 @@
     <string name="forecast_sat">Sat.</string>
     <string name="forecast_sun">Sun.</string>
     <string name="forecast_deadline">DDL</string>
+    <string name="forecast_inbox">Inb.Item</string>
+    <string name="forecast_project">Project</string>
+    <string name="forecast_action">Action</string>
 
 
 </resources>

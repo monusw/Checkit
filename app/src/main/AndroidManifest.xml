@@ -72,10 +72,10 @@
             android:name=".settings.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service
-            android:name=".daily.stepCounter.service.StepService"
-            android:enabled="true"
-            android:exported="true"></service>
+        <!--<service-->
+            <!--android:name=".daily.stepCounter.service.StepService"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true"></service>-->
     </application>
 
 </manifest>

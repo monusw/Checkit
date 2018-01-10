@@ -6,10 +6,7 @@ import xin.monus.checkit.data.source.local.DailyLocalDataSource
 import xin.monus.checkit.data.source.local.InboxItemLocalDataSource
 import xin.monus.checkit.data.source.local.ProjectsLocalDataSource
 import xin.monus.checkit.data.source.remote.InboxItemRemoteDataSource
-import xin.monus.checkit.data.source.repository.ActionRepository
-import xin.monus.checkit.data.source.repository.DailyRepository
-import xin.monus.checkit.data.source.repository.InboxItemRepository
-import xin.monus.checkit.data.source.repository.ProjectsRepository
+import xin.monus.checkit.data.source.repository.*
 
 
 object Injection {
@@ -26,4 +23,7 @@ object Injection {
 
     @JvmStatic fun getDailyRepository(context: Context) : DailyRepository =
             DailyRepository.getInstance(DailyLocalDataSource.getInstance(context))
+
+    @JvmStatic fun getForecastRepository(context: Context) : ForecastRepository =
+            ForecastRepository.getInstance(context)
 }
