@@ -98,5 +98,8 @@
     <string name="settings_edit_success">修改成功</string>
     <string name="settings_msg_logout">可能丢失未同步的数据，确认退出登录？</string>
 
+    <!--daily activity-->
+    <string name="user_message_incomplete">用户信息不完整，这将影响部分功能的正常运行</string>
+
 
 </resources>

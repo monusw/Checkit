@@ -24,6 +24,7 @@ class DailyPresenter(
     override fun start() {
         println("daily activity start")
         firstLoad = false
+        dailyView.setStartRefresh()
         loadItems()
     }
 
@@ -49,7 +50,6 @@ class DailyPresenter(
                 dailyView.setEndRefresh()
                 dailyView.showItems(ArrayList(0))
                 println("No data!")
-//                inboxView.showItems(null)
             }
 
         })

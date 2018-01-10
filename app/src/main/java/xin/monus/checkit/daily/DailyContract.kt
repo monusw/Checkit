@@ -8,6 +8,7 @@ interface DailyContract {
 
     interface View : BaseView<Presenter> {
         fun showItems(list: List<Daily>)
+        fun setStartRefresh()
         fun setEndRefresh()
     }
 
