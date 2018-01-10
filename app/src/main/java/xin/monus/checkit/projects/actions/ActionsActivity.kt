@@ -1,17 +1,30 @@
 package xin.monus.checkit.projects.actions
 
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.ViewGroup
+import android.widget.AbsListView
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.Action
+import xin.monus.checkit.projects.ProjectsActivity
 import xin.monus.checkit.util.Injection
 import xin.monus.checkit.util.setupActionBar
 
 class ActionsActivity : AppCompatActivity(), ActionsContract.View {
 
     override lateinit var presenter: ActionsContract.Presenter
+
+    var projectId = 0
+    lateinit var btnAdd: FloatingActionButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +39,72 @@ class ActionsActivity : AppCompatActivity(), ActionsContract.View {
 
         initView()
 
-        val projectId = intent.getStringExtra("PROJECT_ID").toInt()
+        projectId = intent.getStringExtra("PROJECT_ID").toInt()
 
         presenter = ActionsPresenter(Injection.getActionRepository(this), this, projectId)
+    }
+
+    private fun initView() {
+        recyclerView = findViewById(R.id.actions_list) as SwipeMenuRecyclerView
+        // 点击添加按钮
+        btnAdd = findViewById(R.id.btn_add) as FloatingActionButton
+        btnAdd.setOnClickListener {
+            val intent = Intent(this, ActionEditActivity::class.java)
+            intent.putExtra("PROJECT_ID", projectId)
+            startActivity(intent)
+        }
+
+        val swipeBtnHeight = ViewGroup.LayoutParams.MATCH_PARENT
+        val swipeBtnWidth = 200
+        val swipeBtnTextSize = 20
+
+        with(recyclerView) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+            setSwipeMenuCreator { _, swipeRightMenu, _ ->
+                val deleteItem = SwipeMenuItem(context)
+                        .setText(R.string.projects_swipe_delete)
+                        .setTextColor(Color.WHITE)
+                        .setBackgroundColor(Color.RED)
+                        .setWidth(swipeBtnWidth)
+                        .setHeight(swipeBtnHeight)
+                swipeRightMenu.addMenuItem(deleteItem)
+            }
+
+            setSwipeMenuItemClickListener { menuBridge : SwipeMenuBridge ->
+                menuBridge.closeMenu()
+                val adapterPosition = menuBridge.adapterPosition
+                val menuPosition = menuBridge.position
+                println("click delete action, position: $menuPosition")
+                when (menuPosition) {
+                    0 -> {
+                        val actionId = actionsAdapter.actionList[adapterPosition].id
+                        itemClickListener.itemDelete(actionId)
+                    }
+                }
+            }
+
+            adapter = actionsAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(view: RecyclerView, scrollState: Int) {
+                    val layoutManager = view.layoutManager as LinearLayoutManager
+                    val count = layoutManager.itemCount
+                    val lastPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                    when(scrollState) {
+                        AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
+                            if (lastPosition == count - 1) {
+                                btnAdd.hide()
+                            }
+                            else {
+                                btnAdd.show()
+                            }
+                        }
+                        else -> btnAdd.show()
+                    }
+                }
+            })
+        }
     }
 
     override fun onResume() {
@@ -36,23 +112,42 @@ class ActionsActivity : AppCompatActivity(), ActionsContract.View {
         presenter.start()
     }
 
+    interface ItemClickListener {
+        fun itemClick(actionId: Int)
+        fun itemComplete(actionId: Int)
+        fun itemDelete(actionId: Int)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        val intent = Intent(this, ProjectsActivity::class.java)
+        startActivity(intent)
+        finish()
+//        onBackPressed()
         return true
     }
 
-    private val actionsAdapter by lazy { ActionsAdapter(this, ArrayList(0)) }
+    private val actionsAdapter by lazy { ActionsAdapter(this, ArrayList(0), itemClickListener) }
 
-    lateinit var recyclerView: SwipeMenuRecyclerView
+    private val itemClickListener = object : ItemClickListener {
+        override fun itemClick(actionId: Int) {
+            println("click actionId $actionId")
+            val intent = Intent(this@ActionsActivity, ActionEditActivity::class.java)
+            intent.putExtra("PROJECT_ID", projectId)
+            intent.putExtra("ACTION_ID", actionId)
+            startActivity(intent)
+        }
+        override fun itemComplete(actionId: Int) {
+            println("complete actionId $actionId")
+            presenter.completeAction(actionId)
+        }
 
-    private fun initView() {
-        recyclerView = findViewById(R.id.actions_list) as SwipeMenuRecyclerView
-
-        with(recyclerView) {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = actionsAdapter
+        override fun itemDelete(actionId: Int) {
+            println("delete action $actionId")
+            presenter.deleteAction(actionId)
         }
     }
+
+    lateinit var recyclerView: SwipeMenuRecyclerView
 
     override fun showActions(actions: List<Action>) {
         println(actions.size)

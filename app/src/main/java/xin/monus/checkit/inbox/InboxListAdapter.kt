@@ -56,7 +56,6 @@ class InboxListAdapter(val context: Context, list: List<InboxItem>, val itemClic
                 itemClickedListener.getID(id)
             }
         }
-
     }
 
     override fun getItemCount() = list.size

@@ -50,6 +50,8 @@
     <!--projects item swipe menu-->
     <string name="projects_swipe_delete">Delete</string>
     <string name="projects_swipe_edit">Edit</string>
+
+    <!--projects activity-->
     <string name="project_new_title">New Project</string>
     <string name="project_edit_title">Edit</string>
     <string name="project_content_hint">Project Content</string>
@@ -60,6 +62,30 @@
     <string name="btn_flag">Flag</string>
     <string name="no_null_project_content">Content can not be empty</string>
 
+    <!--actions activity-->
+    <string name="action_content_hint">Action Content</string>
+    <string name="action_new_title">New Action</string>
+    <string name="action_edit_title">Edit</string>
+
+
     <!--action activity-->
     <string name="actions_activity_title">Actions</string>
+
+    <!--forecast activity-->
+    <string name="forecast_before">Before</string>
+    <string name="forecast_today">Today</string>
+    <string name="forecast_future">Future</string>
+    <string name="forecast_mon">Mon.</string>
+    <string name="forecast_tues">Tues.</string>
+    <string name="forecast_wed">Wed.</string>
+    <string name="forecast_thur">Thur.</string>
+    <string name="forecast_fri">Fri.</string>
+    <string name="forecast_sat">Sat.</string>
+    <string name="forecast_sun">Sun.</string>
+    <string name="forecast_deadline">DDL</string>
+    <string name="forecast_inbox">Inb.Item</string>
+    <string name="forecast_project">Project</string>
+    <string name="forecast_action">Action</string>
+
+
 </resources>
