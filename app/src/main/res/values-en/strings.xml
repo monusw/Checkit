@@ -70,4 +70,17 @@
 
     <!--action activity-->
     <string name="actions_activity_title">Actions</string>
+
+    <!--forecast activity-->
+    <string name="forecast_today">Today</string>
+    <string name="forecast_mon">Mon.</string>
+    <string name="forecast_tues">Tues.</string>
+    <string name="forecast_wed">Wed.</string>
+    <string name="forecast_thur">Thur.</string>
+    <string name="forecast_fri">Fri.</string>
+    <string name="forecast_sat">Sat.</string>
+    <string name="forecast_sun">Sun.</string>
+    <string name="forecast_deadline">DDL</string>
+
+
 </resources>

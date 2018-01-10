@@ -68,4 +68,17 @@
 
     <!--action activity-->
     <string name="actions_activity_title">动作</string>
+
+    <!--forecast activity-->
+    <string name="forecast_today">今天</string>
+    <string name="forecast_mon">周一</string>
+    <string name="forecast_tues">周二</string>
+    <string name="forecast_wed">周三</string>
+    <string name="forecast_thur">周四</string>
+    <string name="forecast_fri">周五</string>
+    <string name="forecast_sat">周六</string>
+    <string name="forecast_sun">周日</string>
+    <string name="forecast_deadline">截止</string>
+
+
 </resources>
