@@ -75,7 +75,7 @@
         android:layout_below="@+id/user_height"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:maxLines="14"
         />
 
@@ -99,7 +99,7 @@
         android:layout_below="@+id/user_weight"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:maxLines="14"
         />
 
