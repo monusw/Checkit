@@ -1,10 +1,11 @@
 package xin.monus.checkit.inbox.edit
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
@@ -25,16 +26,15 @@ class InboxEditActivity : AppCompatActivity() {
     lateinit var contentEditor: EditText
     lateinit var finishEdit : FloatingActionButton
     lateinit var tempInboxItem : InboxItem
+    lateinit var btnFlag: Button
 
     //default new one InboxItem
     var isNew = true
     val id:Int by lazy { intent.getIntExtra("ID",0) }
 
-
-
     //date format design
-    @SuppressLint("SimpleDateFormat")
     val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    val timeFormatFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
     val calendar = Calendar.getInstance()
 
@@ -45,8 +45,7 @@ class InboxEditActivity : AppCompatActivity() {
         selectShowTime = findViewById(R.id.show_select_btn) as Button
         contentEditor = findViewById(R.id.content_edit) as EditText
         finishEdit = findViewById(R.id.edit_finish) as FloatingActionButton
-
-        updateTimeShow()
+        btnFlag = findViewById(R.id.btn_flag) as Button
 
         if (id != 0) {
             isNew = false
@@ -54,18 +53,39 @@ class InboxEditActivity : AppCompatActivity() {
             inboxRepository.getInboxItemById(id, object: InboxItemDataSource.GetInboxItemCallback{
                 override fun onInboxItemLoaded(item: InboxItem) {
                     tempInboxItem = item
-
                     selectShowTime.text = tempInboxItem.deadline
                     contentEditor.setText(tempInboxItem.content)
                     //set the position of the selection
                     contentEditor.setSelection(tempInboxItem.content.length)
-                    calendar.time = tempInboxItem.deadline.toDate()
+                    val time = try {
+                        timeFormat.parse(tempInboxItem.deadline)
+                    } catch (e : Exception) {
+                        timeFormatFull.parse(tempInboxItem.deadline)
+                    }
+                    println(timeFormat.format(time))
+//                    calendar.time = time
                 }
 
                 override fun onDataNotAvailable() {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
             })
+        } else {
+            tempInboxItem = InboxItem(
+                    0,
+                    UserProfile.getUser(this).username,
+                    "","",
+                    false,
+                    false)
+        }
+
+//        updateTimeShow()
+
+        setFlagBtnPic()
+
+        btnFlag.setOnClickListener {
+            tempInboxItem.flag = !tempInboxItem.flag
+            setFlagBtnPic()
         }
 
         selectShowTime.setOnClickListener {
@@ -94,56 +114,7 @@ class InboxEditActivity : AppCompatActivity() {
         }
 
         finishEdit.setOnClickListener {
-            val addContent = contentEditor.text.toString()
-            val deadline = calendar.time
-            val deadlineDB = timeFormat.format(deadline)
-
-
-            if (addContent.isEmpty()) {
-                Toast.makeText(this,"内容不能为空",Toast.LENGTH_SHORT).show()
-            }
-            else if (isNew){
-                tempInboxItem = InboxItem(
-                        0,
-                        UserProfile.getUser(this).username,
-                        addContent,deadlineDB,
-                        false,
-                        false)
-
-                inboxRepository.addInboxItem(tempInboxItem, object: InboxItemDataSource.OperationCallback{
-                    override fun success() {
-                        Toast.makeText(applicationContext,"创建成功", Toast.LENGTH_SHORT).show()
-
-                        println(inboxRepository.cachedInboxItems.count())
-
-                        //return to InboxFragment
-                        finish()
-                    }
-
-                    override fun fail() {
-                        Toast.makeText(applicationContext, "创建失败", Toast.LENGTH_SHORT).show()
-                    }
-                })
-            }
-            else {
-                tempInboxItem.content = addContent
-                tempInboxItem.deadline = deadlineDB
-
-                inboxRepository.updateInboxItem(tempInboxItem, object: InboxItemDataSource.OperationCallback{
-                    override fun success() {
-                        Toast.makeText(applicationContext,"修改成功", Toast.LENGTH_SHORT).show()
-
-                        println(inboxRepository.cachedInboxItems.count())
-
-                        //return to InboxFragment
-                        finish()
-                    }
-
-                    override fun fail() {
-                        Toast.makeText(applicationContext, "修改失败", Toast.LENGTH_SHORT).show()
-                    }
-                })
-            }
+            checkEditFinish()
         }
 
         setupActionBar(R.id.toolbar) {
@@ -156,6 +127,57 @@ class InboxEditActivity : AppCompatActivity() {
 
     }
 
+
+    private fun checkEditFinish() {
+        val addContent = contentEditor.text.toString()
+        val deadline = calendar.time
+        val deadlineDB = timeFormat.format(deadline)
+
+
+        if (addContent.isEmpty()) {
+            Toast.makeText(this,getString(R.string.no_null_project_content),Toast.LENGTH_SHORT).show()
+            return
+        }
+        else if (isNew){
+            tempInboxItem.content = addContent
+            tempInboxItem.deadline = deadlineDB
+            inboxRepository.addInboxItem(tempInboxItem, object: InboxItemDataSource.OperationCallback{
+                override fun success() {
+//                        Toast.makeText(applicationContext,"创建成功", Toast.LENGTH_SHORT).show()
+                    println(inboxRepository.cachedInboxItems.count())
+                    finish()
+                }
+                override fun fail() {
+                    Toast.makeText(applicationContext, getString(R.string.global_operation_failed), Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+        else {
+            tempInboxItem.content = addContent
+            tempInboxItem.deadline = deadlineDB
+            inboxRepository.updateInboxItem(tempInboxItem, object: InboxItemDataSource.OperationCallback{
+                override fun success() {
+//                        Toast.makeText(applicationContext,"修改成功", Toast.LENGTH_SHORT).show()
+                    println(inboxRepository.cachedInboxItems.count())
+                    finish()
+                }
+                override fun fail() {
+                    Toast.makeText(applicationContext, getString(R.string.global_operation_failed), Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+    }
+
+    private fun setFlagBtnPic() {
+        val drawable: Drawable? = if (tempInboxItem.flag) {
+            ContextCompat.getDrawable(this, R.drawable.flag_press)
+        } else {
+            ContextCompat.getDrawable(this, R.drawable.flag)
+        }
+        drawable!!.setBounds(0,0, drawable.minimumWidth, drawable.minimumHeight)
+        btnFlag.setCompoundDrawables(null, null, drawable, null)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -166,8 +188,8 @@ class InboxEditActivity : AppCompatActivity() {
         selectShowTime.text = timeFormat.format(date)
     }
 
-    @SuppressLint("SimpleDateFormat")
     fun String.toDate(pattern: String = "yyyy-MM-dd HH:mm"): Date? {
+
         val sdFormat = try {
             SimpleDateFormat(pattern)
         } catch (e: IllegalArgumentException) {

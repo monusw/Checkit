@@ -32,6 +32,7 @@ class ForecastRepository(context: Context) : ForecastDataSource {
     val forecastList = ArrayList<Forecast>(0)
 
     override fun getAllForecast(callback: ForecastDataSource.GetForecastsCallback) {
+        forecastList.clear()
         inboxRepository.getInboxItems(object : InboxItemDataSource.LoadInboxItemsCallback {
             override fun onInboxItemsLoaded(items: List<InboxItem>) {
                 for (item in items) {

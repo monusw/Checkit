@@ -6,26 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<TextView-->
-        <!--android:id="@+id/test_txt"-->
-        <!--android:text="hello world"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textAlignment="center"-->
-        <!--android:textSize="30sp"/>-->
-
     <com.baoyz.widget.PullRefreshLayout
         android:id="@+id/pullRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:refreshType="water_drop">
 
-        <!--<ListView-->
-            <!--android:id="@+id/item_list"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
-
-        <!--</ListView>-->
 
         <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
             android:id="@+id/item_list"
