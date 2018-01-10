@@ -70,7 +70,7 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
                 //更新步数
                 val stepNumber = msg.data.getInt("step")
                 val energy = energy(stepNumber).toDouble()
-                if (energy <= userMessage.daily_calorie) {
+                if (energy <= 0.0) {
                     waveView.progress = (userMessage.daily_calorie / 10).toLong()
                 } else if (energy > userMessage.daily_calorie) {
                     waveView.progress = userMessage.daily_calorie.toLong()
@@ -206,13 +206,11 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
 
         waveView.setMode(WaveView.MODE_CIRCLE)
         waveView.max = userMessage.daily_calorie.toLong()
-        waveView.setProgressListener(object : WaveView.waveProgressListener{
-            override fun onPorgress(isDone: Boolean, progress: Long, max: Long) {
-                if (isDone) {
-                    //TODO
-                }
+        waveView.setProgressListener { isDone, _, _ ->
+            if (isDone) {
+                //TODO
             }
-        })
+        }
 
 
         setHasOptionsMenu(true)
