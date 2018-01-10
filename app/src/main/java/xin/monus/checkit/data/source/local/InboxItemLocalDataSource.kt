@@ -98,6 +98,7 @@ class InboxItemLocalDataSource private constructor(context: Context) : InboxItem
             put(InboxItemTable.COLUMN_DEADLINE, item.deadline)
             put(InboxItemTable.COLUMN_COMPLETE, item.complete)
             put(InboxItemTable.COLUMN_FLAG, item.flag)
+            put(InboxItemTable.COLUMN_STATUS, item.status)
         }
         with(dbHelper.writableDatabase) {
             if (insert(InboxItemTable.TABLE_NAME, null, values) != 0L) {

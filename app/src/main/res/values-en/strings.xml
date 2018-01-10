@@ -87,5 +87,18 @@
     <string name="forecast_project">Project</string>
     <string name="forecast_action">Action</string>
 
+    <!--settings activity-->
+    <string name="settings_nickname_tip">Nickname</string>
+    <string name="settings_height_tip">Height(m)</string>
+    <string name="settings_weight_tip">Weight(kg)</string>
+    <string name="settings_sport_tip">Sports(Cal.)</string>
+    <string name="settings_btn_logout">Logout</string>
+    <string name="settings_btn_sync">Sync</string>
+    <string name="settings_btn_confirm_edit">Commit</string>
+    <string name="settings_incorrect_input">Input is illegal</string>
+    <string name="settings_edit_failed">Modify Failed</string>
+    <string name="settings_edit_success">Modify Success</string>
+    <string name="settings_msg_logout">May lose data, confirm logout?</string>
+
 
 </resources>

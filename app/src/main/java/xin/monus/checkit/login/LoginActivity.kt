@@ -15,6 +15,7 @@ import xin.monus.checkit.data.entity.User
 import xin.monus.checkit.inbox.InboxActivity
 import xin.monus.checkit.network.API
 import xin.monus.checkit.network.api.NetWorkApi
+import xin.monus.checkit.util.Injection
 
 class LoginActivity : AppCompatActivity() {
 
@@ -35,8 +36,8 @@ class LoginActivity : AppCompatActivity() {
     private fun checkAutoLogin() {
         val preferences = getSharedPreferences("login", Context.MODE_PRIVATE)
         val firstLogin = preferences.getBoolean(TAG, true)
-        updateAutoLogin()
         if (!firstLogin) {
+            UserProfile.isLogin = true
             val intent = Intent(this@LoginActivity, InboxActivity::class.java)
             startActivity(intent)
             finish()
@@ -93,6 +94,11 @@ class LoginActivity : AppCompatActivity() {
 
         val username = usernameTxt.text.toString()
         val password = passwordTxt.text.toString()
+
+        val inboxRepository = Injection.getInboxItemRepository(this)
+        if (inboxRepository.cachedInboxItems.isNotEmpty()) {
+            inboxRepository.cachedInboxItems.clear()
+        }
 
         doAsync {
             API.checkLogin(username, password, object: NetWorkApi.UserCallback {

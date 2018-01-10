@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#967ADC</color>
     <color name="colorAccent">#967ADC</color>
     <color name="logout_text">#FF0000</color>
+    <color name="colorPrimaryLight">#D6CAF3</color>
 
     <color name="forecast_date_gray">#CCCCCC</color>
     <color name="forecast_background_gray">#E7E7E7</color>

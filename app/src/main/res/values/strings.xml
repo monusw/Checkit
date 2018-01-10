@@ -85,5 +85,18 @@
     <string name="forecast_project">项目</string>
     <string name="forecast_action">动作</string>
 
+    <!--settings activity-->
+    <string name="settings_nickname_tip">昵称</string>
+    <string name="settings_height_tip">身高(米)</string>
+    <string name="settings_weight_tip">体重(千克)</string>
+    <string name="settings_sport_tip">运动目标(卡路里)</string>
+    <string name="settings_btn_logout">退出登录</string>
+    <string name="settings_btn_sync">同步</string>
+    <string name="settings_btn_confirm_edit">确认修改</string>
+    <string name="settings_incorrect_input">输入信息不合法</string>
+    <string name="settings_edit_failed">修改失败</string>
+    <string name="settings_edit_success">修改成功</string>
+    <string name="settings_msg_logout">可能丢失未同步的数据，确认退出登录？</string>
+
 
 </resources>
