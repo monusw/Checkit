@@ -99,6 +99,8 @@
     <string name="settings_edit_failed">Modify Failed</string>
     <string name="settings_edit_success">Modify Success</string>
     <string name="settings_msg_logout">May lose data, confirm logout?</string>
+    <string name="settings_start_sync">Start Sync</string>
+    <string name="settings_end_sync">Sync Completed</string>
 
     <!--forecast activity-->
     <string name="user_message_incomplete">User messages incomplete, which will cause some functions abnormal!</string>

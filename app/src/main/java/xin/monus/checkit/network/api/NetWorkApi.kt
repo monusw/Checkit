@@ -29,5 +29,7 @@ interface NetWorkApi {
 
     fun syncInboxItems(username: String, context: Context, callback: SyncResult)
 
+    fun syncUserInfo(username: String, context: Context, callback: SyncResult)
+
 
 }

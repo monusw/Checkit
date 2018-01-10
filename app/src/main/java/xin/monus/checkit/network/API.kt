@@ -7,6 +7,7 @@ import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.data.entity.User
 import xin.monus.checkit.data.source.InboxItemDataSource
 import xin.monus.checkit.data.source.local.InboxItemLocalDataSource
+import xin.monus.checkit.login.UserProfile
 import xin.monus.checkit.network.api.NetWorkApi
 import xin.monus.checkit.network.api.NetWorkApi.ReqCallback
 
@@ -140,6 +141,39 @@ object API : NetWorkApi {
                 callback.fail()
             }
 
+        })
+    }
+
+    /**
+     * 同步用户数据
+     */
+    override fun syncUserInfo(username: String, context: Context, callback: NetWorkApi.SyncResult) {
+        val actionUrl = "user/" + username
+        val params = HashMap<String, String>()
+        val user = UserProfile.getUser(context)
+        params.put("nickname", user.nickname)
+        params.put("height", user.height.toString())
+        params.put("weight", user.weight.toString())
+        params.put("daily_calorie", user.daily_calorie.toString())
+        RequestManager.getInstance().requestAsync(actionUrl, 1, params, object : ReqCallback {
+            override fun success(jsonString: String) {
+                println(jsonString)
+
+                val root = JsonParser().parse(jsonString).asJsonObject
+                // 基本数据类型，返回的状态码
+                val statusJson = root.getAsJsonPrimitive("status")
+                val statusCode = statusJson.asInt
+                // 返回数据正常
+                if (statusCode != 200) {
+                    callback.fail()
+                } else {
+                    callback.success()
+                }
+            }
+            override fun fail(msg: String) {
+                println(msg)
+                callback.fail()
+            }
         })
     }
 

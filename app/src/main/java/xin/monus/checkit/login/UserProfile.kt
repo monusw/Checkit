@@ -30,6 +30,8 @@ object UserProfile {
         isLogin = true
         val oldUser = getUserFromDatabase(context)
         if (oldUser != null) {
+            println(user.username)
+            println(oldUser.nickname)
             if (oldUser.username == user.username) {
                 return true
             }
@@ -64,6 +66,7 @@ object UserProfile {
             execSQL(LocalDbHelper.OPEN_FOREIGN_KEYS)
             delete(UserTable.TABLE_NAME, null, null)
         }
+        firstLoad = true
     }
 
     fun update(user: User, context: Context): Boolean {
@@ -74,6 +77,7 @@ object UserProfile {
             put(UserTable.COLUMN_HEIGHT, user.height)
             put(UserTable.COLUMN_WEIGHT, user.weight)
             put(UserTable.COLUMN_CALORIE, user.daily_calorie)
+            put(UserTable.COLUMN_STATUS, DataStatus.UPDATE)
         }
 
         with(dbHelper.writableDatabase) {
@@ -81,7 +85,12 @@ object UserProfile {
                     "${UserTable.COLUMN_USERNAME} = ?",
                     arrayOf(user.username))
             close()
-            return row > 0
+            return if (row > 0) {
+                INSTANCE = getUserFromDatabase(context)!!
+                true
+            } else {
+                false
+            }
         }
     }
 

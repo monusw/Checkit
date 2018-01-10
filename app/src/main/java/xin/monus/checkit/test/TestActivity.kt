@@ -7,11 +7,11 @@ import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.*
 import xin.monus.checkit.data.source.DailyDataSource
 import xin.monus.checkit.db.LocalDbHelper
+import xin.monus.checkit.network.API
 import xin.monus.checkit.network.RequestManager
 import xin.monus.checkit.network.api.NetWorkApi
 import xin.monus.checkit.util.Injection
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class TestActivity: AppCompatActivity() {
@@ -27,15 +27,13 @@ class TestActivity: AppCompatActivity() {
     }
 
     fun en() {
-        val values = HashMap<String, String>()
-        values.put("id", "10")
-        RequestManager.getInstance().requestDeleteAsync(url, values, object : NetWorkApi.ReqCallback {
-            override fun success(jsonString: String) {
-                println(jsonString)
+        API.syncUserInfo("test2", this, object : NetWorkApi.SyncResult {
+            override fun success() {
+                println("sync user success")
             }
 
-            override fun fail(msg: String) {
-                println(msg)
+            override fun fail() {
+                println("fail")
             }
 
         })

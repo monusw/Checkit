@@ -11,14 +11,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.uiThread
 import org.jetbrains.anko.yesButton
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.User
 import xin.monus.checkit.db.LocalDbHelper
 import xin.monus.checkit.login.LoginActivity
 import xin.monus.checkit.login.UserProfile
+import xin.monus.checkit.network.API
+import xin.monus.checkit.network.api.NetWorkApi
 
 /**
  * @author wu
@@ -81,6 +85,30 @@ class SettingsFragment: Fragment(), SettingsContract.View {
     //TODO: add
     private fun syncFromServer() {
         println("start sync")
+        Toast.makeText(activity, getString(R.string.settings_start_sync), Toast.LENGTH_SHORT).show()
+        doAsync {
+            API.syncUserInfo(userMessage.username, activity, object : NetWorkApi.SyncResult {
+                override fun success() {
+                    println("sync user success")
+                }
+                override fun fail() {
+                    println("sync user fail")
+                }
+            })
+//            API.syncInboxItems(userMessage.username, activity, object : NetWorkApi.SyncResult {
+//                override fun success() {
+//                    println("sync inbox item success")
+//                }
+//                override fun fail() {
+//                    println("sync inbox item failed")
+//                }
+//            })
+            uiThread {
+                Toast.makeText(activity, getString(R.string.settings_end_sync), Toast.LENGTH_SHORT).show()
+                println("sync success")
+            }
+        }
+
     }
 
     private fun checkLogout() {
