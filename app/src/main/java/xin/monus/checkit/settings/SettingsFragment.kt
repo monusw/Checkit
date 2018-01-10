@@ -95,11 +95,12 @@ class SettingsFragment: Fragment(), SettingsContract.View {
                     println("sync user fail")
                 }
             })
+            //TODO
 //            API.syncInboxItems(userMessage.username, activity, object : NetWorkApi.SyncResult {
 //                override fun success() {
 //                    println("sync inbox item success")
 //                }
-//                override fun fail() {
+//                override fun ftestail() {
 //                    println("sync inbox item failed")
 //                }
 //            })

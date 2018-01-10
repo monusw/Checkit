@@ -82,7 +82,7 @@ class ForecastFragment : Fragment(), ForecastContract.View {
     val fList6 = ArrayList<Forecast>() // 将来
 
     override fun initData(forecastList: List<Forecast>) {
-        val sfFull = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val sfFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val sfCommon = SimpleDateFormat("yyyy-MM-dd HH:mm")
         val sfYmd = SimpleDateFormat("yyyy-MM-dd")
         val current = Date()
