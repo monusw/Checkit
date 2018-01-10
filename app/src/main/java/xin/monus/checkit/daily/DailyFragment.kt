@@ -1,25 +1,82 @@
 package xin.monus.checkit.daily
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.Color
-import android.os.Bundle
+import android.os.*
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
+import android.widget.TextView
 import com.baoyz.widget.PullRefreshLayout
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import xin.monus.checkit.R
 import xin.monus.checkit.daily.dailyEdit.DailyEditActivity
+import xin.monus.checkit.daily.stepCounter.config.Constant
+import xin.monus.checkit.daily.stepCounter.service.StepService
 import xin.monus.checkit.data.entity.Daily
+
 
 
 /**
  * @author wu
  * @date   2017/12/6
  */
-class DailyFragment : Fragment(), DailyContract.View{
+class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
+
+
+    //循环取当前时刻的步数中间的时间间隔
+    private var TIME_INTERVAL = 500L
+    //控件
+    lateinit var stepNumber : TextView
+
+    lateinit var messenger : Messenger
+    private val mGetReplyMessenger = Messenger(Handler(this))
+    lateinit var delayHandler : Handler
+
+    //以bind形式开启service，故有ServiceConnection接受回调
+    var serviceConnection = object : ServiceConnection {
+        override fun onServiceDisconnected(name : ComponentName?) {
+
+        }
+
+        override fun onServiceConnected(name : ComponentName?, service : IBinder?) {
+            try {
+                messenger = Messenger(service)
+                val msg = Message.obtain(null, Constant.MSG_FROM_CLIENT)
+                msg.replyTo = mGetReplyMessenger
+                messenger.send(msg)
+            } catch (e : RemoteException) {
+                e.printStackTrace()
+            }
+        }
+
+    }
+
+    //接收从服务端回调的步数
+    override fun handleMessage(msg : Message): Boolean {
+        when(msg.what) {
+            Constant.MSG_FROM_SERVER -> {
+                //更新步数
+                stepNumber.text = msg.data.getInt("step").toString()
+                delayHandler.sendEmptyMessageDelayed(Constant.REQUEST_SERVER, TIME_INTERVAL)
+            }
+            Constant.REQUEST_SERVER -> {
+                try {
+                   val msg = Message.obtain(null, Constant.MSG_FROM_CLIENT)
+                    msg.replyTo = mGetReplyMessenger
+                    messenger.send(msg)
+                } catch (e : RemoteException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        return false
+    }
 
     interface ItemClickedListener{
         fun getID(itemID: Int)
@@ -66,6 +123,8 @@ class DailyFragment : Fragment(), DailyContract.View{
                 pullRefreshLayout.setRefreshing(true)
                 presenter.loadItems()
             }
+            stepNumber = findViewById(R.id.step_number)
+            delayHandler = Handler(this@DailyFragment)
 
         }
 
@@ -108,6 +167,26 @@ class DailyFragment : Fragment(), DailyContract.View{
         return root
     }
 
+    override fun onStart() {
+        super.onStart()
+        setupService()
+    }
+
+    /**
+     * 开启服务
+     */
+    private fun setupService() {
+        val intent = Intent(context, StepService::class.java)
+        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+        context.startService(intent)
+    }
+
+    override fun onDestroy() {
+        //取消服务绑定
+        context.unbindService(serviceConnection)
+        super.onDestroy()
+    }
+
     override fun onResume() {
         super.onResume()
         println("daily fragment resume")
@@ -127,8 +206,14 @@ class DailyFragment : Fragment(), DailyContract.View{
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        println("do nothing")
-        return true
+        return when(item.itemId) {
+            R.id.daily_add_btn -> {
+                val intent = Intent(context, DailyEditActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {
