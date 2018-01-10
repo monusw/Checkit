@@ -10,7 +10,8 @@ interface ActionsContract {
     }
 
     interface Presenter: BasePresenter {
-
+        fun completeAction(actionId: Int)
+        fun deleteAction(actionId: Int)
     }
 
 }

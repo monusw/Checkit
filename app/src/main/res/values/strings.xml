@@ -49,6 +49,8 @@
     <!--projects item swipe menu-->
     <string name="projects_swipe_delete">删除</string>
     <string name="projects_swipe_edit">编辑</string>
+
+    <!--projects activity-->
     <string name="project_new_title">新建项目</string>
     <string name="project_edit_title">编辑</string>
     <string name="project_content_hint">项目内容</string>
@@ -58,6 +60,11 @@
     <string name="project_type_single">单个动作</string>
     <string name="btn_flag">标记</string>
     <string name="no_null_project_content">内容不能为空</string>
+
+    <!--actions activity-->
+    <string name="action_content_hint">动作内容</string>
+    <string name="action_new_title">新建动作</string>
+    <string name="action_edit_title">编辑</string>
 
     <!--action activity-->
     <string name="actions_activity_title">动作</string>
