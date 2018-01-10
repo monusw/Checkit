@@ -210,7 +210,6 @@ class StepService : Service(), SensorEventListener {
             stepDetector = null
         }
         //得到休眠锁，目的是为了当手机黑屏后仍然保持CPU运行，使得服务能持续运行
-        //getLock(this)
         sensorManager = this.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         //android4.4以后可以使用计步传感器
         val VERSION_CODES = Build.VERSION.SDK_INT
@@ -308,34 +307,6 @@ class StepService : Service(), SensorEventListener {
         startService(intent)
         super.onDestroy()
     }
-
-    //  同步方法   得到休眠锁
-//    @Synchronized private fun getLock(context: Context): PowerManager.WakeLock? {
-//        if (mWakeLock != null) {
-//            if (mWakeLock!!.isHeld()) {
-//                mWakeLock!!.release()
-//                Log.v(TAG, "释放锁")
-//            }
-//
-//            mWakeLock = null
-//        }
-//
-//        if (mWakeLock == null) {
-//            val mgr = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-//            mWakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, StepService::class.java.name)
-//            mWakeLock!!.setReferenceCounted(true)
-//            val c = Calendar.getInstance()
-//            c.timeInMillis = System.currentTimeMillis()
-//            val hour = c.get(Calendar.HOUR_OF_DAY)
-//            if (hour >= 23 || hour <= 6) {
-//                mWakeLock!!.acquire(5000)
-//            } else {
-//                mWakeLock!!.acquire(300000)
-//            }
-//        }
-//        Log.v(TAG, "得到了锁")
-//        return mWakeLock
-//    }
 
     internal inner class TimeCount(millisInFuture: Long, countDownInterval: Long) : CountDownTimer(millisInFuture, countDownInterval) {
 

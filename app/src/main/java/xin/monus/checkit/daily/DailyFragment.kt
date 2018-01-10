@@ -9,13 +9,11 @@ import android.os.*
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
-import android.widget.Switch
 import android.widget.TextView
 import com.baoyz.widget.PullRefreshLayout
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-import org.jetbrains.anko.support.v4.startService
 import xin.monus.checkit.R
 import xin.monus.checkit.daily.dailyEdit.DailyEditActivity
 import xin.monus.checkit.daily.stepCounter.config.Constant
@@ -64,7 +62,7 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
         when(msg.what) {
             Constant.MSG_FROM_SERVER -> {
                 //更新步数
-                stepNumber.text = msg.data.toString()
+                stepNumber.text = msg.data.getInt("step").toString()
                 delayHandler.sendEmptyMessageDelayed(Constant.REQUEST_SERVER, TIME_INTERVAL)
             }
             Constant.REQUEST_SERVER -> {
@@ -208,8 +206,14 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        println("do nothing")
-        return true
+        return when(item.itemId) {
+            R.id.daily_add_btn -> {
+                val intent = Intent(context, DailyEditActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {
