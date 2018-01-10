@@ -44,10 +44,8 @@ class ForecastRepository(context: Context) : ForecastDataSource {
                         forecastList.add(forecast)
                     }
                 }
-                callback.onForecastsLoaded(forecastList)
             }
             override fun onDataNotAvailable() {
-                callback.onDataNotAvailable()
             }
         })
 
@@ -65,8 +63,6 @@ class ForecastRepository(context: Context) : ForecastDataSource {
                         }
                     }
                 }
-
-                callback.onForecastsLoaded(forecastList)
             }
 
             override fun onDataNotAvailable() {
@@ -77,6 +73,8 @@ class ForecastRepository(context: Context) : ForecastDataSource {
 
         if (forecastList.isEmpty()) {
             callback.onDataNotAvailable()
+        } else {
+            callback.onForecastsLoaded(forecastList)
         }
     }
 
