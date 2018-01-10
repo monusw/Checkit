@@ -105,5 +105,6 @@
     <!--forecast activity-->
     <string name="user_message_incomplete">User messages incomplete, which will cause some functions abnormal!</string>
     <string name="daily_content_hint">Daily Remind</string>
+    <string name="daily_progress">Bodybuilding progress</string>
 
 </resources>

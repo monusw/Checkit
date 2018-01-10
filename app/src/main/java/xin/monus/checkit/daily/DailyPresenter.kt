@@ -64,6 +64,7 @@ class DailyPresenter(
                 dailyRepository.updateDailyItem(tempDailyItem, object : DailyDataSource.OperationCallback{
                     override fun success() {
                         println("Change state successfully!")
+                        loadItems()
                     }
 
                     override fun fail() {
