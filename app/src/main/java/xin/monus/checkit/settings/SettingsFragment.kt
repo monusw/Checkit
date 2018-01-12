@@ -24,10 +24,7 @@ import xin.monus.checkit.login.UserProfile
 import xin.monus.checkit.network.API
 import xin.monus.checkit.network.api.NetWorkApi
 
-/**
- * @author wu
- * @date   2018/1/7
- */
+
 class SettingsFragment: Fragment(), SettingsContract.View {
 
     override lateinit var presenter: SettingsContract.Presenter
@@ -76,13 +73,14 @@ class SettingsFragment: Fragment(), SettingsContract.View {
         }
 
         syncBtn.setOnClickListener {
-            syncFromServer()
+            if (UserProfile.isLogin) {
+                syncFromServer()
+            }
         }
 
         return root
     }
 
-    //TODO: add
     private fun syncFromServer() {
         println("start sync")
         Toast.makeText(activity, getString(R.string.settings_start_sync), Toast.LENGTH_SHORT).show()
@@ -95,7 +93,6 @@ class SettingsFragment: Fragment(), SettingsContract.View {
                     println("sync user fail")
                 }
             })
-            //TODO
             API.syncInboxItems(userMessage.username, activity, object : NetWorkApi.SyncResult {
                 override fun success() {
                     println("sync inbox item success")
