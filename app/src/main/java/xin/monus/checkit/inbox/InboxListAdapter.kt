@@ -100,7 +100,7 @@ class InboxListAdapter(val context: Context, list: List<InboxItem>, val itemClic
 
     override fun getItemCount() = list.size
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = inflater.inflate(R.layout.activity_inbox_frag_item, parent, false)
         return ViewHolder(view)
     }

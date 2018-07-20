@@ -19,8 +19,8 @@ object API : NetWorkApi {
      */
     override fun checkLogin(username: String, password: String, callback: NetWorkApi.UserCallback) {
         val params = HashMap<String, String>()
-        params.put("username", username)
-        params.put("password", password)
+        params["username"] = username
+        params["password"] = password
         RequestManager.getInstance().requestAsync("login", 1, params, object :ReqCallback {
             override fun success(jsonString: String) {
                 val root = JsonParser().parse(jsonString).asJsonObject
@@ -53,8 +53,8 @@ object API : NetWorkApi {
      */
     override fun checkRegister(username: String, password: String, callback: NetWorkApi.UserCallback) {
         val params = HashMap<String, String>()
-        params.put("username", username)
-        params.put("password", password)
+        params["username"] = username
+        params["password"] = password
         RequestManager.getInstance().requestAsync("register", 1, params, object : ReqCallback {
             override fun success(jsonString: String) {
                 val root = JsonParser().parse(jsonString).asJsonObject
@@ -148,13 +148,13 @@ object API : NetWorkApi {
      * 同步用户数据
      */
     override fun syncUserInfo(username: String, context: Context, callback: NetWorkApi.SyncResult) {
-        val actionUrl = "user/" + username
+        val actionUrl = "user/$username"
         val params = HashMap<String, String>()
         val user = UserProfile.getUser(context)
-        params.put("nickname", user.nickname)
-        params.put("height", user.height.toString())
-        params.put("weight", user.weight.toString())
-        params.put("daily_calorie", user.daily_calorie.toString())
+        params["nickname"] = user.nickname
+        params["height"] = user.height.toString()
+        params["weight"] = user.weight.toString()
+        params["daily_calorie"] = user.daily_calorie.toString()
         RequestManager.getInstance().requestAsync(actionUrl, 1, params, object : ReqCallback {
             override fun success(jsonString: String) {
                 println(jsonString)

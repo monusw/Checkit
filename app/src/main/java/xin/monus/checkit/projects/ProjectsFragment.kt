@@ -32,7 +32,7 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
     lateinit var recyclerView: SwipeMenuRecyclerView
     lateinit var floatingBtn: FloatingActionButton
 
-    private val projectsAdapter  by lazy {ProjectsAdapter(context, ArrayList(0), itemClickListener) }
+    private val projectsAdapter  by lazy {ProjectsAdapter(requireContext(), ArrayList(0), itemClickListener) }
 
     private val itemClickListener = object : ItemClickListener {
         override fun onClickDelete(projectId: Int) {
@@ -75,7 +75,7 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
             pullRefresh.setRefreshing(false)
         }
 
-        floatingBtn = activity.findViewById(R.id.fab)
+        floatingBtn = activity!!.findViewById(R.id.fab)
 
         floatingBtn.setOnClickListener {
             onClickAddBtn()

@@ -45,7 +45,7 @@ class SettingsFragment: Fragment(), SettingsContract.View {
         val root = inflater.inflate(R.layout.activity_settings_frag, container, false)
 
         with(root) {
-            userMessage = UserProfile.getUser(activity)
+            userMessage = UserProfile.getUser(requireActivity())
             nicknameLabel = findViewById(R.id.nickname_label)
             usernameLabel = findViewById(R.id.username_label)
             nicknameEdit = findViewById(R.id.nickname_edit)
@@ -85,7 +85,7 @@ class SettingsFragment: Fragment(), SettingsContract.View {
         println("start sync")
         Toast.makeText(activity, getString(R.string.settings_start_sync), Toast.LENGTH_SHORT).show()
         doAsync {
-            API.syncUserInfo(userMessage.username, activity, object : NetWorkApi.SyncResult {
+            API.syncUserInfo(userMessage.username, requireActivity(), object : NetWorkApi.SyncResult {
                 override fun success() {
                     println("sync user success")
                 }
@@ -93,7 +93,7 @@ class SettingsFragment: Fragment(), SettingsContract.View {
                     println("sync user fail")
                 }
             })
-            API.syncInboxItems(userMessage.username, activity, object : NetWorkApi.SyncResult {
+            API.syncInboxItems(userMessage.username, requireActivity(), object : NetWorkApi.SyncResult {
                 override fun success() {
                     println("sync inbox item success")
                 }
@@ -115,7 +115,7 @@ class SettingsFragment: Fragment(), SettingsContract.View {
                 clearData()
                 val intent = Intent(activity, LoginActivity::class.java)
                 startActivity(intent)
-                activity.finish()
+                activity?.finish()
             }
             noButton {
                 println("cancel logout")
@@ -124,12 +124,12 @@ class SettingsFragment: Fragment(), SettingsContract.View {
     }
 
     private fun clearData() {
-        val preferences = activity.getSharedPreferences("login", Context.MODE_PRIVATE)
+        val preferences = activity!!.getSharedPreferences("login", Context.MODE_PRIVATE)
         val editor = preferences.edit()
         editor.putBoolean("FIRST_LOGIN", true)
         editor.apply()
-        UserProfile.deleteUser(activity)
-        LocalDbHelper.deleteDatabase(activity)
+        UserProfile.deleteUser(requireActivity())
+        LocalDbHelper.deleteDatabase(requireActivity())
     }
 
     private fun checkModify() {
@@ -144,7 +144,7 @@ class SettingsFragment: Fragment(), SettingsContract.View {
         userMessage.weight = weightEdit.text.toString().toDouble()
         userMessage.daily_calorie = calEdit.text.toString().toDouble()
 
-        if (UserProfile.update(userMessage, activity)) {
+        if (UserProfile.update(userMessage, requireActivity())) {
             nicknameLabel.text = userMessage.nickname
             Toast.makeText(activity, getString(R.string.settings_edit_success), Toast.LENGTH_SHORT).show()
         } else {

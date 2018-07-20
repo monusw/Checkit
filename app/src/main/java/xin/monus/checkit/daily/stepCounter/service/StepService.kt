@@ -1,7 +1,6 @@
 package xin.monus.checkit.daily.stepCounter.service
 
 import android.annotation.TargetApi
-import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
@@ -14,7 +13,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.*
-import android.support.v7.app.NotificationCompat
+import android.support.v4.app.NotificationCompat
 import android.util.Log
 import xin.monus.checkit.R
 import xin.monus.checkit.daily.DailyFragment
@@ -59,7 +58,7 @@ class StepService : Service(), SensorEventListener {
                     val bundle = Bundle()
                     //将现在的步数以消息的形式进行发送
                     bundle.putInt("step", StepDetector.CURRENT_STEP)
-                    replyMsg.setData(bundle)
+                    replyMsg.data = bundle
                     messenger.send(replyMsg)  //发送要返回的消息
                 } catch (e: RemoteException) {
                     e.printStackTrace()
@@ -181,8 +180,8 @@ class StepService : Service(), SensorEventListener {
      * @param content
      */
     private fun updateNotification(content : String) {
-        builder = NotificationCompat.Builder(this)
-        builder!!.priority = Notification.PRIORITY_MIN
+        builder = NotificationCompat.Builder(this, "notification")
+        builder!!.priority = NotificationManager.IMPORTANCE_MIN
         val contentIntent = PendingIntent.getActivity(this, 0,
                 Intent(this, DailyFragment::class.java), 0)
         builder!!.setContentIntent(contentIntent)

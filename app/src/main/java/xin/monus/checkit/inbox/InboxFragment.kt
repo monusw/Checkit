@@ -52,7 +52,7 @@ class InboxFragment: Fragment(), InboxContract.View {
         }
     }
 
-    private val listAdapter by lazy { InboxListAdapter(context, ArrayList(0), itemClickListener) }
+    private val listAdapter by lazy { InboxListAdapter(requireContext(), ArrayList(0), itemClickListener) }
 
     private lateinit var pullRefreshLayout: PullRefreshLayout
 
@@ -129,7 +129,7 @@ class InboxFragment: Fragment(), InboxContract.View {
         }
 
 
-        floatingBtn = activity.findViewById<FloatingActionButton>(R.id.fab)
+        floatingBtn = activity!!.findViewById<FloatingActionButton>(R.id.fab)
         floatingBtn.setOnClickListener {
             _ ->
 //            Snackbar.make(view, "For test", Snackbar.LENGTH_SHORT).setAction("Action", null).show()

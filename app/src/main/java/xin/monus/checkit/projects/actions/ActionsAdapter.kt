@@ -89,7 +89,7 @@ class ActionsAdapter(val context: Context, actionList: List<Action>, val itemCli
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = inflater.inflate(R.layout.activity_actions_item, parent, false)
         return ViewHolder(view)
     }

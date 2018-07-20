@@ -39,7 +39,7 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
     lateinit var stepNumberShow : TextView
     lateinit var waveView : WaveView
 
-    private val userMessage by lazy { UserProfile.getUser(activity) }
+    private val userMessage by lazy { UserProfile.getUser(activity!!) }
     lateinit var messenger : Messenger
     private val mGetReplyMessenger = Messenger(Handler(this))
     lateinit var delayHandler : Handler
@@ -88,9 +88,9 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
             }
             Constant.REQUEST_SERVER -> {
                 try {
-                   val msg = Message.obtain(null, Constant.MSG_FROM_CLIENT)
-                    msg.replyTo = mGetReplyMessenger
-                    messenger.send(msg)
+                   val m = Message.obtain(null, Constant.MSG_FROM_CLIENT)
+                    m.replyTo = mGetReplyMessenger
+                    messenger.send(m)
                 } catch (e : RemoteException) {
                     e.printStackTrace()
                 }
@@ -141,7 +141,7 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
         }
     }
 
-    private val listAdapter by lazy { DailyListAdapter(context, ArrayList(0), itemClickListener) }
+    private val listAdapter by lazy { DailyListAdapter(context!!, ArrayList(0), itemClickListener) }
 
     private lateinit var pullRefreshLayout: PullRefreshLayout
 
@@ -228,13 +228,13 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
      */
     private fun setupService() {
         val intent = Intent(context, StepService::class.java)
-        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
-        context.startService(intent)
+        context?.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+        context?.startService(intent)
     }
 
     override fun onDestroy() {
         //取消服务绑定
-        context.unbindService(serviceConnection)
+        context?.unbindService(serviceConnection)
         super.onDestroy()
     }
 

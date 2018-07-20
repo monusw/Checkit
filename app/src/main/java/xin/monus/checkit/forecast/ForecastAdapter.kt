@@ -22,7 +22,7 @@ class ForecastAdapter(val context: Context, list: List<Forecast>):BaseAdapter<Fo
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = inflater.inflate(R.layout.activity_forecast_frag_item, parent, false)
         return ForecastAdapter.ViewHolder(view)
     }

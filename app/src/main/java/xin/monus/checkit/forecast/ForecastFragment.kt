@@ -28,7 +28,7 @@ class ForecastFragment : Fragment(), ForecastContract.View {
     lateinit var element6:RelativeLayout
     lateinit var deadlineLabel: TextView
 
-    val forecastAdapter by lazy {ForecastAdapter(context, ArrayList(0)) }
+    val forecastAdapter by lazy {ForecastAdapter(requireContext(), ArrayList(0)) }
     lateinit var recyclerView: RecyclerView
 
     val elementList = ArrayList<RelativeLayout>()
@@ -135,35 +135,35 @@ class ForecastFragment : Fragment(), ForecastContract.View {
         val num6 = element6.findViewById<TextView>(R.id.number)
 
         if (fList1.size != 0) {
-            num1.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_red))
+            num1.setTextColor(ContextCompat.getColor(requireActivity(), R.color.forecast_date_red))
         } else {
-            num1.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_gray))
+            num1.setTextColor(ContextCompat.getColor(requireActivity(), R.color.forecast_date_gray))
         }
 
         if (fList2.size != 0) {
-            num2.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_yellow))
+            num2.setTextColor(ContextCompat.getColor(requireActivity(), R.color.forecast_date_yellow))
         } else {
-            num2.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_gray))
+            num2.setTextColor(ContextCompat.getColor(requireActivity(), R.color.forecast_date_gray))
         }
         if (fList3.size != 0) {
-            num3.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_yellow))
+            num3.setTextColor(ContextCompat.getColor(requireActivity(), R.color.forecast_date_yellow))
         } else {
-            num3.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_gray))
+            num3.setTextColor(ContextCompat.getColor(requireActivity(), R.color.forecast_date_gray))
         }
         if (fList4.size != 0) {
             num4.setTextColor(Color.BLACK)
         } else {
-            num4.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_gray))
+            num4.setTextColor(ContextCompat.getColor(requireActivity(), R.color.forecast_date_gray))
         }
         if (fList5.size != 0) {
             num5.setTextColor(Color.BLACK)
         } else {
-            num5.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_gray))
+            num5.setTextColor(ContextCompat.getColor(requireActivity(), R.color.forecast_date_gray))
         }
         if (fList6.size != 0) {
             num6.setTextColor(Color.BLACK)
         } else {
-            num6.setTextColor(ContextCompat.getColor(activity, R.color.forecast_date_gray))
+            num6.setTextColor(ContextCompat.getColor(requireActivity(), R.color.forecast_date_gray))
         }
 
         num1.text = fList1.size.toString()
@@ -203,7 +203,7 @@ class ForecastFragment : Fragment(), ForecastContract.View {
         for (element in elementList) {
             element.setBackgroundColor(Color.WHITE)
         }
-        elementList[index].setBackgroundColor(ContextCompat.getColor(activity, R.color.forecast_background_gray))
+        elementList[index].setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.forecast_background_gray))
 
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
