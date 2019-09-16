@@ -1,12 +1,11 @@
 package xin.monus.checkit.util
 
-import android.support.annotation.IdRes
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import androidx.annotation.IdRes
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 
 /**
  * The `fragment` is added to the container view with id `frameId`. The operation is
@@ -29,7 +28,7 @@ fun AppCompatActivity.addFragmentToActivity(fragment: Fragment, tag: String) {
 }
 
 fun AppCompatActivity.setupActionBar(@IdRes toolbarId: Int, action: ActionBar.() -> Unit) {
-    setSupportActionBar(findViewById(toolbarId) as Toolbar?)
+    setSupportActionBar(findViewById(toolbarId))
     supportActionBar?.run {
         action()
     }

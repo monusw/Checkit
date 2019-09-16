@@ -25,13 +25,12 @@ class LocalDbHelper(context : Context) :
 
 
     companion object {
-        val DATABASE_VERSION = 1
-        val DATABASE_NAME = "check_it.db"
-
+        const val DATABASE_VERSION = 1
+        const val DATABASE_NAME = "check_it.db"
         // Open foreign key constrain to make cascade available
-        val OPEN_FOREIGN_KEYS = "PRAGMA FOREIGN_KEYS = ON;"
+        const val OPEN_FOREIGN_KEYS = "PRAGMA FOREIGN_KEYS = ON;"
         // SQL to create tables
-        val CREATE_TABLE_USER =
+        private const val CREATE_TABLE_USER =
                 "CREATE TABLE ${UserTable.TABLE_NAME} ("+
                         "${UserTable.COLUMN_USERNAME} VARCHAR(30) PRIMARY KEY NOT NULL ," +
                         "${UserTable.COLUMN_PASSWORD} VARCHAR(40) NOT NULL ," +
@@ -42,7 +41,7 @@ class LocalDbHelper(context : Context) :
                         "${UserTable.COLUMN_STATUS} INTEGER NOT NULL DEFAULT 0,"+
                         "${UserTable.COLUMN_TIMESTAMP} INTEGER NOT NULL DEFAULT (STRFTIME('%s','now', 'utc'))"+
                         ");"
-        val CREATE_TABLE_INBOX_ITEM =
+        private const val CREATE_TABLE_INBOX_ITEM =
                 "CREATE TABLE ${InboxItemTable.TABLE_NAME} (" +
                         "${InboxItemTable.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"+
                         "${InboxItemTable.COLUMN_USERNAME} VARCHAR(30),"+
@@ -56,7 +55,7 @@ class LocalDbHelper(context : Context) :
                         "${UserTable.TABLE_NAME} (${UserTable.COLUMN_USERNAME}) " +
                         "ON DELETE CASCADE ON UPDATE CASCADE"+
                         ");"
-        val CREATE_TABLE_PROJECT =
+        private const val CREATE_TABLE_PROJECT =
                 "CREATE TABLE ${ProjectTable.TABLE_NAME} (" +
                         "${ProjectTable.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT ,"+
                         "${ProjectTable.COLUMN_USERNAME} VARCHAR(30),"+
@@ -71,7 +70,7 @@ class LocalDbHelper(context : Context) :
                         "${UserTable.TABLE_NAME} (${UserTable.COLUMN_USERNAME}) " +
                         "ON DELETE CASCADE ON UPDATE CASCADE"+
                         ");"
-        val CREATE_TABLE_ACTION =
+        private const val CREATE_TABLE_ACTION =
                 "CREATE TABLE ${ActionTable.TABLE_NAME} ("+
                         "${ActionTable.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT ,"+
                         "${ActionTable.COLUMN_PROJECT_ID} INTEGER ,"+
@@ -86,14 +85,14 @@ class LocalDbHelper(context : Context) :
                         "${ProjectTable.TABLE_NAME} (${ProjectTable.COLUMN_ID})" +
                         "ON DELETE CASCADE ON UPDATE CASCADE"+
                         ");"
-        val CREATE_TRIGGER_ACTION_DELETE =
+        private const val CREATE_TRIGGER_ACTION_DELETE =
                 "CREATE TRIGGER action_delete BEFORE DELETE " +
                         "ON ${ActionTable.TABLE_NAME} "+
                         "BEGIN " +
                         "DELETE FROM ${ActionTable.TABLE_NAME} " +
                         "WHERE ${ActionTable.COLUMN_PARENT_ACTION_ID} = old.${ActionTable.COLUMN_ID};"+
                         "END;"
-        val CREATE_TABLE_DAILY =
+        private const val CREATE_TABLE_DAILY =
                 "CREATE TABLE ${DailyTable.TABLE_NAME} (" +
                         "${DailyTable.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"+
                         "${DailyTable.COLUMN_USERNAME} VARCHAR(30),"+

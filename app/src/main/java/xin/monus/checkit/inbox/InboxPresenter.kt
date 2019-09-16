@@ -57,10 +57,9 @@ class InboxPresenter(
     override fun completeButtonListener(itemID: Int) {
         inboxItemRepository.getInboxItemById(itemID, object : InboxItemDataSource.GetInboxItemCallback{
             override fun onInboxItemLoaded(item: InboxItem) {
-                val tempInboxItem = item
-                tempInboxItem.complete = !tempInboxItem.complete //changed in the adapter
+                item.complete = !item.complete //changed in the adapter
 
-                inboxItemRepository.updateInboxItem(tempInboxItem, object : InboxItemDataSource.OperationCallback{
+                inboxItemRepository.updateInboxItem(item, object : InboxItemDataSource.OperationCallback{
                     override fun success() {
                         println("Change state successfully!")
                     }

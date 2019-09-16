@@ -5,7 +5,7 @@ package xin.monus.checkit.settings
  * @date   2018/1/7
  */
 class SettingsPresenter(
-        val settingsView: SettingsContract.View
+        settingsView: SettingsContract.View
 ) : SettingsContract.Presenter {
 
     init {

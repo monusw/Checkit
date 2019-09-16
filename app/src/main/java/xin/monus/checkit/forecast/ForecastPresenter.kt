@@ -6,7 +6,7 @@ import xin.monus.checkit.data.entity.Forecast
 import xin.monus.checkit.data.source.ForecastDataSource
 
 class ForecastPresenter(
-        val forecastRepository: ForecastDataSource,
+        private val forecastRepository: ForecastDataSource,
         val forecastView: ForecastContract.View
 ) : ForecastContract.Presenter {
     init {

@@ -8,7 +8,7 @@ import xin.monus.checkit.data.source.ProjectsDataSource
 import xin.monus.checkit.data.source.repository.ProjectsRepository
 
 class ProjectsPresenter(
-        val projectsRepository: ProjectsRepository,
+        private val projectsRepository: ProjectsRepository,
         val projectsView: ProjectsContract.View
 ) : ProjectsContract.Presenter {
 

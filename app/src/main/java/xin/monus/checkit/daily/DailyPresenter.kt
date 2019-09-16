@@ -58,10 +58,9 @@ class DailyPresenter(
     override fun completeButtonListener(itemID: Int) {
         dailyRepository.getDailyItemById(itemID, object : DailyDataSource.GetDailyItemCallback{
             override fun onDailyItemLoaded(item: Daily) {
-                val tempDailyItem = item
-                tempDailyItem.complete = !tempDailyItem.complete //changed in the adapter
+                item.complete = !item.complete //changed in the adapter
 
-                dailyRepository.updateDailyItem(tempDailyItem, object : DailyDataSource.OperationCallback{
+                dailyRepository.updateDailyItem(item, object : DailyDataSource.OperationCallback{
                     override fun success() {
                         println("Change state successfully!")
                         loadItems()

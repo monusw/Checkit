@@ -5,7 +5,7 @@ import xin.monus.checkit.data.source.ActionDataSource
 
 
 class ActionsPresenter(
-        val actionRepository: ActionDataSource,
+        private val actionRepository: ActionDataSource,
         val actionsView: ActionsContract.View,
         val projectId: Int
 ) : ActionsContract.Presenter {

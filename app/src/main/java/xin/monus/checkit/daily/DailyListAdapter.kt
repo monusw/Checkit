@@ -3,8 +3,8 @@ package xin.monus.checkit.daily
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DailyListAdapter(val context: Context, list: List<Daily>, val itemClickedListener: DailyFragment.ItemClickedListener) :
+class DailyListAdapter(val context: Context, list: List<Daily>, private val itemClickedListener: DailyFragment.ItemClickedListener) :
         xin.monus.checkit.base.BaseAdapter<DailyListAdapter.ViewHolder>(context) {
 
     var list: List<Daily> = list
@@ -41,12 +41,16 @@ class DailyListAdapter(val context: Context, list: List<Daily>, val itemClickedL
 
             val time = list[position].remindTime
             println(time)
-            val sf = SimpleDateFormat("HH:mm")
+            val sf = SimpleDateFormat("HH:mm", Locale.getDefault())
             val remindT = sf.parse(time)
             val current = Date()
             val currentT = sf.parse(sf.format(current))
-            if (remindT.time < currentT.time) {
-                remindTime.setBackgroundColor(ContextCompat.getColor(context, R.color.background_red))
+            if (remindT != null && currentT != null) {
+                if (remindT.time < currentT.time) {
+                    remindTime.setBackgroundColor(ContextCompat.getColor(context, R.color.background_red))
+                } else {
+                    remindTime.setBackgroundColor(Color.WHITE)
+                }
             } else {
                 remindTime.setBackgroundColor(Color.WHITE)
             }
@@ -86,7 +90,7 @@ class DailyListAdapter(val context: Context, list: List<Daily>, val itemClickedL
     override fun getItemCount() = list.size
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = inflater.inflate(R.layout.activity_daily_frag_item, parent, false)
-        return DailyListAdapter.ViewHolder(view)
+        return ViewHolder(view)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -4,12 +4,12 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.InboxItem
 import xin.monus.checkit.data.source.InboxItemDataSource
@@ -24,28 +24,28 @@ class InboxEditActivity : AppCompatActivity() {
     val inboxRepository by lazy { Injection.getInboxItemRepository(this) }
     lateinit var selectShowTime: Button
     lateinit var contentEditor: EditText
-    lateinit var finishEdit : FloatingActionButton
+    private lateinit var finishEdit : FloatingActionButton
     lateinit var tempInboxItem : InboxItem
-    lateinit var btnFlag: Button
+    private lateinit var btnFlag: Button
 
     //default new one InboxItem
-    var isNew = true
+    private var isNew = true
     val id:Int by lazy { intent.getIntExtra("ID",0) }
 
     //date format design
-    val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
-    val timeFormatFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA)
+    val timeFormatFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
 
-    val calendar = Calendar.getInstance()
+    private val calendar: Calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inbox_edit)
 
-        selectShowTime = findViewById(R.id.show_select_btn) as Button
-        contentEditor = findViewById(R.id.content_edit) as EditText
-        finishEdit = findViewById(R.id.edit_finish) as FloatingActionButton
-        btnFlag = findViewById(R.id.btn_flag) as Button
+        selectShowTime = findViewById(R.id.show_select_btn)
+        contentEditor = findViewById(R.id.content_edit)
+        finishEdit = findViewById(R.id.edit_finish)
+        btnFlag = findViewById(R.id.btn_flag)
 
         if (id != 0) {
             isNew = false
@@ -63,7 +63,7 @@ class InboxEditActivity : AppCompatActivity() {
                         timeFormatFull.parse(tempInboxItem.deadline)
                     }
                     println(timeFormat.format(time))
-//                    calendar.time = time
+                    calendar.time = time
                 }
 
                 override fun onDataNotAvailable() {
@@ -74,12 +74,12 @@ class InboxEditActivity : AppCompatActivity() {
             tempInboxItem = InboxItem(
                     0,
                     UserProfile.getUser(this).username,
-                    "","",
-                    false,
-                    false)
+                    "", "",
+                    complete = false,
+                    flag = false)
         }
 
-//        updateTimeShow()
+        updateTimeShow()
 
         setFlagBtnPic()
 
@@ -87,19 +87,18 @@ class InboxEditActivity : AppCompatActivity() {
             tempInboxItem.flag = !tempInboxItem.flag
             setFlagBtnPic()
         }
-
         selectShowTime.setOnClickListener {
             DatePickerDialog(
                     this@InboxEditActivity,
                     DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                         calendar.set(Calendar.YEAR, year)
                         calendar.set(Calendar.MONTH, month)
-                        calendar.set(Calendar.DAY_OF_YEAR, dayOfMonth)
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                         updateTimeShow()
                     },
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_YEAR)
+                    calendar.get(Calendar.DAY_OF_MONTH)
             ).show()
             TimePickerDialog(
                     this@InboxEditActivity,
@@ -134,37 +133,41 @@ class InboxEditActivity : AppCompatActivity() {
         val deadlineDB = timeFormat.format(deadline)
 
 
-        if (addContent.isEmpty()) {
-            Toast.makeText(this,getString(R.string.no_null_project_content),Toast.LENGTH_SHORT).show()
-            return
-        }
-        else if (isNew){
-            tempInboxItem.content = addContent
-            tempInboxItem.deadline = deadlineDB
-            inboxRepository.addInboxItem(tempInboxItem, object: InboxItemDataSource.OperationCallback{
-                override fun success() {
+        when {
+            addContent.isEmpty() -> {
+                Toast.makeText(this,getString(R.string.no_null_project_content),Toast.LENGTH_SHORT).show()
+                return
+            }
+            isNew -> {
+                tempInboxItem.content = addContent
+                tempInboxItem.deadline = deadlineDB
+                inboxRepository.addInboxItem(tempInboxItem, object: InboxItemDataSource.OperationCallback{
+                    override fun success() {
 //                        Toast.makeText(applicationContext,"创建成功", Toast.LENGTH_SHORT).show()
-                    println(inboxRepository.cachedInboxItems.count())
-                    finish()
-                }
-                override fun fail() {
-                    Toast.makeText(applicationContext, getString(R.string.global_operation_failed), Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
-        else {
-            tempInboxItem.content = addContent
-            tempInboxItem.deadline = deadlineDB
-            inboxRepository.updateInboxItem(tempInboxItem, object: InboxItemDataSource.OperationCallback{
-                override fun success() {
+                        println(inboxRepository.cachedInboxItems.count())
+                        finish()
+                    }
+
+                    override fun fail() {
+                        Toast.makeText(applicationContext, getString(R.string.global_operation_failed), Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+            else -> {
+                tempInboxItem.content = addContent
+                tempInboxItem.deadline = deadlineDB
+                inboxRepository.updateInboxItem(tempInboxItem, object: InboxItemDataSource.OperationCallback{
+                    override fun success() {
 //                        Toast.makeText(applicationContext,"修改成功", Toast.LENGTH_SHORT).show()
-                    println(inboxRepository.cachedInboxItems.count())
-                    finish()
-                }
-                override fun fail() {
-                    Toast.makeText(applicationContext, getString(R.string.global_operation_failed), Toast.LENGTH_SHORT).show()
-                }
-            })
+                        println(inboxRepository.cachedInboxItems.count())
+                        finish()
+                    }
+
+                    override fun fail() {
+                        Toast.makeText(applicationContext, getString(R.string.global_operation_failed), Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
         }
     }
 
@@ -191,17 +194,16 @@ class InboxEditActivity : AppCompatActivity() {
     fun String.toDate(pattern: String = "yyyy-MM-dd HH:mm"): Date? {
 
         val sdFormat = try {
-            SimpleDateFormat(pattern)
+            SimpleDateFormat(pattern, Locale.CHINA)
         } catch (e: IllegalArgumentException) {
             null
         }
-        val date = sdFormat?.let {
+        return sdFormat?.let {
             try {
                 it.parse(this)
             } catch (e: ParseException) {
                 null
             }
         }
-        return date
     }
 }

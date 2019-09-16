@@ -2,6 +2,8 @@ package xin.monus.checkit.network
 
 import android.util.Log
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import xin.monus.checkit.network.api.NetWorkApi
 import java.io.IOException
 import java.net.URLEncoder
@@ -11,9 +13,9 @@ import java.util.concurrent.TimeUnit
  * 网络请求管理单例类，对OkHttp的封装
  */
 class RequestManager {
-    val BASE_URL = "http://101.132.99.105/CMS/api/index.php"    // 请求接口根地址
-    val TYPE_GET = 0                       // get请求
-    val TYPE_POST_FORM = 1                 // post请求(表单)
+    private val BASE_URL = "http://101.132.99.105/CMS/api/index.php"    // 请求接口根地址
+    private val TYPE_GET = 0                       // get请求
+    private val TYPE_POST_FORM = 1                 // post请求(表单)
     val TAG = RequestManager::class.java.simpleName
 
     val CONNECT_TIME_OUT:Long = 30                // 连接请求超时时间
@@ -69,14 +71,14 @@ class RequestManager {
         val request = Request.Builder().url(requestUrl).build()
         val call = mOkHttpClient.newCall(request)
         call.enqueue(object: Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
+            override fun onFailure(call: Call, e: IOException) {
                 callback.fail("GET 请求失败")
                 Log.e(TAG, e.toString())
             }
 
-            override fun onResponse(call: Call?, response: Response) {
+            override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
-                    callback.success(response.body()!!.string())
+                    callback.success(response.body!!.string())
                 } else {
                     callback.fail("服务器错误")
                     Log.e(TAG, "服务器错误")
@@ -91,18 +93,18 @@ class RequestManager {
             builder.add(key, paramsMap[key]!!)
         }
         val formBody = builder.build()
-        val requestUrl = BASE_URL + "/" + actionUrl
+        val requestUrl = "$BASE_URL/$actionUrl"
         val request = Request.Builder().url(requestUrl).post(formBody).build()
         val call = mOkHttpClient.newCall(request)
         call.enqueue(object : Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
+            override fun onFailure(call: Call, e: IOException) {
                 callback.fail("POST 请求失败")
                 Log.e(TAG, e.toString())
             }
 
-            override fun onResponse(call: Call?, response: Response) {
+            override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
-                    callback.success(response.body()!!.string())
+                    callback.success(response.body!!.string())
                 } else {
                     callback.fail("服务器错误")
                     Log.e(TAG, "服务器错误")
@@ -113,19 +115,19 @@ class RequestManager {
     }
 
     fun requestPostAsyncWithJson(actionUrl: String, jsonString: String, callback: NetWorkApi.ReqCallback) {
-        val JSON: MediaType = MediaType.parse("application/json; charset=utf-8")!!
-        val body = RequestBody.create(JSON, jsonString)
-        val requestUrl = BASE_URL + "/" + actionUrl
+        val JSON: MediaType = "application/json; charset=utf-8".toMediaTypeOrNull()!!
+        val body = jsonString.toRequestBody(JSON)
+        val requestUrl = "$BASE_URL/$actionUrl"
         val request = Request.Builder().url(requestUrl).post(body).build()
         val call = mOkHttpClient.newCall(request)
         call.enqueue(object : Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
+            override fun onFailure(call: Call, e: IOException) {
                 callback.fail("POST JSON 失败")
             }
 
-            override fun onResponse(call: Call?, response: Response) {
+            override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
-                    callback.success(response.body()!!.string())
+                    callback.success(response.body!!.string())
                 } else {
                     callback.fail("服务器错误")
                     Log.e(TAG, "服务器错误")
@@ -156,14 +158,14 @@ class RequestManager {
         val request = Request.Builder().url(requestUrl).delete().build()
         val call = mOkHttpClient.newCall(request)
         call.enqueue(object : Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
+            override fun onFailure(call: Call, e: IOException) {
                 callback.fail("DELETE 请求失败")
                 Log.e(TAG, e.toString())
             }
 
-            override fun onResponse(call: Call?, response: Response) {
+            override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
-                    callback.success(response.body()!!.string())
+                    callback.success(response.body!!.string())
                 } else {
                     callback.fail("服务器错误")
                     Log.e(TAG, "服务器错误")
@@ -177,8 +179,8 @@ class RequestManager {
 }
 
 object DataStatus {
-    val DELETED = -1
-    val NEW = 0         //本地新增
-    val UPDATE = 1      //本地更新
-    val SYNC = 9        //已经与服务器同步过
+    const val DELETED = -1
+    const val NEW = 0         //本地新增
+    const val UPDATE = 1      //本地更新
+    const val SYNC = 9        //已经与服务器同步过
 }

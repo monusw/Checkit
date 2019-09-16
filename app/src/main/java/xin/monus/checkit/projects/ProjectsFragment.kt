@@ -4,18 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.baoyz.widget.PullRefreshLayout
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import xin.monus.checkit.R
@@ -28,9 +27,9 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
 
     override lateinit var presenter: ProjectsContract.Presenter
 
-    lateinit var pullRefresh: PullRefreshLayout
-    lateinit var recyclerView: SwipeMenuRecyclerView
-    lateinit var floatingBtn: FloatingActionButton
+    private lateinit var pullRefresh: PullRefreshLayout
+    private lateinit var recyclerView: SwipeMenuRecyclerView
+    private lateinit var floatingBtn: FloatingActionButton
 
     private val projectsAdapter  by lazy {ProjectsAdapter(requireContext(), ArrayList(0), itemClickListener) }
 
@@ -132,19 +131,18 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
                 swipeRightMenu.addMenuItem(deleteItem)
             }
 
-            setSwipeMenuItemClickListener {menuBridge: SwipeMenuBridge ->
+            setSwipeMenuItemClickListener { menuBridge, position ->
                 menuBridge.closeMenu()
-                val adapterPosition = menuBridge.adapterPosition
                 val menuPosition = menuBridge.position
                 println("click menu, position: $menuPosition")
                 when (menuPosition) {
                     0 -> {
-                        val projectId = projectsAdapter.projects[adapterPosition].id
+                        val projectId = projectsAdapter.projects[position].id
                         println(projectId)
                         itemClickListener.onClickEdit(projectId)
                     }
                     1 -> {
-                        val projectId = projectsAdapter.projects[adapterPosition].id
+                        val projectId = projectsAdapter.projects[position].id
                         itemClickListener.onClickDelete(projectId)
                     }
                 }
@@ -154,7 +152,7 @@ class ProjectsFragment: Fragment(), ProjectsContract.View {
         }
     }
 
-    class ProjectsAdapter(context: Context, projects: List<Project>, val itemClickListener: ItemClickListener) :
+    class ProjectsAdapter(context: Context, projects: List<Project>, private val itemClickListener: ItemClickListener) :
             BaseAdapter<ProjectsAdapter.ViewHolder>(context) {
 
         var projects: List<Project> = projects

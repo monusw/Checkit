@@ -3,12 +3,12 @@ package xin.monus.checkit.projects.actions
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import xin.monus.checkit.R
 import xin.monus.checkit.base.BaseAdapter
 import xin.monus.checkit.data.entity.Action
@@ -19,7 +19,7 @@ import java.util.*
  * @author wu
  * @date   2017/12/12
  */
-class ActionsAdapter(val context: Context, actionList: List<Action>, val itemClickListerner:ActionsActivity.ItemClickListener) : BaseAdapter<ActionsAdapter.ViewHolder>(context) {
+class ActionsAdapter(val context: Context, actionList: List<Action>, private val itemClickListerner:ActionsActivity.ItemClickListener) : BaseAdapter<ActionsAdapter.ViewHolder>(context) {
 
     var actionList: List<Action> = actionList
         set(value) {
@@ -38,14 +38,14 @@ class ActionsAdapter(val context: Context, actionList: List<Action>, val itemCli
             val content = contentTxt
             val deadline = deadlineTxt
             val flag = actionList[position].flag
-            val sfFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val sfCommon = SimpleDateFormat("yyyy-MM-dd HH:mm")
-            val sfYmd = SimpleDateFormat("yyyy-MM-dd")
+            val sfFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val sfCommon = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+            val sfYmd = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val current = Date()
             val cal = Calendar.getInstance()
             cal.time = current
             val time1 = current.time
-            val today = sfYmd.parse(sfYmd.format(current))
+            val today = sfYmd.parse(sfYmd.format(current)) as Date
             cal.time = today
             cal.add(Calendar.DAY_OF_MONTH, 2)
             val time2 = cal.time.time

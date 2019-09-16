@@ -5,13 +5,13 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_project_edit.*
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.Project
@@ -26,17 +26,17 @@ import java.util.*
 
 class ProjectEditActivity : AppCompatActivity() {
 
-    val projectRepository by lazy { Injection.getProjectsRepository(this) }
+    private val projectRepository by lazy { Injection.getProjectsRepository(this) }
     var projectId: Int = 0
-    lateinit var contenTxt: EditText
-    lateinit var radioGroup: RadioGroup
-    lateinit var btnFlag: Button
-    lateinit var btnDeadline: Button
-    lateinit var btnCheck: FloatingActionButton
+    private lateinit var contentTxt: EditText
+    private lateinit var radioGroup: RadioGroup
+    private lateinit var btnFlag: Button
+    private lateinit var btnDeadline: Button
+    private lateinit var btnCheck: FloatingActionButton
     lateinit var newProject: Project
 
-    val calendar = Calendar.getInstance()
-    val sf = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    private val calendar: Calendar = Calendar.getInstance()
+    private val sf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,11 +83,11 @@ class ProjectEditActivity : AppCompatActivity() {
     }
 
     fun setupUI() {
-        contenTxt = findViewById(R.id.content) as EditText
-        radioGroup = findViewById(R.id.radio_group) as RadioGroup
-        btnFlag = findViewById(R.id.btn_flag) as Button
-        btnDeadline = findViewById(R.id.btn_deadline) as Button
-        btnCheck = findViewById(R.id.edit_finish) as FloatingActionButton
+        contentTxt = findViewById(R.id.content)
+        radioGroup = findViewById(R.id.radio_group)
+        btnFlag = findViewById(R.id.btn_flag)
+        btnDeadline = findViewById(R.id.btn_deadline)
+        btnCheck = findViewById(R.id.edit_finish)
 
         // 初始化UI
         if (projectId != 0) {
@@ -99,7 +99,7 @@ class ProjectEditActivity : AppCompatActivity() {
                 ProjectType.SINGLE ->
                     radioGroup.check(single_btn.id)
             }
-            contenTxt.setText(newProject.content)
+            contentTxt.setText(newProject.content)
             println(newProject.deadline)
             btnDeadline.text = newProject.deadline
 
@@ -162,11 +162,11 @@ class ProjectEditActivity : AppCompatActivity() {
     }
 
     private fun checkEditFinish() {
-        if (contenTxt.text.isEmpty()) {
+        if (contentTxt.text.isEmpty()) {
             Toast.makeText(this, R.string.no_null_project_content, Toast.LENGTH_SHORT).show()
             return
         }
-        newProject.content = contenTxt.text.toString()
+        newProject.content = contentTxt.text.toString()
         newProject.deadline = btnDeadline.text.toString()
         if (projectId == 0) {
             projectRepository.addProject(newProject, object : ProjectsDataSource.OperationCallback {

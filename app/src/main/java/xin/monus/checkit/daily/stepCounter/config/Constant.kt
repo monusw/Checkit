@@ -5,7 +5,7 @@ package xin.monus.checkit.daily.stepCounter.config
  */
 object Constant {
 
-    val MSG_FROM_CLIENT = 0
-    val MSG_FROM_SERVER = 1
-    val REQUEST_SERVER = 2
+    const val MSG_FROM_CLIENT = 0
+    const val MSG_FROM_SERVER = 1
+    const val REQUEST_SERVER = 2
 }

@@ -13,7 +13,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.*
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
 import android.util.Log
 import xin.monus.checkit.R
 import xin.monus.checkit.daily.DailyFragment
@@ -38,7 +38,7 @@ class StepService : Service(), SensorEventListener {
     private val messenger = Messenger(MessengerHandler())
     //广播
     private var mBatInfoReceiver: BroadcastReceiver? = null
-    private var mWakeLock: PowerManager.WakeLock? = null
+//    private var mWakeLock: PowerManager.WakeLock? = null
     private var time: TimeCount? = null
 
     //计步传感器类型 0-counter 1-detector 2-加速度传感器
@@ -91,7 +91,7 @@ class StepService : Service(), SensorEventListener {
      */
     private fun getTodayDate() : String {
         val date = Date(System.currentTimeMillis())
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return sdf.format(date)
     }
 
@@ -103,7 +103,7 @@ class StepService : Service(), SensorEventListener {
         mStepData = StepData(this)
 
         //获取存储的日期
-        var date = mStepData!!.getDate()
+        val date = mStepData!!.getDate()
         if (date != CURRENTDATE) {
             StepDetector.CURRENT_STEP = 0
             isNewDay = true
@@ -134,40 +134,40 @@ class StepService : Service(), SensorEventListener {
         //所以监听这个广播，当收到时就隐藏自己的对话，如点击pad右下角部分弹出的对话框
         filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
 
-        var broadcastReceiver = object : BroadcastReceiver(){
-            override fun onReceive(context : Context, intent : Intent) {
-                var action = intent.action
-
-                when {
-                    Intent.ACTION_SCREEN_ON == action -> Log.v(TAG, "screen on")
-                    Intent.ACTION_SCREEN_OFF == action -> {
-                        Log.v(TAG, "screen off")
-                        save()
-                        //改为60秒一存储
-                        duration = 60000
-                    }
-                    Intent.ACTION_USER_PRESENT == action -> {
-                        Log.v(TAG, "screen unlock")
-                        save()
-                        //改为30秒一存储
-                        duration = 30000
-                    }
-                    Intent.ACTION_CLOSE_SYSTEM_DIALOGS == intent.action -> {
-                        Log.v(TAG, "receive Intent.ACTION_CLOSE_SYSTEM_DIALOGS  出现系统对话框")
-                        //保存一次
-                        save()
-                    }
-                    Intent.ACTION_SHUTDOWN == intent.action -> {
-                        Log.v(TAG, "receive ACTION_SHUTDOWN")
-                        save()
-                    }
-                    Intent.ACTION_TIME_CHANGED == intent.action -> {
-                        Log.v(TAG, "receive ACTION_TIME_CHANGED")
-                        initTodayData()
-                    }
-                }
-            }
-        }
+//        var broadcastReceiver = object : BroadcastReceiver(){
+//            override fun onReceive(context : Context, intent : Intent) {
+//                val action = intent.action
+//
+//                when {
+//                    Intent.ACTION_SCREEN_ON == action -> Log.v(TAG, "screen on")
+//                    Intent.ACTION_SCREEN_OFF == action -> {
+//                        Log.v(TAG, "screen off")
+//                        save()
+//                        //改为60秒一存储
+//                        duration = 60000
+//                    }
+//                    Intent.ACTION_USER_PRESENT == action -> {
+//                        Log.v(TAG, "screen unlock")
+//                        save()
+//                        //改为30秒一存储
+//                        duration = 30000
+//                    }
+//                    Intent.ACTION_CLOSE_SYSTEM_DIALOGS == intent.action -> {
+//                        Log.v(TAG, "receive Intent.ACTION_CLOSE_SYSTEM_DIALOGS  出现系统对话框")
+//                        //保存一次
+//                        save()
+//                    }
+//                    Intent.ACTION_SHUTDOWN == intent.action -> {
+//                        Log.v(TAG, "receive ACTION_SHUTDOWN")
+//                        save()
+//                    }
+//                    Intent.ACTION_TIME_CHANGED == intent.action -> {
+//                        Log.v(TAG, "receive ACTION_TIME_CHANGED")
+//                        initTodayData()
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun startTimeCount() {
@@ -242,7 +242,7 @@ class StepService : Service(), SensorEventListener {
      */
     private fun addBasePedoListener() {
         //只有在使用加速传感器的时候才会调用StepDetector这个类
-        stepDetector = StepDetector(this)
+        stepDetector = StepDetector()
         //获得传感器类型，这里获得的类型是加速度传感器
         //此方法用来注册，只有注册过才会生效，参数：SensorEventListener的实例，Sensor的实例，更新速率
         val sensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)

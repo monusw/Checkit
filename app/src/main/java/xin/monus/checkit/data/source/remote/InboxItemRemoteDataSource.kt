@@ -28,7 +28,7 @@ class InboxItemRemoteDataSource private constructor(context: Context)  : InboxIt
 //        val username = "test1"
         val user = getUserFromDatabase()
         val username = user!!.username
-        val url = "inbox_item/"+username
+        val url = "inbox_item/$username"
         val params = HashMap<String, String>()
         doAsync {
             RequestManager.getInstance().requestAsync(url, 0, params, object : NetWorkApi.ReqCallback {
@@ -78,9 +78,9 @@ class InboxItemRemoteDataSource private constructor(context: Context)  : InboxIt
     override fun deleteInboxItem(id: Int, callback: InboxItemDataSource.OperationCallback) {
         val user = getUserFromDatabase()
         val username = user!!.username
-        val url = "inbox_item/"+username
+        val url = "inbox_item/$username"
         val values = HashMap<String, String>()
-        values.put("id", id.toString())
+        values["id"] = id.toString()
         RequestManager.getInstance().requestDeleteAsync(url, values, object : NetWorkApi.ReqCallback {
             override fun success(jsonString: String) {
                 callback.success()
@@ -96,9 +96,9 @@ class InboxItemRemoteDataSource private constructor(context: Context)  : InboxIt
     override fun deleteCompleteItems(callback: InboxItemDataSource.OperationCallback) {
         val user = getUserFromDatabase()
         val username = user!!.username
-        val url = "inbox_item/"+username
+        val url = "inbox_item/$username"
         val values = HashMap<String, String>()
-        values.put("id", "complete")
+        values["id"] = "complete"
         RequestManager.getInstance().requestDeleteAsync(url, values, object : NetWorkApi.ReqCallback {
             override fun success(jsonString: String) {
                 callback.success()
@@ -114,9 +114,9 @@ class InboxItemRemoteDataSource private constructor(context: Context)  : InboxIt
     override fun deleteAllItems(callback: InboxItemDataSource.OperationCallback) {
         val user = getUserFromDatabase()
         val username = user!!.username
-        val url = "inbox_item/"+username
+        val url = "inbox_item/$username"
         val values = HashMap<String, String>()
-        values.put("id", "all")
+        values["id"] = "all"
         RequestManager.getInstance().requestDeleteAsync(url, values, object : NetWorkApi.ReqCallback {
             override fun success(jsonString: String) {
                 callback.success()

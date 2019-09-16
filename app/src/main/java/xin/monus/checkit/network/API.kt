@@ -93,7 +93,7 @@ object API : NetWorkApi {
                 items.filterTo(tempList) { it.status < DataStatus.SYNC }
                 if (tempList.isNotEmpty()) {
                     val jsonString = Gson().toJson(tempList)
-                    RequestManager.getInstance().requestPostAsyncWithJson("inbox_item/test1", jsonString, object : NetWorkApi.ReqCallback {
+                    RequestManager.getInstance().requestPostAsyncWithJson("inbox_item/test1", jsonString, object : ReqCallback {
                         override fun success(jsonString: String) {
                             println(jsonString)
                             val root = JsonParser().parse(jsonString).asJsonObject

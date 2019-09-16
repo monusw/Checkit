@@ -6,16 +6,15 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.Color
 import android.os.*
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.baoyz.widget.PullRefreshLayout
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import com.yuan.waveview.WaveView
-import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.yesButton
 import xin.monus.checkit.R
 import xin.monus.checkit.daily.dailyEdit.DailyEditActivity
@@ -24,7 +23,6 @@ import xin.monus.checkit.daily.stepCounter.service.StepService
 import xin.monus.checkit.data.entity.Daily
 import xin.monus.checkit.login.UserProfile
 import java.math.BigDecimal
-
 
 /**
  * @author wu
@@ -36,13 +34,13 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
     //循环取当前时刻的步数中间的时间间隔
     private var TIME_INTERVAL = 500L
     //控件
-    lateinit var stepNumberShow : TextView
-    lateinit var waveView : WaveView
+    private lateinit var stepNumberShow : TextView
+    private lateinit var waveView : WaveView
 
     private val userMessage by lazy { UserProfile.getUser(activity!!) }
     lateinit var messenger : Messenger
     private val mGetReplyMessenger = Messenger(Handler(this))
-    lateinit var delayHandler : Handler
+    private lateinit var delayHandler : Handler
 
     //以bind形式开启service，故有ServiceConnection接受回调
     var serviceConnection = object : ServiceConnection {
@@ -70,18 +68,16 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
                 //更新步数
                 val stepNumber = msg.data.getInt("step")
                 val energy = energy(stepNumber).toDouble()
-                if (energy <= 0.0) {
-                    waveView.progress = (userMessage.daily_calorie / 10).toLong()
-                } else if (energy > userMessage.daily_calorie) {
-                    waveView.progress = userMessage.daily_calorie.toLong()
-                } else {
-                    waveView.progress = energy.toLong()
+                when {
+                    energy <= 0.0 -> waveView.progress = (userMessage.daily_calorie / 10).toLong()
+                    energy > userMessage.daily_calorie -> waveView.progress = userMessage.daily_calorie.toLong()
+                    else -> waveView.progress = energy.toLong()
                 }
                 if (energy != 0.0) {
                     val bgEnergy = BigDecimal(energy / userMessage.daily_calorie * 100)
-                    stepNumberShow.text = (bgEnergy.setScale(2, BigDecimal.ROUND_HALF_UP)).toString() + "%"
+                    stepNumberShow.text =  String.format("%.2f%%", bgEnergy.toDouble())
                 } else {
-                    stepNumberShow.text = 0.toString() + "%"
+                    stepNumberShow.text = "0%"
                 }
 
                 delayHandler.sendEmptyMessageDelayed(Constant.REQUEST_SERVER, TIME_INTERVAL)
@@ -120,9 +116,9 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
 
     override lateinit var presenter: DailyContract.Presenter
 
-    lateinit var recycleView: SwipeMenuRecyclerView
+    private lateinit var recycleView: SwipeMenuRecyclerView
 
-    private val itemClickListener = object : DailyFragment.ItemClickedListener{
+    private val itemClickListener = object : ItemClickedListener{
         override fun getID(itemID: Int) {
             val intent = Intent(context, DailyEditActivity::class.java)
             println(itemID)
@@ -145,7 +141,7 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
 
     private lateinit var pullRefreshLayout: PullRefreshLayout
 
-    private var isTitle = false
+//    private var isTitle = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.activity_daily_frag, container, false)
@@ -164,7 +160,7 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
         }
 
         if (userMessage.weight == 0.0 || userMessage.height == 0.0 || userMessage.daily_calorie == 0.0) {
-            alert(R.string.user_message_incomplete) {
+            context!!.alert(R.string.user_message_incomplete) {
                 yesButton {
 
                 }
@@ -188,18 +184,30 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
                 swipeRightMenu.addMenuItem(deleteItem)
             }
 
-            setSwipeMenuItemClickListener {menuBridge: SwipeMenuBridge ->
+            setSwipeMenuItemClickListener { menuBridge, position ->
                 menuBridge.closeMenu()
-                val adapterPosition = menuBridge.adapterPosition
                 val menuPosition = menuBridge.position
                 println("click menu, position: $menuPosition")
                 when (menuPosition) {
                     0 -> {
-                        val projectId = listAdapter.list[adapterPosition].id
+                        val projectId = listAdapter.list[position].id
                         itemClickListener.itemDelete(projectId)
                     }
                 }
             }
+
+//            setSwipeMenuItemClickListener {menuBridge: SwipeMenuBridge ->
+//                menuBridge.closeMenu()
+//                val adapterPosition = menuBridge.adapterPosition
+//                val menuPosition = menuBridge.position
+//                println("click menu, position: $menuPosition")
+//                when (menuPosition) {
+//                    0 -> {
+//                        val projectId = listAdapter.list[adapterPosition].id
+//                        itemClickListener.itemDelete(projectId)
+//                    }
+//                }
+//            }
 
             adapter = listAdapter
         }
@@ -256,7 +264,7 @@ class DailyFragment : Fragment(), DailyContract.View, Handler.Callback {
         pullRefreshLayout.setRefreshing(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.daily, menu)
     }
 

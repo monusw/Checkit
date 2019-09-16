@@ -2,14 +2,14 @@ package xin.monus.checkit.settings
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 import xin.monus.checkit.R
 import xin.monus.checkit.daily.DailyActivity
 import xin.monus.checkit.forecast.ForecastActivity
@@ -21,9 +21,9 @@ import xin.monus.checkit.util.setupActionBar
 
 class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val drawerLayout by lazy { findViewById(R.id.drawer_layout) as DrawerLayout }
+    private val drawerLayout by lazy { findViewById<DrawerLayout>(R.id.drawer_layout) }
 
-    private val toolbar by lazy { findViewById(R.id.toolbar) as Toolbar }
+    private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
 
     private lateinit var settingsPresenter: SettingsContract.Presenter
 
@@ -44,12 +44,10 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        val navigationView = findViewById(R.id.nav_view) as NavigationView
-        // TODO: Change the index in different activity
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.menu.getItem(4).isChecked = true
         navigationView.setNavigationItemSelectedListener(this)
 
-        //TODO: change
         val settingsFragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
                 as SettingsFragment? ?: SettingsFragment.newInstance().also {
             replaceFragmentInActivity(it, R.id.contentFrame)
@@ -59,9 +57,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        val id = item.itemId
-
-        when (id) {
+        when (item.itemId) {
             R.id.nav_inbox -> {
                 val intent = Intent(this@SettingsActivity, InboxActivity::class.java)
                 startActivity(intent)
@@ -86,13 +82,13 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 //            }
         }
 
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
 
     override fun onBackPressed() {
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
         } else {

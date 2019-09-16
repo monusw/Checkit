@@ -80,7 +80,7 @@ abstract class CountDownTimer(millisInFuture : Long, countdownInterval : Long) {
                     if (!mCancelled) {
                         sendMessageDelayed(obtainMessage(MSG), delay)
                     } else {
-
+                        null
                     }
                 }
             }

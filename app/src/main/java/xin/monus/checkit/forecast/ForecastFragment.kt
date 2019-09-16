@@ -2,10 +2,10 @@ package xin.monus.checkit.forecast
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,18 +20,18 @@ import kotlin.collections.ArrayList
 class ForecastFragment : Fragment(), ForecastContract.View {
     override lateinit var presenter: ForecastContract.Presenter
 
-    lateinit var element1:RelativeLayout
-    lateinit var element2:RelativeLayout
-    lateinit var element3:RelativeLayout
-    lateinit var element4:RelativeLayout
-    lateinit var element5:RelativeLayout
-    lateinit var element6:RelativeLayout
-    lateinit var deadlineLabel: TextView
+    private lateinit var element1:RelativeLayout
+    private lateinit var element2:RelativeLayout
+    private lateinit var element3:RelativeLayout
+    private lateinit var element4:RelativeLayout
+    private lateinit var element5:RelativeLayout
+    private lateinit var element6:RelativeLayout
+    private lateinit var deadlineLabel: TextView
 
-    val forecastAdapter by lazy {ForecastAdapter(requireContext(), ArrayList(0)) }
-    lateinit var recyclerView: RecyclerView
+    private val forecastAdapter by lazy {ForecastAdapter(requireContext(), ArrayList(0)) }
+    private lateinit var recyclerView: RecyclerView
 
-    val elementList = ArrayList<RelativeLayout>()
+    private val elementList = ArrayList<RelativeLayout>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.activity_forecast_frag, container, false)
@@ -74,22 +74,22 @@ class ForecastFragment : Fragment(), ForecastContract.View {
         presenter.start()
     }
 
-    val fList1 = ArrayList<Forecast>() // 过去
-    val fList2 = ArrayList<Forecast>() // 今天
-    val fList3 = ArrayList<Forecast>() // +1
-    val fList4 = ArrayList<Forecast>() // +2
-    val fList5 = ArrayList<Forecast>() // +3
-    val fList6 = ArrayList<Forecast>() // 将来
+    private val fList1 = ArrayList<Forecast>() // 过去
+    private val fList2 = ArrayList<Forecast>() // 今天
+    private val fList3 = ArrayList<Forecast>() // +1
+    private val fList4 = ArrayList<Forecast>() // +2
+    private val fList5 = ArrayList<Forecast>() // +3
+    private val fList6 = ArrayList<Forecast>() // 将来
 
     override fun initData(forecastList: List<Forecast>) {
-        val sfFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val sfCommon = SimpleDateFormat("yyyy-MM-dd HH:mm")
-        val sfYmd = SimpleDateFormat("yyyy-MM-dd")
+        val sfFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val sfCommon = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        val sfYmd = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val current = Date()
         val cal = Calendar.getInstance()
         cal.time = current
         val time1 = current.time
-        val today = sfYmd.parse(sfYmd.format(current))
+        val today = sfYmd.parse(sfYmd.format(current)) as Date
         cal.time = today
         cal.add(Calendar.DAY_OF_MONTH, 1)
         val time2 = cal.time.time
@@ -206,7 +206,7 @@ class ForecastFragment : Fragment(), ForecastContract.View {
         elementList[index].setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.forecast_background_gray))
 
 
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val today = Date()
         val cal = Calendar.getInstance()
         cal.time = today

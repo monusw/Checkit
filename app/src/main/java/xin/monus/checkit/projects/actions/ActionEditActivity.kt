@@ -5,12 +5,12 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.Action
 import xin.monus.checkit.data.source.ActionDataSource
@@ -21,17 +21,17 @@ import java.util.*
 
 class ActionEditActivity : AppCompatActivity() {
 
-    val actionRepository by lazy { Injection.getActionRepository(this) }
+    private val actionRepository by lazy { Injection.getActionRepository(this) }
     var projectId: Int = 0
-    var actionId: Int = 0
-    lateinit var contenTxt: EditText
-    lateinit var btnFlag: Button
-    lateinit var btnDeadline: Button
-    lateinit var btnCheck: FloatingActionButton
+    private var actionId: Int = 0
+    private lateinit var contentTxt: EditText
+    private lateinit var btnFlag: Button
+    private lateinit var btnDeadline: Button
+    private lateinit var btnCheck: FloatingActionButton
     lateinit var newAction: Action
 
-    val calendar = Calendar.getInstance()
-    val sf = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    private val calendar: Calendar = Calendar.getInstance()
+    private val sf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,13 +77,13 @@ class ActionEditActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        contenTxt = findViewById(R.id.content) as EditText
-        btnFlag = findViewById(R.id.btn_flag) as Button
-        btnDeadline = findViewById(R.id.btn_deadline) as Button
-        btnCheck = findViewById(R.id.edit_finish) as FloatingActionButton
+        contentTxt = findViewById(R.id.content)
+        btnFlag = findViewById(R.id.btn_flag)
+        btnDeadline = findViewById(R.id.btn_deadline)
+        btnCheck = findViewById(R.id.edit_finish)
 
         if (actionId != 0) {
-            contenTxt.setText(newAction.content)
+            contentTxt.setText(newAction.content)
         }
 
         btnDeadline.text = newAction.deadline
@@ -128,11 +128,11 @@ class ActionEditActivity : AppCompatActivity() {
     }
 
     private fun checkEditFinish() {
-        if (contenTxt.text.isEmpty()) {
+        if (contentTxt.text.isEmpty()) {
             Toast.makeText(this, R.string.no_null_project_content, Toast.LENGTH_SHORT).show()
             return
         }
-        newAction.content = contenTxt.text.toString()
+        newAction.content = contentTxt.text.toString()
         newAction.deadline = btnDeadline.text.toString()
 
         if (actionId == 0) {

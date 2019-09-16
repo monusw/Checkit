@@ -3,18 +3,17 @@ package xin.monus.checkit.inbox
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.AbsListView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.baoyz.widget.PullRefreshLayout
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.noButton
-import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.yesButton
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.InboxItem
@@ -32,9 +31,9 @@ class InboxFragment: Fragment(), InboxContract.View {
 
     private lateinit var floatingBtn: FloatingActionButton
 
-    lateinit var recycleView: SwipeMenuRecyclerView
+    private lateinit var recycleView: SwipeMenuRecyclerView
 
-    private val itemClickListener = object : InboxFragment.ItemClickedListener{
+    private val itemClickListener = object : ItemClickedListener{
         override fun getID(itemID: Int) {
             val intent = Intent(context, InboxEditActivity::class.java)
             intent.putExtra("ID", itemID)
@@ -56,7 +55,7 @@ class InboxFragment: Fragment(), InboxContract.View {
 
     private lateinit var pullRefreshLayout: PullRefreshLayout
 
-    private var isTitle = false
+//    private var isTitle = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -91,18 +90,18 @@ class InboxFragment: Fragment(), InboxContract.View {
                 swipeRightMenu.addMenuItem(deleteItem)
             }
 
-            setSwipeMenuItemClickListener {menuBridge: SwipeMenuBridge ->
+            setSwipeMenuItemClickListener { menuBridge, position ->
                 menuBridge.closeMenu()
-                val adapterPosition = menuBridge.adapterPosition
                 val menuPosition = menuBridge.position
                 println("click menu, position: $menuPosition")
                 when (menuPosition) {
                     0 -> {
-                        val projectId = listAdapter.list[adapterPosition].id
+                        val projectId = listAdapter.list[position].id
                         itemClickListener.itemDelete(projectId)
                     }
                 }
             }
+
 
             adapter = listAdapter
 
@@ -129,9 +128,8 @@ class InboxFragment: Fragment(), InboxContract.View {
         }
 
 
-        floatingBtn = activity!!.findViewById<FloatingActionButton>(R.id.fab)
+        floatingBtn = activity!!.findViewById(R.id.fab)
         floatingBtn.setOnClickListener {
-            _ ->
 //            Snackbar.make(view, "For test", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
 //            presenter.loadItems()
             val intent = Intent(context, InboxEditActivity::class.java)
@@ -164,14 +162,14 @@ class InboxFragment: Fragment(), InboxContract.View {
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.inbox, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete_all -> {
-                alert(R.string.delete_confirm) {
+                context!!.alert(R.string.delete_confirm) {
                     yesButton {
                         presenter.deleteAll()
                     }
@@ -183,7 +181,7 @@ class InboxFragment: Fragment(), InboxContract.View {
                 true
             }
             R.id.delete_finished -> {
-                alert(R.string.delete_confirm) {
+                context!!.alert(R.string.delete_confirm) {
                     yesButton {
                         presenter.deleteFinished()
                     }

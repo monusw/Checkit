@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/top_back_view"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@color/forecast_background_gray"
-            android:orientation="vertical" />
+    <LinearLayout
+        android:id="@+id/top_back_view"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/forecast_background_gray"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/image"
@@ -48,9 +51,7 @@
             app:layout_constraintTop_toBottomOf="@+id/nickname_label" />
 
 
-        <android.support.constraint.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/login_form"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -70,7 +71,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/settings_nickname_tip"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -215,10 +216,10 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 

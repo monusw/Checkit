@@ -3,11 +3,11 @@ package xin.monus.checkit.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -20,9 +20,9 @@ import xin.monus.checkit.util.setupActionBar
 
 class RegisterActivity : AppCompatActivity() {
 
-    lateinit var usernameTxt: EditText
-    lateinit var passwordTxt: EditText
-    lateinit var rePasswordTxt: EditText
+    private lateinit var usernameTxt: EditText
+    private lateinit var passwordTxt: EditText
+    private lateinit var rePasswordTxt: EditText
     lateinit var progressCircle: ProgressBar
 
     val TAG = "FIRST_LOGIN"
@@ -40,10 +40,10 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        usernameTxt = findViewById(R.id.username) as EditText
-        passwordTxt = findViewById(R.id.password) as EditText
-        rePasswordTxt = findViewById(R.id.re_password) as EditText
-        progressCircle = findViewById(R.id.register_progress) as ProgressBar
+        usernameTxt = findViewById(R.id.username)
+        passwordTxt = findViewById(R.id.password)
+        rePasswordTxt = findViewById(R.id.re_password)
+        progressCircle = findViewById(R.id.register_progress)
         btn_register.setOnClickListener {
             checkRegister()
         }

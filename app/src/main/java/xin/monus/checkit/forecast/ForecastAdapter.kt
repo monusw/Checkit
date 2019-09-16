@@ -2,8 +2,8 @@ package xin.monus.checkit.forecast
 
 import android.content.Context
 import android.graphics.Color
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -24,7 +24,7 @@ class ForecastAdapter(val context: Context, list: List<Forecast>):BaseAdapter<Fo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = inflater.inflate(R.layout.activity_forecast_frag_item, parent, false)
-        return ForecastAdapter.ViewHolder(view)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -33,14 +33,14 @@ class ForecastAdapter(val context: Context, list: List<Forecast>):BaseAdapter<Fo
             deadline.text = list[position].deadline
 
             val deadlineTime = list[position].deadline
-            val sfFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val sfCommon = SimpleDateFormat("yyyy-MM-dd HH:mm")
-            val sfYmd = SimpleDateFormat("yyyy-MM-dd")
+            val sfFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val sfCommon = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+            val sfYmd = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val current = Date()
             val cal = Calendar.getInstance()
             cal.time = current
             val time1 = current.time
-            val today = sfYmd.parse(sfYmd.format(current))
+            val today = sfYmd.parse(sfYmd.format(current)) as Date
             cal.time = today
             cal.add(Calendar.DAY_OF_MONTH, 2)
             val time2 = cal.time.time
@@ -49,12 +49,10 @@ class ForecastAdapter(val context: Context, list: List<Forecast>):BaseAdapter<Fo
             } catch (e: Exception) {
                 sfFull.parse(deadlineTime)
             }
-            if (date.time < time1) {
-                deadline.setBackgroundColor(ContextCompat.getColor(context, R.color.background_red))
-            } else if (date.time < time2) {
-                deadline.setBackgroundColor(ContextCompat.getColor(context, R.color.background_yellow))
-            } else {
-                deadline.setBackgroundColor(Color.WHITE)
+            when {
+                date.time < time1 -> deadline.setBackgroundColor(ContextCompat.getColor(context, R.color.background_red))
+                date.time < time2 -> deadline.setBackgroundColor(ContextCompat.getColor(context, R.color.background_yellow))
+                else -> deadline.setBackgroundColor(Color.WHITE)
             }
 
 

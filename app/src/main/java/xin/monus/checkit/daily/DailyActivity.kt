@@ -2,12 +2,12 @@ package xin.monus.checkit.daily
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import com.google.android.material.navigation.NavigationView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import xin.monus.checkit.R
@@ -44,8 +44,7 @@ class DailyActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        val navigationView = findViewById(R.id.nav_view) as NavigationView
-        // TODO: Change the index in different activity
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.menu.getItem(2).isChecked = true
         navigationView.setNavigationItemSelectedListener(this)
 
@@ -86,13 +85,13 @@ class DailyActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 //            }
         }
 
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val drawer: DrawerLayout = findViewById(R.id.drawer_layout)
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
 
     override fun onBackPressed() {
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val drawer: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
         } else {

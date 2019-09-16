@@ -84,6 +84,7 @@
     <string name="forecast_inbox">收集箱项</string>
     <string name="forecast_project">项目</string>
     <string name="forecast_action">动作</string>
+    <string name="forecast_temp_date">2018–11–11 12:12</string>
 
     <!--settings activity-->
     <string name="settings_nickname_tip">昵称</string>

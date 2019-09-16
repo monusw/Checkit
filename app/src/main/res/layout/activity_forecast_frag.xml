@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,11 +9,15 @@
         android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <include
             android:id="@+id/element1"
             layout="@layout/forecast_btn_element" />
+
         <include
             android:id="@+id/element2"
             layout="@layout/forecast_btn_element" />
@@ -21,30 +25,33 @@
         <include
             android:id="@+id/element3"
             layout="@layout/forecast_btn_element" />
+
         <include
             android:id="@+id/element4"
             layout="@layout/forecast_btn_element" />
+
         <include
             android:id="@+id/element5"
             layout="@layout/forecast_btn_element" />
+
         <include
             android:id="@+id/element6"
             layout="@layout/forecast_btn_element" />
 
 
-
     </LinearLayout>
 
     <TextView
-        app:layout_constraintTop_toBottomOf="@+id/linear_layout"
-        android:gravity="center"
         android:id="@+id/deadline_label"
         android:layout_width="60dp"
         android:layout_height="30dp"
         android:background="@color/background_light_gray"
-        android:textSize="22sp"
+        android:gravity="center"
+        android:text="@string/forecast_deadline"
         android:textColor="@android:color/black"
-        android:text="@string/forecast_deadline"/>
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
 
     <TextView
         android:id="@+id/deadline_text"
@@ -52,14 +59,14 @@
         android:layout_height="30dp"
         android:background="@color/background_light_gray"
         android:gravity="center_vertical"
-        android:text="2018-1-10"
+        android:text="@string/forecast_temp_date"
         android:textColor="@android:color/black"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/deadline_label"
         app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -69,4 +76,4 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

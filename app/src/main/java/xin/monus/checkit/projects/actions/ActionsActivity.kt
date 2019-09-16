@@ -3,13 +3,12 @@ package xin.monus.checkit.projects.actions
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.AbsListView
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import xin.monus.checkit.R
@@ -39,15 +38,15 @@ class ActionsActivity : AppCompatActivity(), ActionsContract.View {
 
         initView()
 
-        projectId = intent.getStringExtra("PROJECT_ID").toInt()
+        projectId = intent.getStringExtra("PROJECT_ID")!!.toInt()
 
         presenter = ActionsPresenter(Injection.getActionRepository(this), this, projectId)
     }
 
     private fun initView() {
-        recyclerView = findViewById(R.id.actions_list) as SwipeMenuRecyclerView
+        recyclerView = findViewById(R.id.actions_list)
         // 点击添加按钮
-        btnAdd = findViewById(R.id.btn_add) as FloatingActionButton
+        btnAdd = findViewById(R.id.btn_add)
         btnAdd.setOnClickListener {
             val intent = Intent(this, ActionEditActivity::class.java)
             intent.putExtra("PROJECT_ID", projectId)
@@ -56,7 +55,7 @@ class ActionsActivity : AppCompatActivity(), ActionsContract.View {
 
         val swipeBtnHeight = ViewGroup.LayoutParams.MATCH_PARENT
         val swipeBtnWidth = 200
-        val swipeBtnTextSize = 20
+//        val swipeBtnTextSize = 20
 
         with(recyclerView) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -71,14 +70,13 @@ class ActionsActivity : AppCompatActivity(), ActionsContract.View {
                 swipeRightMenu.addMenuItem(deleteItem)
             }
 
-            setSwipeMenuItemClickListener { menuBridge : SwipeMenuBridge ->
+            setSwipeMenuItemClickListener { menuBridge, position ->
                 menuBridge.closeMenu()
-                val adapterPosition = menuBridge.adapterPosition
                 val menuPosition = menuBridge.position
                 println("click delete action, position: $menuPosition")
                 when (menuPosition) {
                     0 -> {
-                        val actionId = actionsAdapter.actionList[adapterPosition].id
+                        val actionId = actionsAdapter.actionList[position].id
                         itemClickListener.itemDelete(actionId)
                     }
                 }
@@ -147,7 +145,7 @@ class ActionsActivity : AppCompatActivity(), ActionsContract.View {
         }
     }
 
-    lateinit var recyclerView: SwipeMenuRecyclerView
+    private lateinit var recyclerView: SwipeMenuRecyclerView
 
     override fun showActions(actions: List<Action>) {
         println(actions.size)

@@ -3,11 +3,11 @@ package xin.monus.checkit.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.*
 import xin.monus.checkit.R
@@ -19,9 +19,9 @@ import xin.monus.checkit.util.Injection
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var usernameTxt: EditText
-    lateinit var passwordTxt: EditText
-    lateinit var progressCircle: ProgressBar
+    private lateinit var usernameTxt: EditText
+    private lateinit var passwordTxt: EditText
+    private lateinit var progressCircle: ProgressBar
 
     val TAG = "FIRST_LOGIN"
 
@@ -46,9 +46,9 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun setupUI() {
-        usernameTxt = findViewById(R.id.username) as EditText
-        passwordTxt = findViewById(R.id.password) as EditText
-        progressCircle = findViewById(R.id.login_progress) as ProgressBar
+        usernameTxt = findViewById(R.id.username)
+        passwordTxt = findViewById(R.id.password)
+        progressCircle = findViewById(R.id.login_progress)
 
 
         btn_login.setOnClickListener {
@@ -63,8 +63,8 @@ class LoginActivity : AppCompatActivity() {
         btn_nologin.setOnClickListener {
             alert(R.string.confirm_direct_use) {
                 yesButton {
-                    // TODO: 测试
                     UserProfile.generateDefaultUser(this@LoginActivity)
+                    updateAutoLogin()
                     val intent = Intent(this@LoginActivity, InboxActivity::class.java)
                     startActivity(intent)
                     finish()

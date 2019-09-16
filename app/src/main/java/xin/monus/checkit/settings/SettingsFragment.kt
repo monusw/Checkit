@@ -3,7 +3,6 @@ package xin.monus.checkit.settings
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.noButton
-import org.jetbrains.anko.support.v4.alert
-import org.jetbrains.anko.uiThread
-import org.jetbrains.anko.yesButton
+import androidx.fragment.app.Fragment
+import org.jetbrains.anko.*
 import xin.monus.checkit.R
 import xin.monus.checkit.data.entity.User
 import xin.monus.checkit.db.LocalDbHelper
@@ -29,17 +25,17 @@ class SettingsFragment: Fragment(), SettingsContract.View {
 
     override lateinit var presenter: SettingsContract.Presenter
 
-    lateinit var userMessage : User
-    lateinit var nicknameEdit : EditText
-    lateinit var heightEdit : EditText
-    lateinit var weightEdit : EditText
-    lateinit var calEdit: EditText
-    lateinit var modifyBtn : Button
-    lateinit var logoutBtn : Button
+    private lateinit var userMessage : User
+    private lateinit var nicknameEdit : EditText
+    private lateinit var heightEdit : EditText
+    private lateinit var weightEdit : EditText
+    private lateinit var calEdit: EditText
+    private lateinit var modifyBtn : Button
+    private lateinit var logoutBtn : Button
 
-    lateinit var nicknameLabel: TextView
-    lateinit var usernameLabel: TextView
-    lateinit var syncBtn: Button
+    private lateinit var nicknameLabel: TextView
+    private lateinit var usernameLabel: TextView
+    private lateinit var syncBtn: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.activity_settings_frag, container, false)
@@ -110,7 +106,7 @@ class SettingsFragment: Fragment(), SettingsContract.View {
     }
 
     private fun checkLogout() {
-        alert(R.string.settings_msg_logout) {
+        context!!.alert(R.string.settings_msg_logout) {
             yesButton {
                 clearData()
                 val intent = Intent(activity, LoginActivity::class.java)

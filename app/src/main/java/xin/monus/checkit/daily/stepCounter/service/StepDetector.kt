@@ -1,16 +1,17 @@
 package xin.monus.checkit.daily.stepCounter.service
 
-import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.util.Log
 import xin.monus.checkit.daily.stepCounter.utils.CountDownTimer
 import java.util.*
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
-class StepDetector(context : Context) : SensorEventListener {
-    private var TAG = "TAG_StepDetector"    //"StepDetector"
+class StepDetector : SensorEventListener {
+    private val TAG = "TAG_StepDetector"    //"StepDetector"
     //存放三轴数据（x,y,z）的个数
     private var valueNum = 5
     //用于存放计算阈值的波峰波谷差值
@@ -55,7 +56,7 @@ class StepDetector(context : Context) : SensorEventListener {
     //倒计时3.5秒，3.5秒内不会显示计步，用于屏蔽席位波动
     private var duration = 3500L
     lateinit var time : TimeCount
-    internal var onSensorChangeListener: OnSensorChangeListener ?= null
+    private var onSensorChangeListener: OnSensorChangeListener ?= null
 
     companion object {
         //记录临时的步数
@@ -82,7 +83,7 @@ class StepDetector(context : Context) : SensorEventListener {
 
     //当传感器发生变化后调用的回调函数
     override fun onSensorChanged(event : SensorEvent) {
-        var sensor = event.sensor
+        val sensor = event.sensor
         //同步块
         synchronized(this) {
             //获取加速度传感器
@@ -94,8 +95,8 @@ class StepDetector(context : Context) : SensorEventListener {
 
     @Synchronized private fun calc_step(event: SensorEvent) {
         //算出加速度传感器的x、y、z三轴的平均数值（为了平衡在某一个方向数值过大造成的数据误差）
-        average = Math.sqrt(Math.pow(event.values[0].toDouble(), 2.0)
-                + Math.pow(event.values[1].toDouble(), 2.0) + Math.pow(event.values[2].toDouble(), 2.0)).toFloat()
+        average = sqrt(event.values[0].toDouble().pow(2.0)
+                + event.values[1].toDouble().pow(2.0) + event.values[2].toDouble().pow(2.0)).toFloat()
         detectorNewStep(average)
     }
 
@@ -111,14 +112,14 @@ class StepDetector(context : Context) : SensorEventListener {
         if (gravityOld == 0f) {
             gravityOld=values
         } else {
-            if (DetectorPeak(values, gravityOld)) {
+            if (detectorPeak(values, gravityOld)) {
                 timeOfLastPeak = timeOfThisPeak
                 timeOfNow = System.currentTimeMillis()
 
                 if (timeOfNow - timeOfLastPeak >= 200 && (peakOfWave - valleyOfWave >= threadValue)) {
                     timeOfThisPeak = timeOfNow
                     //更新界面的处理，不涉及算法
-                    preStrp()
+                    preStep()
                 }
                 if (timeOfNow - timeOfLastPeak >= 200 && (peakOfWave - valleyOfWave >= initialValue)) {
                     timeOfThisPeak = timeOfNow
@@ -132,7 +133,7 @@ class StepDetector(context : Context) : SensorEventListener {
     /**
      * 判断状态并计步
      */
-    private fun preStrp() {
+    private fun preStep() {
         if (CountTimeState == 0) {
             //开启计时器(倒计时3.5秒,倒计时时间间隔为0.7秒)  是在3.5秒内每0.7面去监测一次。
             time = TimeCount(duration, 700)
@@ -141,7 +142,7 @@ class StepDetector(context : Context) : SensorEventListener {
             Log.v(TAG, "开启计时器")
         } else if (CountTimeState == 1) {
             TEMP_STEP++          //如果传感器测得的数据满足走一步的条件则步数加1
-            Log.v(TAG, "计步中 TEMP_STEP:" + TEMP_STEP)
+            Log.v(TAG, "计步中 TEMP_STEP:$TEMP_STEP")
         } else if (CountTimeState == 2) {
             CURRENT_STEP++
             if (onSensorChangeListener != null) {
@@ -165,7 +166,7 @@ class StepDetector(context : Context) : SensorEventListener {
      * @param oldValue
      * @return
      */
-    fun DetectorPeak(newValue: Float, oldValue: Float): Boolean {
+    private fun detectorPeak(newValue: Float, oldValue: Float): Boolean {
         lastStatus = isDirectionUp
         if (newValue >= oldValue) {
             isDirectionUp = true
@@ -196,7 +197,7 @@ class StepDetector(context : Context) : SensorEventListener {
      * @param value
      * @return
      */
-    fun peakValleyThread(value: Float): Float {
+    private fun peakValleyThread(value: Float): Float {
         var tempThread = threadValue
         if (tempCount < valueNum) {
             tempValue[tempCount] = value
@@ -222,7 +223,7 @@ class StepDetector(context : Context) : SensorEventListener {
      * @param n
      * @return
      */
-    fun averageValue(value: FloatArray, n: Int): Float {
+    private fun averageValue(value: FloatArray, n: Int): Float {
         var ave = 0f
         for (i in 0 until n) {
             ave += value[i]
@@ -265,7 +266,7 @@ class StepDetector(context : Context) : SensorEventListener {
                         CountTimeState = 0
                         lastStep = -1
                         TEMP_STEP = 0
-                        Log.v(TAG, "停止计步：" + CURRENT_STEP)
+                        Log.v(TAG, "停止计步：$CURRENT_STEP")
                     } else {
                         lastStep = CURRENT_STEP
                     }

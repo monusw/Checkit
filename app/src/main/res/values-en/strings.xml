@@ -86,6 +86,7 @@
     <string name="forecast_inbox">Inb.Item</string>
     <string name="forecast_project">Project</string>
     <string name="forecast_action">Action</string>
+    <string name="forecast_temp_date">2018-11-11 12:12</string>
 
     <!--settings activity-->
     <string name="settings_nickname_tip">Nickname</string>

@@ -3,9 +3,9 @@ package xin.monus.checkit.daily.dailyEdit
 import android.app.TimePickerDialog
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -22,7 +22,7 @@ import java.util.*
 
 class DailyEditActivity : AppCompatActivity() {
 
-    val dailyRepository by lazy { Injection.getDailyRepository(this)}
+    private val dailyRepository by lazy { Injection.getDailyRepository(this)}
     lateinit var selectRemindTime: Button
     lateinit var contentEditor: EditText
     lateinit var finishEdit : FloatingActionButton
@@ -33,18 +33,18 @@ class DailyEditActivity : AppCompatActivity() {
     var isNew = true
     val id:Int by lazy { intent.getIntExtra("ID",0) }
 
-    val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    private val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
-    val calendar = Calendar.getInstance()
+    val calendar: Calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_item_edit)
 
-        selectRemindTime = findViewById(R.id.remind_time_btn) as Button
-        contentEditor = findViewById(R.id.daily_content_edit) as EditText
-        finishEdit = findViewById(R.id.daily_edit_finish) as FloatingActionButton
-        btnFlag = findViewById(R.id.btn_flag) as Button
+        selectRemindTime = findViewById(R.id.remind_time_btn)
+        contentEditor = findViewById(R.id.daily_content_edit)
+        finishEdit = findViewById(R.id.daily_edit_finish)
+        btnFlag = findViewById(R.id.btn_flag)
 
         updateTimeShow()
 
@@ -59,7 +59,7 @@ class DailyEditActivity : AppCompatActivity() {
                     contentEditor.setText(tempDailyItem.content)
                     //set the position of the selection
                     contentEditor.setSelection(tempDailyItem.content.length)
-                    calendar.time = tempDailyItem.remindTime.toDate()
+                    calendar.time = tempDailyItem.remindTime.toDate() as Date
                 }
 
                 override fun onDataNotAvailable() {
@@ -70,8 +70,8 @@ class DailyEditActivity : AppCompatActivity() {
             tempDailyItem  = Daily(0,
                     UserProfile.getUser(this).username,
                     "","",
-                    false,
-                    false)
+                    complete = false,
+                    flag = false)
         }
 
         setFlagBtnPic()
@@ -171,17 +171,16 @@ class DailyEditActivity : AppCompatActivity() {
 
     fun String.toDate(pattern: String = "HH:mm"): Date? {
         val sdFormat = try {
-            SimpleDateFormat(pattern)
+            SimpleDateFormat(pattern, Locale.getDefault())
         } catch (e: IllegalArgumentException) {
             null
         }
-        val date = sdFormat?.let {
+        return sdFormat?.let {
             try {
                 it.parse(this)
             } catch (e: ParseException) {
-                null
+                Date()
             }
         }
-        return date
     }
 }
